@@ -1,0 +1,27 @@
+- id: ds-arrays-001
+  difficulty: basic
+  tags: [arrays, complexity]
+  question: |
+    存取陣列中第 i 個元素 (random access) 的時間複雜度是？
+  options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"]
+  answer: 0
+  explanation: |
+    陣列是連續記憶體，元素位址 = 起始位址 + i * 元素大小，可直接計算，故 O(1)。
+- id: ds-arrays-002
+  difficulty: basic
+  tags: [arrays]
+  question: |
+    在動態陣列 (dynamic array) 尾端 append 一個元素的「攤平 (amortized)」時間複雜度是？
+  options: ["O(1)", "O(n)", "O(log n)", "O(n^2)"]
+  answer: 0
+  explanation: |
+    多數 append 是 O(1)；偶爾需要擴容並複製整個陣列為 O(n)，但攤平後仍是 O(1)。
+- id: ds-arrays-003
+  difficulty: intermediate
+  tags: [arrays, insertion]
+  question: |
+    在長度為 n 的陣列「開頭」插入一個元素，最差情況時間複雜度是？
+  options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"]
+  answer: 2
+  explanation: |
+    開頭插入需把後面 n 個元素全部往後搬一格，故 O(n)。

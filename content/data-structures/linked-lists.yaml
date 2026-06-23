@@ -1,0 +1,31 @@
+- id: ds-linked-001
+  difficulty: basic
+  tags: [linked-list]
+  question: |
+    已知某節點的指標，在 singly linked list 中於其「後面」插入一個新節點，時間複雜度是？
+  options: ["O(1)", "O(n)", "O(log n)", "O(n^2)"]
+  answer: 0
+  explanation: |
+    只需改兩個指標即可，與串列長度無關，故 O(1)。
+- id: ds-linked-002
+  difficulty: basic
+  tags: [linked-list, access]
+  question: |
+    在 singly linked list 中存取第 i 個元素的時間複雜度是？
+  options: ["O(1)", "O(n)", "O(log n)", "O(1) 攤平"]
+  answer: 1
+  explanation: |
+    linked list 不支援隨機存取，必須從頭沿指標走 i 步，故 O(n)。
+- id: ds-linked-003
+  difficulty: intermediate
+  tags: [linked-list, comparison]
+  question: |
+    相較於陣列，linked list 的主要「缺點」是下列何者？
+  options:
+    - 無法在中間插入元素
+    - 不支援 O(1) 隨機存取，且每個節點有額外指標記憶體開銷
+    - 無法儲存任意型別
+    - 一定比陣列慢
+  answer: 1
+  explanation: |
+    linked list 失去 O(1) 隨機存取，且每節點要存指標 (額外記憶體)；但在已知位置插入/刪除是 O(1)。

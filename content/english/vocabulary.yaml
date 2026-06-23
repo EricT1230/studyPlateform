@@ -1,0 +1,39 @@
+- id: en-vocab-001
+  difficulty: basic
+  tags: [vocabulary]
+  question: |
+    In software, an API marked as "deprecated" means it is:
+  options:
+    - recommended as the new standard
+    - still supported but discouraged and may be removed later
+    - permanently deleted already
+    - faster than alternatives
+  answer: 1
+  explanation: |
+    Deprecated = 仍可用但「不建議使用」，通常未來版本會移除。
+- id: en-vocab-002
+  difficulty: basic
+  tags: [vocabulary]
+  question: |
+    Your teammate says a fix is "idempotent". This means running it multiple times:
+  options:
+    - produces the same result as running it once
+    - doubles the effect each time
+    - is not allowed
+    - requires a restart
+  answer: 0
+  explanation: |
+    Idempotent = 執行一次或多次結果相同，常見於 REST / 部署腳本的描述。
+- id: en-vocab-003
+  difficulty: intermediate
+  tags: [vocabulary]
+  question: |
+    "Let's not bikeshed this" in a design discussion suggests you should:
+  options:
+    - paint the bike shed first
+    - avoid spending too much time on trivial details
+    - assign more reviewers
+    - revert the change
+  answer: 1
+  explanation: |
+    Bikeshedding = 在瑣碎小事上過度爭論。這句是提醒大家別糾結細節。

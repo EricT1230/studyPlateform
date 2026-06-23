@@ -1,0 +1,27 @@
+- id: algo-sort-001
+  difficulty: basic
+  tags: [sorting, complexity]
+  question: |
+    Quicksort 的「平均」時間複雜度是？
+  options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"]
+  answer: 1
+  explanation: |
+    平均 O(n log n)；最差情況 (已排序 + 差的 pivot) 才退化為 O(n^2)。
+- id: algo-sort-002
+  difficulty: intermediate
+  tags: [sorting, stability]
+  question: |
+    下列哪個排序演算法是「穩定 (stable)」的？
+  options: ["Quicksort", "Heapsort", "Merge sort", "Selection sort"]
+  answer: 2
+  explanation: |
+    Merge sort 在合併時保留相等元素的相對順序，故穩定。Quicksort/Heapsort/Selection sort 一般不穩定。
+- id: algo-sort-003
+  difficulty: advanced
+  tags: [sorting, lower-bound]
+  question: |
+    任何「以比較為基礎 (comparison-based)」的排序，最差情況下的時間複雜度下界是？
+  options: ["O(n)", "O(n log n)", "O(log n)", "O(n^2)"]
+  answer: 1
+  explanation: |
+    比較排序的決策樹有 n! 個葉節點，高度至少 log(n!) = Θ(n log n)，故下界為 Ω(n log n)。

@@ -1,0 +1,39 @@
+- id: en-comm-001
+  difficulty: intermediate
+  tags: [communication, code-review]
+  question: |
+    In a code review you spot a likely bug. Which comment is most professional and constructive?
+  options:
+    - "This is wrong."
+    - "Did you even test this?"
+    - "I think this might break when the list is empty — could we add a guard or a test for that case?"
+    - "Please fix."
+  answer: 2
+  explanation: |
+    具體指出情境、用提問語氣、提供可行建議——這是外商 code review 的標準溝通方式。
+- id: en-comm-002
+  difficulty: intermediate
+  tags: [communication, standup]
+  question: |
+    You are blocked in standup. Which update is clearest and most accountable?
+  options:
+    - "I'm stuck on stuff."
+    - "Nothing works, not my fault."
+    - "I'm blocked on the payment API returning 500s; I've opened a ticket and will pair with Sara after standup."
+    - "Still working on it."
+  answer: 2
+  explanation: |
+    說明「卡在哪、已採取什麼行動、下一步」——清楚、不甩鍋、可被協助。
+- id: en-comm-003
+  difficulty: advanced
+  tags: [communication, disagreement]
+  question: |
+    You disagree with a reviewer's suggestion. Which reply best balances respect and pushback?
+  options:
+    - "No."
+    - "You don't understand the code."
+    - "I see your point on readability. I kept it this way for performance — here's a benchmark. Open to alternatives if you know a cleaner approach."
+    - "Whatever you say."
+  answer: 2
+  explanation: |
+    先認同對方觀點、給出有數據的理由、保持開放——這是 senior 工程師有效表達不同意見的方式。
