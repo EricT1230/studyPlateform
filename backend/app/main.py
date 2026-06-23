@@ -21,9 +21,8 @@ def create_app(content_dir: Path = CONTENT_DIR, db_path: Path = DB_PATH) -> Fast
     init_db(conn)
     app.state.db = conn
 
-    # Routers are registered here as later tasks add them:
-    # from .api import subjects, questions, attempts, stats, tutorials
-    # app.include_router(subjects.router)  ... etc.
+    from .api import subjects
+    app.include_router(subjects.router)
     return app
 
 
