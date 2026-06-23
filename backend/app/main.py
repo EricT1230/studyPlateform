@@ -21,9 +21,10 @@ def create_app(content_dir: Path = CONTENT_DIR, db_path: Path = DB_PATH) -> Fast
     init_db(conn)
     app.state.db = conn
 
-    from .api import subjects, questions
+    from .api import subjects, questions, attempts
     app.include_router(subjects.router)
     app.include_router(questions.router)
+    app.include_router(attempts.router)
     return app
 
 
