@@ -64,6 +64,13 @@ python -m pytest
 
 作答歷史存在 `backend/progress.db`（git 忽略）。每一次作答都記錄下來，未來要升級成「間隔重複（Anki 式）」複習時，所需的歷史現在就在累積。
 
+## 文件
+
+- [企畫書](docs/企畫書.md) — 願景、學科地基策略、開發里程碑
+- [HANDOFF](docs/HANDOFF.md) — 交接與動工指南（給接手實作的人）
+- [設計 spec](docs/superpowers/specs/2026-06-23-study-drill-platform-design.md)
+- [MVP 實作計畫](docs/superpowers/plans/2026-06-23-study-drill-platform.md)
+
 ## 路線圖（之後）
 
 - 間隔重複排程（用已累積的作答歷史）
