@@ -127,26 +127,23 @@ frontend/src/
 | **progress.db** | 作答歷史檔，已被 `.gitignore`。別 commit 它。 |
 | **SQLite 執行緒** | 連線用 `check_same_thread=False`（uvicorn 多執行緒需要）。 |
 
-## 7. 待辦 Backlog（下一批可動工的任務）
+## 7. 待辦 Backlog（規畫已全部訂好）
 
-> 開動前先找 Claude 為該 Phase 出 spec + plan。以下是方向與驗收，不是 plan 本身。
+> **所有 Phase 的設計 spec 都已寫好。** 含完整程式碼的逐步實作 plan 採「臨動工前才產」——
+> 因為它會引用上一個 Phase 實際寫出的程式，太早寫會過時。動工順序：
+> 挑一個 Phase → 找 Claude 用該 spec 產 plan → 照 plan 逐任務 TDD → 每任務交回 Claude review。
+> 動工前先讀 [ARCHITECTURE.md](ARCHITECTURE.md)，確認接縫與鐵則。
 
-**最高優先：題庫擴充（Phase 2，可立即做、無需大改）**
-- [ ] 資料結構補到 basic→master 各約 8–10 題（hash table、tree、heap、graph、stack/queue）
-- [ ] 演算法補（搜尋、遞迴/DP、greedy、圖論基礎）
-- [ ] 英文補（更多職場溝通情境、技術閱讀理解）
-- 驗收：`load_questions(CONTENT_DIR)` 無例外、前端能篩到新題、難度分佈合理。
+| Phase | 主題 | spec | plan | 狀態 |
+|---|---|---|---|---|
+| 1 | 間隔重複 | [spec](superpowers/specs/2026-06-24-spaced-repetition-design.md) | [plan](superpowers/plans/2026-06-24-spaced-repetition.md)（7 任務、含完整碼） | ✅ **spec+plan 就緒，可直接動工** |
+| 2 | 題庫擴充 + 筆記 | [spec](superpowers/specs/2026-06-24-phase2-content-and-notes-design.md) | 動工前產 | 📐 spec 就緒 |
+| 3 | CAG 解答小老師 | [spec](superpowers/specs/2026-06-24-phase3-cag-tutor-design.md) | 動工前產 | 📐 spec 就緒 |
+| 4 | 新題型（翻牌卡/開放式自評） | [spec](superpowers/specs/2026-06-24-phase4-question-types-design.md) | 動工前產 | 📐 spec 就緒 |
 
-**間隔重複（Phase 1）— ✅ spec + plan 已就緒，可直接動工**
-- spec：[2026-06-24-spaced-repetition-design.md](superpowers/specs/2026-06-24-spaced-repetition-design.md)
-- plan：[2026-06-24-spaced-repetition.md](superpowers/plans/2026-06-24-spaced-repetition.md)（7 個任務、含完整程式碼與測試）
-- 模型：Leitner 五盒（間隔 1/3/7/16/35 天），統一模型（每次作答都重排程），不設每日上限、用排序處理 backlog。
-- 動工方式：照 plan 一個任務一個任務做（TDD），做完一個交回 Claude review。
-
-**CAG 解答小老師（Phase 3，需 spec+plan）**
-- [ ] 設計把題庫+筆記組成 context 的策略；接 Claude API
-- [ ] 問答 API + 前端對話介面；英文口說對話教練模式
-- 驗收：能就某題/主題追問並得到貼合題庫的解說。
+- **Phase 2 的「題庫擴充」部分**不需 plan——純加 YAML，照本檔第 4 節直接做；其「筆記功能」部分動工前產 plan。
+- **建議起手順序**：Phase 1（間隔重複，plan 已就緒）→ Phase 2（邊擴題庫邊做筆記）→ Phase 4（新題型，架構驗證）→ Phase 3（CAG，最複雜、且吃 Phase 2 的筆記）。
+- 每個 Phase spec 都列了「不做（YAGNI）」清單與「設計鐵則一致性」檢查，動工與審查時對照。
 
 ## 8. 已知缺口（最終 review 列出、尚未處理的 minor）
 
