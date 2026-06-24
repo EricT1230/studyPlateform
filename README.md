@@ -66,6 +66,7 @@ python -m pytest
 
 ## 文件
 
+- [AGENTS.md](AGENTS.md) — 接手 Agent 的定向導言（動工前先讀）
 - [企畫書](docs/企畫書.md) — 願景、學科地基策略、開發里程碑
 - [HANDOFF](docs/HANDOFF.md) — 交接與動工指南（給接手實作的人）
 - [設計 spec](docs/superpowers/specs/2026-06-23-study-drill-platform-design.md)

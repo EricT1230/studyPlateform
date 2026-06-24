@@ -1,5 +1,6 @@
 # HANDOFF — 動工交接文件
 
+> AI agent 接手請先讀 [AGENTS.md](../AGENTS.md)（定向導言），再讀本檔。
 > 給接手實作的人（人類開發者或 AI coding agent）。讀完這份就能動工。
 > 高層次的「為什麼/做什麼」見 [企畫書](企畫書.md)。
 >
