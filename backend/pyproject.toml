@@ -1,0 +1,11 @@
+[project]
+name = "study-drill-backend"
+version = "0.1.0"
+description = "Personal MCQ study-drill platform — FastAPI backend"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # Third-party: Starlette's TestClient warns about httpx vs httpx2. Not our code.
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated",
+]

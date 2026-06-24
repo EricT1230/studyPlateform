@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getQuestions } from "../api/client";
 
 export default function Browse() {
@@ -27,6 +28,8 @@ export default function Browse() {
         <div className="card" key={item.id}>
           <div style={{ color: "#888", fontSize: 13 }}>
             {item.id} · {item.subject} · {item.difficulty}
+            {" · "}
+            <Link to={`/tutorial/${item.subject}/${item.topic}`}>📖 看教學</Link>
           </div>
           <p style={{ whiteSpace: "pre-wrap" }}>{item.question}</p>
           <ul>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { postAttempt } from "../api/client";
 
 export default function QuestionCard({ question, onAnswered }) {
@@ -23,6 +24,8 @@ export default function QuestionCard({ question, onAnswered }) {
     <div className="card">
       <div style={{ color: "#888", fontSize: 13 }}>
         {question.subject} · {question.topic} · {question.difficulty}
+        {" · "}
+        <Link to={`/tutorial/${question.subject}/${question.topic}`}>📖 看教學</Link>
       </div>
       <p style={{ whiteSpace: "pre-wrap", fontWeight: 600 }}>{question.question}</p>
       {question.options.map((opt, idx) => (

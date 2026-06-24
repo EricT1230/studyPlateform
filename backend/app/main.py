@@ -16,6 +16,7 @@ def create_app(content_dir: Path = CONTENT_DIR, db_path: Path = DB_PATH) -> Fast
         allow_headers=["*"],
     )
     app.state.questions = load_questions(content_dir)
+    app.state.questions_by_id = {q.id: q for q in app.state.questions}
     app.state.content_dir = content_dir
     conn = get_connection(db_path)
     init_db(conn)
