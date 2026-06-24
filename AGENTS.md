@@ -36,7 +36,8 @@ MVP 已完成並驗收（5 個 API、4 個前端頁面、15 題、後端 30 個 
 
 1. **本檔（AGENTS.md）** — 你現在在這。
 2. **[docs/HANDOFF.md](docs/HANDOFF.md)** — 動工聖經：環境、程式碼地圖、設計鐵則、題庫規範、雷區、待辦 backlog。
-3. **[docs/企畫書.md](docs/企畫書.md)** — 背景與方向：願景、學科地基策略、里程碑（想知道「為什麼這樣排」時讀）。
+3. **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** — 系統架構北極星：鐵則、資料模型演進、每個 Phase 從哪個接縫接進來。動到架構前必讀。
+4. **[docs/企畫書.md](docs/企畫書.md)** — 背景與方向：願景、學科地基策略、里程碑（想知道「為什麼這樣排」時讀）。
 4. **[實作計畫範本](docs/superpowers/plans/2026-06-23-study-drill-platform.md)** — 看「一份好的 plan / 任務長什麼樣」，你拿到的新 plan 會是同種格式。
 5. 要動的那塊對應的**程式碼與測試**。
 
