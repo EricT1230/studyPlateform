@@ -137,11 +137,11 @@ frontend/src/
 - [ ] 英文補（更多職場溝通情境、技術閱讀理解）
 - 驗收：`load_questions(CONTENT_DIR)` 無例外、前端能篩到新題、難度分佈合理。
 
-**間隔重複（Phase 1，需 spec+plan）**
-- [ ] 設計排程演算法（SM-2 或簡化版），讀 `attempts` 歷史算下次複習時間
-- [ ] 新增 `GET /review/today` 出「今日該複習」清單
-- [ ] 前端儀表板加「今日複習」入口
-- 驗收：答錯題間隔縮短、答對拉長；每日清單正確。
+**間隔重複（Phase 1）— ✅ spec + plan 已就緒，可直接動工**
+- spec：[2026-06-24-spaced-repetition-design.md](superpowers/specs/2026-06-24-spaced-repetition-design.md)
+- plan：[2026-06-24-spaced-repetition.md](superpowers/plans/2026-06-24-spaced-repetition.md)（7 個任務、含完整程式碼與測試）
+- 模型：Leitner 五盒（間隔 1/3/7/16/35 天），統一模型（每次作答都重排程），不設每日上限、用排序處理 backlog。
+- 動工方式：照 plan 一個任務一個任務做（TDD），做完一個交回 Claude review。
 
 **CAG 解答小老師（Phase 3，需 spec+plan）**
 - [ ] 設計把題庫+筆記組成 context 的策略；接 Claude API
