@@ -127,23 +127,25 @@ frontend/src/
 | **progress.db** | 作答歷史檔，已被 `.gitignore`。別 commit 它。 |
 | **SQLite 執行緒** | 連線用 `check_same_thread=False`（uvicorn 多執行緒需要）。 |
 
-## 7. 待辦 Backlog（規畫已全部訂好）
+## 7. 待辦 Backlog（規畫已全部訂好，可一路做下去）
 
-> **所有 Phase 的設計 spec 都已寫好。** 含完整程式碼的逐步實作 plan 採「臨動工前才產」——
-> 因為它會引用上一個 Phase 實際寫出的程式，太早寫會過時。動工順序：
-> 挑一個 Phase → 找 Claude 用該 spec 產 plan → 照 plan 逐任務 TDD → 每任務交回 Claude review。
-> 動工前先讀 [ARCHITECTURE.md](ARCHITECTURE.md)，確認接縫與鐵則。
+> **所有 Phase 的 spec 與含完整程式碼的 plan 都已寫好。** 照數字序 1→2→3→4 一路做即可、不會偏離。
+> 每個 plan 都標明「前置 Phase」，且程式碼是依「上一個 Phase 照 plan 做完後的狀態」寫的——
+> 只要照 plan 做（這正是 plan 的用途），就會彼此對得上。
+> 流程：挑 Phase → 照 plan 逐任務 TDD → 每任務交回 Claude review → 下一個。
+> 動工前先讀 [ARCHITECTURE.md](ARCHITECTURE.md) 的鐵則與接縫。
 
-| Phase | 主題 | spec | plan | 狀態 |
+| 順序 | Phase | spec | plan（含完整碼 + 測試） | 前置 |
 |---|---|---|---|---|
-| 1 | 間隔重複 | [spec](superpowers/specs/2026-06-24-spaced-repetition-design.md) | [plan](superpowers/plans/2026-06-24-spaced-repetition.md)（7 任務、含完整碼） | ✅ **spec+plan 就緒，可直接動工** |
-| 2 | 題庫擴充 + 筆記 | [spec](superpowers/specs/2026-06-24-phase2-content-and-notes-design.md) | 動工前產 | 📐 spec 就緒 |
-| 3 | CAG 解答小老師 | [spec](superpowers/specs/2026-06-24-phase3-cag-tutor-design.md) | 動工前產 | 📐 spec 就緒 |
-| 4 | 新題型（翻牌卡/開放式自評） | [spec](superpowers/specs/2026-06-24-phase4-question-types-design.md) | 動工前產 | 📐 spec 就緒 |
+| 1 | 間隔重複 | [spec](superpowers/specs/2026-06-24-spaced-repetition-design.md) | [plan](superpowers/plans/2026-06-24-spaced-repetition.md)（7 任務） | MVP |
+| 2 | 題庫擴充 + 筆記 | [spec](superpowers/specs/2026-06-24-phase2-content-and-notes-design.md) | [plan](superpowers/plans/2026-06-24-phase2-content-and-notes.md)（3 任務） | Phase 1 |
+| 3 | CAG 解答小老師 | [spec](superpowers/specs/2026-06-24-phase3-cag-tutor-design.md) | [plan](superpowers/plans/2026-06-24-phase3-cag-tutor.md)（4 任務） | Phase 2 |
+| 4 | 新題型（翻牌卡/開放式） | [spec](superpowers/specs/2026-06-24-phase4-question-types-design.md) | [plan](superpowers/plans/2026-06-24-phase4-question-types.md)（4 任務） | Phase 1 |
 
-- **Phase 2 的「題庫擴充」部分**不需 plan——純加 YAML，照本檔第 4 節直接做；其「筆記功能」部分動工前產 plan。
-- **建議起手順序**：Phase 1（間隔重複，plan 已就緒）→ Phase 2（邊擴題庫邊做筆記）→ Phase 4（新題型，架構驗證）→ Phase 3（CAG，最複雜、且吃 Phase 2 的筆記）。
-- 每個 Phase spec 都列了「不做（YAGNI）」清單與「設計鐵則一致性」檢查，動工與審查時對照。
+- **建構順序定為 1→2→3→4（數字序）**：Phase 3（CAG）吃 Phase 2 的筆記；Phase 4 只需 Phase 1。各 plan 開頭都註明前置。
+- **Phase 2 的「題庫擴充」部分**不需 plan——純加 YAML，照本檔第 4 節直接做；plan 涵蓋的是「筆記功能」。
+- **Phase 3 動工前**：實作者要先重讀 `claude-api` 技能，確認 Claude SDK/model 細節（plan 已內含正確寫法，但模型 API 易變，務必對照）。
+- 每個 plan 末有 self-review notes（spec 覆蓋、YAGNI、型別一致性、設計鐵則檢查），審查時對照。
 
 ## 8. 已知缺口（最終 review 列出、尚未處理的 minor）
 
