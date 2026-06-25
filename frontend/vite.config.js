@@ -9,6 +9,6 @@ export default defineConfig({
     // Docker Desktop on Windows/macOS does not forward inotify events across
     // bind mounts, so file-watch HMR needs polling. Enabled only in the dev
     // container (VITE_USE_POLLING=1) to avoid burning CPU on native dev.
-    watch: process.env.VITE_USE_POLLING ? { usePolling: true } : undefined,
+    watch: globalThis.process?.env?.VITE_USE_POLLING ? { usePolling: true } : undefined,
   },
 })
