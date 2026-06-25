@@ -318,7 +318,8 @@ a { color: var(--accent-strong); }
 /* ============================================================
    Buttons
    ============================================================ */
-button.primary {
+.primary {
+  display: inline-block;
   padding: 12px 22px;
   border: 0;
   border-radius: 999px;
@@ -326,13 +327,14 @@ button.primary {
   color: #fff;
   font-weight: 700;
   font-size: 0.95rem;
+  text-decoration: none;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: background var(--fast) var(--ease), transform var(--fast) var(--ease),
     box-shadow var(--fast) var(--ease);
 }
-button.primary:hover { background: var(--accent-strong); transform: translateY(-1px); box-shadow: var(--shadow); }
-button.primary:active { transform: translateY(0); }
+.primary:hover { background: var(--accent-strong); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow); }
+.primary:active { transform: translateY(0); }
 
 /* ============================================================
    Filters

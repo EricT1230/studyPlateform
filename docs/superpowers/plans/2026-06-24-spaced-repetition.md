@@ -608,7 +608,7 @@ git commit -m "feat: add due_today count to stats"
 
 Frontend tasks use **manual verification** (run the app, observe), per the existing project pattern. Verify each builds with `npm run build`.
 
-- [ ] **Step 1: Add `getReview` to the API client**
+- [x] **Step 1: Add `getReview` to the API client**
 
 In `frontend/src/api/client.js`, add this export (next to `getStats`):
 ```javascript
@@ -617,7 +617,7 @@ export function getReview() {
 }
 ```
 
-- [ ] **Step 2: Create the Review page**
+- [x] **Step 2: Create the Review page**
 
 `frontend/src/pages/Review.jsx`:
 ```jsx
@@ -659,7 +659,7 @@ export default function Review() {
 }
 ```
 
-- [ ] **Step 3: Add the route and nav link in `App.jsx`**
+- [x] **Step 3: Add the route and nav link in `App.jsx`**
 
 Replace the contents of `frontend/src/App.jsx` with:
 ```jsx
@@ -693,19 +693,19 @@ export default function App() {
 }
 ```
 
-- [ ] **Step 4: Build to verify it compiles**
+- [x] **Step 4: Build to verify it compiles**
 
 Run (from `frontend/`): `npm run build`
 Expected: build succeeds; then `rm -rf dist`.
 
-- [ ] **Step 5: Manual verification**
+- [x] **Step 5: Manual verification**
 
 Start backend (`uvicorn app.main:app --reload` from `backend/` with venv active) and frontend (`npm run dev`). Then:
 1. Go to `/review` with no due cards → shows "今天沒有要複習的…".
 2. In `/practice`, answer a question wrong, wait is not practical — instead verify scheduling via the dashboard count in Task 7, or temporarily confirm `/review` is reachable and renders a card when due. (A due card appears only when `due_date <= today`; a freshly-wrong card is due tomorrow by design.)
 3. Confirm the "複習" nav link works and the page loads without console errors.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add frontend/src/api/client.js frontend/src/pages/Review.jsx frontend/src/App.jsx
@@ -723,7 +723,7 @@ git commit -m "feat: add review page and nav link"
 - Consumes: `getStats()` (already used by Dashboard), which now returns `due_today`; `react-router-dom` `Link`.
 - Produces: a "今天待複習" block linking to `/review`.
 
-- [ ] **Step 1: Add the due-today block to the dashboard**
+- [x] **Step 1: Add the due-today block to the dashboard**
 
 In `frontend/src/pages/Dashboard.jsx`, add `Link` to the imports:
 ```jsx
@@ -749,12 +749,12 @@ Then, inside the returned JSX, immediately after the `<h2>儀表板</h2>` line, 
 ```
 (`stats.due_today` is always present now that `/stats` returns it.)
 
-- [ ] **Step 2: Build to verify it compiles**
+- [x] **Step 2: Build to verify it compiles**
 
 Run (from `frontend/`): `npm run build`
 Expected: build succeeds; then `rm -rf dist`.
 
-- [ ] **Step 3: Manual verification (end-to-end)**
+- [x] **Step 3: Manual verification (end-to-end)**
 
 With backend + frontend running:
 1. Directly insert a due card to see the full flow. In a Python shell from `backend/` (venv active):
@@ -769,7 +769,7 @@ With backend + frontend running:
 3. Click it → Review page shows the card → answer it → it advances; answering correct reschedules it forward (it leaves today's due list).
 4. Reload dashboard → due count drops to 0.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add frontend/src/pages/Dashboard.jsx

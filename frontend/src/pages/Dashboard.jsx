@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getStats } from "../api/client";
 
 export default function Dashboard() {
@@ -15,6 +16,20 @@ export default function Dashboard() {
   return (
     <div>
       <h2>儀表板</h2>
+
+      <div className="card">
+        <h3>今天待複習</h3>
+        <div className="stat-row">
+          <span>到期題數</span>
+          <span className="num">{stats.due_today} 題</span>
+        </div>
+        {stats.due_today > 0 && (
+          <p style={{ marginTop: 16, marginBottom: 0 }}>
+            <Link className="primary" to="/review">開始複習 →</Link>
+          </p>
+        )}
+      </div>
+
       {attempted === 0 && (
         <div className="banner">
           <p>還沒有作答紀錄 — 去「練習」開始第一題，正確率與弱點分析會出現在這裡 ✨</p>

@@ -34,6 +34,10 @@ export function getStats() {
   return get("/stats");
 }
 
+export function getReview() {
+  return get("/review");
+}
+
 export function getTutorial(subject, topic) {
   return get(`/tutorials/${subject}/${topic}`);
 }
