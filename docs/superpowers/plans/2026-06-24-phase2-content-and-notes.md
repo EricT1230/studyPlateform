@@ -52,7 +52,7 @@ frontend/src/
 - Produces: `read_notes(content_dir, subject, topic) -> str` — file contents, or `""` if absent. Raises `ValueError` on bad segment.
 - Produces: `write_notes(content_dir, subject, topic, markdown: str) -> None` — creates parent dir if needed, writes UTF-8. Raises `ValueError` on bad segment.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `backend/tests/test_notes_service.py`:
 ```python
@@ -87,12 +87,12 @@ def test_bad_segment_rejected(tmp_path, bad):
         notes_path(tmp_path, "ok", bad)
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_notes_service.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'app.notes_service'`.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 `backend/app/notes_service.py`:
 ```python
@@ -124,12 +124,12 @@ def write_notes(content_dir: Path, subject: str, topic: str, markdown: str) -> N
     p.write_text(markdown, encoding="utf-8")
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest tests/test_notes_service.py -v`
 Expected: PASS (all parametrized cases + roundtrip).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add backend/app/notes_service.py backend/tests/test_notes_service.py
