@@ -1,0 +1,19 @@
+# Backend build context (repo root). Keep host-only and generated files out.
+# NOTE: do not exclude content/**/*.md — those are tutorial sources the API serves.
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/venv
+**/.pytest_cache
+backend/progress.db
+*.db
+*.sqlite3
+
+# Node / frontend artifacts (frontend has its own .dockerignore too)
+**/node_modules
+frontend/dist
+
+# VCS / repo docs not needed in the backend image
+.git
+.gitignore
+docs

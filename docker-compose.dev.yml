@@ -1,0 +1,46 @@
+# Development stack with hot reload:
+#   docker compose -f docker-compose.dev.yml up --build
+#   open http://localhost:5173
+#
+#   backend  : uvicorn --reload, source bind-mounted -> edits reload instantly
+#   frontend : Vite dev server with HMR (no nginx build) -> edits hot-swap
+#
+# In dev the browser talks to the backend directly on :8000. The backend's
+# CORS allowlist already permits http://localhost:5173, so no proxy is needed.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0 --port 8000
+      --reload --reload-dir /app/backend/app
+    environment:
+      DB_PATH: /data/progress.db
+    volumes:
+      - study-data:/data
+      - ./backend/app:/app/backend/app   # live source -> uvicorn --reload
+      - ./content:/app/content:ro
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /app
+    # Install into the container (linux deps), then run Vite dev with HMR.
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    environment:
+      VITE_API_BASE: http://localhost:8000  # browser -> backend directly in dev
+      VITE_USE_POLLING: "1"                  # reliable HMR across Docker bind mounts
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules                    # keep container's linux node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  study-data:

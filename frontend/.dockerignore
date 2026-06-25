@@ -1,0 +1,11 @@
+node_modules
+dist
+.vite
+
+# Exclude .env so the Docker build arg VITE_API_BASE=/api is used
+# (otherwise the host's VITE_API_BASE=http://localhost:8000 would win).
+.env
+.env.*
+
+Dockerfile
+.dockerignore

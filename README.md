@@ -8,7 +8,41 @@
 
 題庫與程式碼徹底分開——題目永遠是可讀的 YAML，能 `git diff`、能換工具。
 
-## 怎麼跑
+## 用 Docker 跑（推薦）
+
+只需要安裝 **Docker Desktop**，不用自己裝 Python / Node。
+
+**開發模式（熱重載）** — 改 code 即時生效：
+
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+- 後端 `uvicorn --reload`，改 `backend/app/**.py` 自動重啟
+- 前端 Vite dev server，HMR + React Fast Refresh，改前端即時熱替換
+- 開瀏覽器到 http://localhost:5173
+
+**正式模式** — 前端 build 成靜態檔由 nginx 提供：
+
+```bash
+docker compose up --build
+```
+
+- 前端走 nginx 同源 + `/api` 反向代理到後端，**沒有 CORS 問題**
+- 一樣開 http://localhost:5173
+
+收掉容器：
+
+```bash
+docker compose down                              # 正式
+docker compose -f docker-compose.dev.yml down    # 開發
+```
+
+> 作答進度存在具名 volume `studyplateform_study-data`（`down` 不會清掉，資料保留）。
+> 題庫 `content/` 以唯讀掛載進容器，改 YAML 重啟後端即生效，不用重 build。
+> 後端 API 文件在 http://localhost:8000/docs 。
+
+## 本機手動跑
 
 需要 **Python 3.11+** 和 **Node 18+**。開兩個終端機：
 

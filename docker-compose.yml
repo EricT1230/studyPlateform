@@ -1,0 +1,38 @@
+# One-command startup:  docker compose up --build
+# Then open http://localhost:5173
+#
+#   frontend (nginx)  :5173  -> serves the SPA, proxies /api -> backend
+#   backend  (uvicorn):8000  -> FastAPI + SQLite
+#
+# Same-origin via the nginx proxy, so there are no CORS concerns.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      # Persist the SQLite progress DB on the named volume below.
+      DB_PATH: /data/progress.db
+    volumes:
+      - study-data:/data
+      # Live content: edit content/*.yaml on the host, restart backend to reload.
+      - ./content:/app/content:ro
+    ports:
+      - "8000:8000"   # exposed for direct API access / Swagger at /docs
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: /api
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  study-data:
