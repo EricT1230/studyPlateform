@@ -150,7 +150,7 @@ git commit -m "feat: add file-based notes service with path-safety"
 - Produces: `GET /notes/{subject}/{topic}` -> `{"subject", "topic", "markdown"}` (empty string if no file); 400 on bad segment.
 - Produces: `PUT /notes/{subject}/{topic}` body `{"markdown": str}` -> `{"ok": true}`; writes the file; 400 on bad segment.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `backend/tests/test_notes_api.py`:
 ```python
@@ -179,12 +179,12 @@ def test_bad_segment_put_400(client):
     assert client.put("/notes/ok/a.b", json={"markdown": "x"}).status_code == 400
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_notes_api.py -v`
 Expected: FAIL — 404 (routes not registered).
 
-- [ ] **Step 3: Write the router**
+- [x] **Step 3: Write the router**
 
 `backend/app/api/notes.py`:
 ```python
@@ -217,7 +217,7 @@ def put_notes(request: Request, subject: str, topic: str, body: NotesIn):
     return {"ok": True}
 ```
 
-- [ ] **Step 4: Register the router in main.py**
+- [x] **Step 4: Register the router in main.py**
 
 In `backend/app/main.py`, add `notes` to the API import block and register it (place after the existing routers):
 ```python
@@ -227,17 +227,17 @@ In `backend/app/main.py`, add `notes` to the API import block and register it (p
 ```
 (If Phase 1's `review` router is present, keep it; just add the `notes` import and `app.include_router(notes.router)` line.)
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 Run: `python -m pytest tests/test_notes_api.py -v`
 Expected: PASS.
 
-- [ ] **Step 6: Run the full backend suite**
+- [x] **Step 6: Run the full backend suite**
 
 Run: `python -m pytest`
 Expected: PASS (all existing tests + notes).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add backend/app/api/notes.py backend/app/main.py backend/tests/test_notes_api.py
