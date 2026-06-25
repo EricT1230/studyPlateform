@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getReview } from "../api/client";
 import QuestionCard from "../components/QuestionCard";
+import NotesPanel from "../components/NotesPanel";
 
 export default function Review() {
   const [queue, setQueue] = useState(null); // null = loading
@@ -37,6 +38,7 @@ export default function Review() {
             question={current}
             onAnswered={() => setIdx((i) => i + 1)}
           />
+          <NotesPanel subject={current.subject} topic={current.topic} />
         </>
       )}
     </div>

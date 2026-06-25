@@ -38,6 +38,20 @@ export function getReview() {
   return get("/review");
 }
 
+export function getNotes(subject, topic) {
+  return get(`/notes/${subject}/${topic}`);
+}
+
+export async function saveNotes(subject, topic, markdown) {
+  const res = await fetch(`${BASE}/notes/${subject}/${topic}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ markdown }),
+  });
+  if (!res.ok) throw new Error(`PUT /notes -> ${res.status}`);
+  return res.json();
+}
+
 export function getTutorial(subject, topic) {
   return get(`/tutorials/${subject}/${topic}`);
 }

@@ -449,6 +449,53 @@ a { color: var(--accent-strong); }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ============================================================
+   Notes panel
+   ============================================================ */
+.notes-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 0;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color var(--fast) var(--ease);
+}
+.notes-toggle:hover { color: var(--accent-strong); }
+
+.notes-area {
+  width: 100%;
+  min-height: 150px;
+  margin-top: var(--space-3);
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease),
+    background var(--fast) var(--ease);
+}
+.notes-area:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.notes-area::placeholder { color: var(--muted); }
+
+.notes-actions { display: flex; align-items: center; gap: 12px; margin-top: var(--space-3); }
+.notes-status { color: var(--ok); font-size: 0.85rem; font-weight: 600; }
+
+/* ============================================================
    Responsive
    ============================================================ */
 @media (max-width: 560px) {

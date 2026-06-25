@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getSubjects, getQuestions } from "../api/client";
 import Filters from "../components/Filters";
 import QuestionCard from "../components/QuestionCard";
+import NotesPanel from "../components/NotesPanel";
 
 const EMPTY = { subject: "", topic: "", difficulty: "", onlyWrong: false };
 
@@ -55,6 +56,7 @@ export default function Practice() {
             question={current}
             onAnswered={() => setIdx((i) => i + 1)}
           />
+          <NotesPanel subject={current.subject} topic={current.topic} />
         </>
       )}
     </div>

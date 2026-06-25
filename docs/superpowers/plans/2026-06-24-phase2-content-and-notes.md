@@ -259,7 +259,7 @@ git commit -m "feat: add GET/PUT /notes endpoints"
 
 Frontend uses **manual verification** + `npm run build`.
 
-- [ ] **Step 1: Add client functions**
+- [x] **Step 1: Add client functions**
 
 In `frontend/src/api/client.js`, add:
 ```javascript
@@ -278,7 +278,7 @@ export async function saveNotes(subject, topic, markdown) {
 }
 ```
 
-- [ ] **Step 2: Create NotesPanel**
+- [x] **Step 2: Create NotesPanel**
 
 `frontend/src/components/NotesPanel.jsx`:
 ```jsx
@@ -328,7 +328,7 @@ export default function NotesPanel({ subject, topic }) {
 }
 ```
 
-- [ ] **Step 3: Embed in Practice.jsx**
+- [x] **Step 3: Embed in Practice.jsx**
 
 In `frontend/src/pages/Practice.jsx`, add the import:
 ```jsx
@@ -339,11 +339,11 @@ Then render the panel for the current question, immediately after the `<Question
           <NotesPanel subject={current.subject} topic={current.topic} />
 ```
 
-- [ ] **Step 4: Embed in Review.jsx**
+- [x] **Step 4: Embed in Review.jsx**
 
 In `frontend/src/pages/Review.jsx`, add the same import and render `<NotesPanel subject={current.subject} topic={current.topic} />` immediately after the `<QuestionCard ... />` element in the `{current && ( ... )}` block.
 
-- [ ] **Step 5: Embed in Tutorial.jsx**
+- [x] **Step 5: Embed in Tutorial.jsx**
 
 In `frontend/src/pages/Tutorial.jsx`, add the import and render the panel below the tutorial HTML. Replace the success `return` with:
 ```jsx
@@ -357,12 +357,12 @@ In `frontend/src/pages/Tutorial.jsx`, add the import and render the panel below 
 ```
 (Add `import NotesPanel from "../components/NotesPanel";` at the top. `subject`/`topic` come from the existing `useParams()`.)
 
-- [ ] **Step 6: Build to verify**
+- [x] **Step 6: Build to verify**
 
 Run (from `frontend/`): `npm run build`
 Expected: build succeeds; then `rm -rf dist`.
 
-- [ ] **Step 7: Manual verification**
+- [x] **Step 7: Manual verification**
 
 With backend + frontend running:
 1. In `/practice`, answer a question; the ✍️ 筆記 panel shows the question's subject/topic. Expand, type, 儲存筆記 → "已儲存 ✓".
@@ -370,7 +370,7 @@ With backend + frontend running:
 3. Check `content/<subject>/<topic>.notes.md` was created on disk.
 4. `/tutorial/data-structures/arrays` shows the notes panel under the article.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add frontend/src/api/client.js frontend/src/components/NotesPanel.jsx frontend/src/pages/Practice.jsx frontend/src/pages/Review.jsx frontend/src/pages/Tutorial.jsx
