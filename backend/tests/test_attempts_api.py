@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from app.db.schedule import due_question_ids, get_box
 
@@ -39,7 +39,12 @@ def test_correct_attempt_schedules_question_forward(client):
 
 def test_wrong_attempt_schedules_question_for_tomorrow(client):
     client.post("/attempts", json={"question_id": "ds-arrays-001", "chosen": 1})
-    assert get_box(client.app.state.db, "ds-arrays-001") == 1
+    conn = client.app.state.db
+    assert get_box(conn, "ds-arrays-001") == 1
+    # box 1 interval is 1 day: not due today, but due tomorrow.
+    today = date.today()
+    assert "ds-arrays-001" not in due_question_ids(conn, today)
+    assert "ds-arrays-001" in due_question_ids(conn, today + timedelta(days=1))
 
 
 def test_unanswered_question_has_no_schedule_row(client):

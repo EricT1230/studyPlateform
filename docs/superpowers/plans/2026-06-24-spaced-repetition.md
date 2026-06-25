@@ -326,7 +326,7 @@ git commit -m "feat: add schedule table and repository"
 - Consumes: `record_attempt` (existing), `get_box`/`upsert_schedule` from `app.db.schedule`, `next_schedule` from `app.scheduler_service`, `app.state.questions_by_id`, `app.state.db`.
 - Produces: unchanged HTTP contract for `POST /attempts` (`{is_correct, answer, explanation}`); NEW side effect: the answered question's `schedule` row is created/updated.
 
-- [ ] **Step 1: Write the failing test (append to `test_attempts_api.py`)**
+- [x] **Step 1: Write the failing test (append to `test_attempts_api.py`)**
 
 Add this import at the top of `backend/tests/test_attempts_api.py`:
 ```python
@@ -355,12 +355,12 @@ def test_unanswered_question_has_no_schedule_row(client):
     assert get_box(client.app.state.db, "en-vocab-001") is None
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_attempts_api.py -k "schedule" -v`
 Expected: FAIL — `get_box` returns None / AssertionError (reschedule not wired yet).
 
-- [ ] **Step 3: Modify the attempts router**
+- [x] **Step 3: Modify the attempts router**
 
 Replace the entire contents of `backend/app/api/attempts.py` with:
 ```python
@@ -398,12 +398,12 @@ def post_attempt(request: Request, attempt: AttemptIn):
     return {"is_correct": is_correct, "answer": q.answer, "explanation": q.explanation}
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest tests/test_attempts_api.py -v`
 Expected: PASS (existing attempt tests + 3 new schedule tests).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add backend/app/api/attempts.py backend/tests/test_attempts_api.py
