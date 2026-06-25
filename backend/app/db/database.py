@@ -9,6 +9,12 @@ CREATE TABLE IF NOT EXISTS attempts (
     chosen      INTEGER NOT NULL,
     answered_at TEXT    NOT NULL DEFAULT (datetime('now'))
 );
+CREATE TABLE IF NOT EXISTS schedule (
+    question_id   TEXT PRIMARY KEY,
+    box           INTEGER NOT NULL,
+    due_date      TEXT    NOT NULL,
+    last_reviewed TEXT    NOT NULL
+);
 """
 
 
