@@ -157,7 +157,7 @@ git commit -m "feat: add Leitner scheduler service (pure logic)"
   - `due_question_ids(conn, today: date) -> list[str]` — ids with `due_date <= today`, ordered `due_date ASC, box ASC, question_id ASC`.
   - `due_count(conn, today: date) -> int` — number of rows with `due_date <= today`.
 
-- [ ] **Step 1: Add the schedule table to the schema**
+- [x] **Step 1: Add the schedule table to the schema**
 
 In `backend/app/db/database.py`, the `_SCHEMA` string currently creates only `attempts`. Append the `schedule` table so `_SCHEMA` becomes:
 ```python
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS schedule (
 ```
 (`init_db` uses `executescript`, which runs both statements.)
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 `backend/tests/test_schedule_repo.py`:
 ```python
@@ -236,12 +236,12 @@ def test_due_count(conn):
     assert due_count(conn, TODAY) == 1
 ```
 
-- [ ] **Step 3: Run test to verify it fails**
+- [x] **Step 3: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_schedule_repo.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'app.db.schedule'`.
 
-- [ ] **Step 4: Write the repository**
+- [x] **Step 4: Write the repository**
 
 `backend/app/db/schedule.py`:
 ```python
@@ -297,17 +297,17 @@ def due_count(conn: sqlite3.Connection, today: date) -> int:
     return row["n"]
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `python -m pytest tests/test_schedule_repo.py -v`
 Expected: PASS (5 passed).
 
-- [ ] **Step 6: Run the full suite (the new table must not break existing tests)**
+- [x] **Step 6: Run the full suite (the new table must not break existing tests)**
 
 Run: `python -m pytest`
 Expected: PASS (all existing tests + new ones).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add backend/app/db/database.py backend/app/db/schedule.py backend/tests/test_schedule_repo.py
