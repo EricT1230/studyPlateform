@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Practice from "./pages/Practice";
 import Tutorial from "./pages/Tutorial";
@@ -8,9 +8,13 @@ export default function App() {
   return (
     <BrowserRouter>
       <nav className="nav">
-        <Link to="/">儀表板</Link>
-        <Link to="/practice">練習</Link>
-        <Link to="/browse">瀏覽</Link>
+        <Link to="/" className="nav-brand">
+          <span className="dot" aria-hidden="true" />
+          學習平台
+        </Link>
+        <NavLink to="/" end className="nav-link">儀表板</NavLink>
+        <NavLink to="/practice" className="nav-link">練習</NavLink>
+        <NavLink to="/browse" className="nav-link">瀏覽</NavLink>
       </nav>
       <main className="main">
         <Routes>

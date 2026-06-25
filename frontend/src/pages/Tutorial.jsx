@@ -9,12 +9,22 @@ export default function Tutorial() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    setError(false);
+    let active = true;
     getTutorial(subject, topic)
-      .then((t) => setHtml(marked.parse(t.markdown)))
-      .catch(() => setError(true));
+      .then((t) => {
+        if (!active) return;
+        setHtml(marked.parse(t.markdown));
+        setError(false);
+      })
+      .catch(() => {
+        if (active) setError(true);
+      });
+    return () => {
+      active = false;
+    };
   }, [subject, topic]);
 
-  if (error) return <p>這個主題還沒有教學文章。</p>;
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  if (error) return <p className="empty">這個主題還沒有教學文章。</p>;
+  if (!html) return <p className="loading">載入中…</p>;
+  return <article className="tutorial" dangerouslySetInnerHTML={{ __html: html }} />;
 }

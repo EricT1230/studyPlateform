@@ -38,13 +38,18 @@ export default function Practice() {
       <Filters subjects={subjects} value={filters} onChange={setFilters} />
       <button className="primary" onClick={start}>開始練習</button>
 
-      {loading && <p>載入中…</p>}
-      {!loading && queue.length > 0 && !current && <p>本輪結束 🎉 共 {queue.length} 題。</p>}
-      {!loading && queue.length === 0 && <p style={{ color: "#888" }}>選好條件後按「開始練習」。</p>}
+      {loading && <p className="loading">載入中…</p>}
+      {!loading && queue.length > 0 && !current && (
+        <div className="banner"><p>本輪結束 🎉 共完成 {queue.length} 題，按上方「開始練習」再來一輪。</p></div>
+      )}
+      {!loading && queue.length === 0 && <p className="empty">選好條件後按「開始練習」。</p>}
 
       {current && (
         <>
-          <p style={{ color: "#888" }}>第 {idx + 1} / {queue.length} 題</p>
+          <div className="progress-meta">
+            <span>第 {idx + 1} / {queue.length} 題</span>
+            <div className="bar"><i style={{ width: `${(idx / queue.length) * 100}%` }} /></div>
+          </div>
           <QuestionCard
             key={current.id}
             question={current}

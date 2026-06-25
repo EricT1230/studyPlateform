@@ -22,22 +22,27 @@ export default function QuestionCard({ question, onAnswered }) {
 
   return (
     <div className="card">
-      <div style={{ color: "#888", fontSize: 13 }}>
-        {question.subject} · {question.topic} · {question.difficulty}
-        {" · "}
-        <Link to={`/tutorial/${question.subject}/${question.topic}`}>📖 看教學</Link>
+      <div className="card-meta">
+        <span className="tag">{question.subject}</span>
+        <span className="tag">{question.topic}</span>
+        <span className="tag">{question.difficulty}</span>
+        <Link className="tag tag-link" to={`/tutorial/${question.subject}/${question.topic}`}>
+          📖 看教學
+        </Link>
       </div>
-      <p style={{ whiteSpace: "pre-wrap", fontWeight: 600 }}>{question.question}</p>
+      <p className="question">{question.question}</p>
       {question.options.map((opt, idx) => (
-        <button key={idx} className={optionClass(idx)} onClick={() => choose(idx)}>
+        <button key={idx} className={optionClass(idx)} disabled={!!result} onClick={() => choose(idx)}>
           {opt}
         </button>
       ))}
       {result && (
         <div className="explanation">
-          <strong>{result.is_correct ? "✅ 答對了" : "❌ 答錯了"}</strong>
-          <p style={{ whiteSpace: "pre-wrap" }}>{result.explanation}</p>
-          <button className="primary" onClick={onAnswered}>下一題</button>
+          <strong className={`verdict ${result.is_correct ? "ok" : "bad"}`}>
+            {result.is_correct ? "✅ 答對了" : "❌ 答錯了"}
+          </strong>
+          <p>{result.explanation}</p>
+          <button className="primary" onClick={onAnswered}>下一題 →</button>
         </div>
       )}
     </div>

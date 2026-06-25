@@ -19,22 +19,26 @@ export default function Browse() {
     <div>
       <h2>瀏覽題庫 ({questions.length})</h2>
       <input
-        placeholder="搜尋題目或 id…"
+        className="search"
+        placeholder="🔍 搜尋題目或 id…"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        style={{ width: "100%", padding: 10, marginBottom: 16 }}
       />
+      {filtered.length === 0 && <p className="empty">找不到符合「{q}」的題目。</p>}
       {filtered.map((item) => (
         <div className="card" key={item.id}>
-          <div style={{ color: "#888", fontSize: 13 }}>
-            {item.id} · {item.subject} · {item.difficulty}
-            {" · "}
-            <Link to={`/tutorial/${item.subject}/${item.topic}`}>📖 看教學</Link>
+          <div className="card-meta">
+            <span className="tag">{item.id}</span>
+            <span className="tag">{item.subject}</span>
+            <span className="tag">{item.difficulty}</span>
+            <Link className="tag tag-link" to={`/tutorial/${item.subject}/${item.topic}`}>
+              📖 看教學
+            </Link>
           </div>
-          <p style={{ whiteSpace: "pre-wrap" }}>{item.question}</p>
-          <ul>
+          <p className="browse-q">{item.question}</p>
+          <ul className="browse-opts">
             {item.options.map((opt, idx) => (
-              <li key={idx} style={{ fontWeight: idx === item.answer ? 700 : 400 }}>
+              <li key={idx} className={idx === item.answer ? "is-answer" : ""}>
                 {opt}{idx === item.answer ? "  ✅" : ""}
               </li>
             ))}
