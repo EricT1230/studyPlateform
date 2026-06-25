@@ -22,7 +22,7 @@ services:
     volumes:
       - study-data:/data
       - ./backend/app:/app/backend/app   # live source -> uvicorn --reload
-      - ./content:/app/content:ro
+      - ./content:/app/content           # read-write: notes feature writes here
     ports:
       - "8000:8000"
 

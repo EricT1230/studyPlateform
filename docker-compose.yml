@@ -16,8 +16,9 @@ services:
       DB_PATH: /data/progress.db
     volumes:
       - study-data:/data
-      # Live content: edit content/*.yaml on the host, restart backend to reload.
-      - ./content:/app/content:ro
+      # Live content (read-write): edit content/*.yaml on the host and restart
+      # the backend to reload; the notes feature also writes <topic>.notes.md here.
+      - ./content:/app/content
     ports:
       - "8000:8000"   # exposed for direct API access / Swagger at /docs
     restart: unless-stopped

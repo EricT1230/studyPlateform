@@ -39,7 +39,7 @@ docker compose -f docker-compose.dev.yml down    # 開發
 ```
 
 > 作答進度存在具名 volume `studyplateform_study-data`（`down` 不會清掉，資料保留）。
-> 題庫 `content/` 以唯讀掛載進容器，改 YAML 重啟後端即生效，不用重 build。
+> 題庫 `content/` 以讀寫掛載進容器：改 YAML 重啟後端即生效（不用重 build），筆記功能也會把 `<主題>.notes.md` 寫回這裡（git 管理）。
 > 後端 API 文件在 http://localhost:8000/docs 。
 
 ## 本機手動跑
