@@ -63,7 +63,7 @@ Each backend file has one responsibility (pure logic / persistence / one endpoin
 - Produces: `INTERVALS: dict[int, int]` = `{1:1, 2:3, 3:7, 4:16, 5:35}`, `MAX_BOX = 5`.
 - Produces: `next_schedule(current_box: int, is_correct: bool, today: datetime.date) -> tuple[int, datetime.date]`. Returns `(new_box, new_due_date)`. Correct → `min(current_box+1, 5)`; wrong → `1`; `new_due_date = today + INTERVALS[new_box]` days. No DB, no `date.today()` inside.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `backend/tests/test_scheduler_service.py`:
 ```python
@@ -99,12 +99,12 @@ def test_first_correct_vs_first_wrong_differ():
     assert wrong_box == 1 and wrong_due == TODAY + timedelta(days=1)
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_scheduler_service.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'app.scheduler_service'`.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 `backend/app/scheduler_service.py`:
 ```python
@@ -128,12 +128,12 @@ def next_schedule(current_box: int, is_correct: bool, today: date) -> tuple[int,
     return new_box, new_due
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `python -m pytest tests/test_scheduler_service.py -v`
 Expected: PASS (4 passed).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add backend/app/scheduler_service.py backend/tests/test_scheduler_service.py
