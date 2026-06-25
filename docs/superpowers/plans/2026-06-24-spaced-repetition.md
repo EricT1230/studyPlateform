@@ -423,7 +423,7 @@ git commit -m "feat: reschedule question on every attempt"
 - Consumes: `due_question_ids` from `app.db.schedule`, `app.state.questions_by_id`, `app.state.db`.
 - Produces: `GET /review` -> `[question_dict, ...]` (same shape as `GET /questions`), only questions due today, ordered by `due_question_ids`. Ids missing from the bank are skipped.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `backend/tests/test_review_api.py`:
 ```python
@@ -456,12 +456,12 @@ def test_review_skips_ids_not_in_bank(client):
     assert client.get("/review").json() == []
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_review_api.py -v`
 Expected: FAIL — 404 on `/review` (route not registered).
 
-- [ ] **Step 3: Write the router**
+- [x] **Step 3: Write the router**
 
 `backend/app/api/review.py`:
 ```python
@@ -480,7 +480,7 @@ def get_review(request: Request):
     return [by_id[i].model_dump() for i in ids if i in by_id]
 ```
 
-- [ ] **Step 4: Register the router in `main.py`**
+- [x] **Step 4: Register the router in `main.py`**
 
 In `backend/app/main.py`, update the router import/registration block to include `review`:
 ```python
@@ -493,12 +493,12 @@ In `backend/app/main.py`, update the router import/registration block to include
     app.include_router(review.router)
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `python -m pytest tests/test_review_api.py -v`
 Expected: PASS (4 passed).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add backend/app/api/review.py backend/app/main.py backend/tests/test_review_api.py
