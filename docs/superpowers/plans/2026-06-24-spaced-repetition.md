@@ -518,7 +518,7 @@ git commit -m "feat: add GET /review endpoint"
 - Consumes: `due_count` from `app.db.schedule`.
 - Produces: `compute_stats(conn, questions, today: date) -> dict` — same keys as before PLUS `due_today: int`. `GET /stats` passes `date.today()`.
 
-- [ ] **Step 1: Write the failing test (append to `test_stats_api.py`)**
+- [x] **Step 1: Write the failing test (append to `test_stats_api.py`)**
 
 ```python
 def test_stats_reports_due_today(client):
@@ -531,12 +531,12 @@ def test_stats_reports_due_today(client):
     assert data["due_today"] == 1
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `python -m pytest tests/test_stats_api.py::test_stats_reports_due_today -v`
 Expected: FAIL — `KeyError: 'due_today'` (stats doesn't return it yet).
 
-- [ ] **Step 3: Modify `stats_service.py`**
+- [x] **Step 3: Modify `stats_service.py`**
 
 Add the import at the top of `backend/app/stats_service.py`:
 ```python
@@ -558,7 +558,7 @@ and the final `return` becomes:
 ```
 (Leave all the aggregation logic between header and return unchanged.)
 
-- [ ] **Step 4: Modify the stats router**
+- [x] **Step 4: Modify the stats router**
 
 Replace the contents of `backend/app/api/stats.py` with:
 ```python
@@ -576,17 +576,17 @@ def get_stats(request: Request):
     )
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 Run: `python -m pytest tests/test_stats_api.py -v`
 Expected: PASS — existing stats tests (which call through `/stats`) plus the new `due_today` test.
 
-- [ ] **Step 6: Run the full backend suite**
+- [x] **Step 6: Run the full backend suite**
 
 Run: `python -m pytest`
 Expected: PASS (all tests across all files).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add backend/app/stats_service.py backend/app/api/stats.py backend/tests/test_stats_api.py

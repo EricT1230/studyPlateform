@@ -1,8 +1,11 @@
 import sqlite3
 from collections import defaultdict
+from datetime import date
+
+from .db.schedule import due_count
 
 
-def compute_stats(conn: sqlite3.Connection, questions) -> dict:
+def compute_stats(conn: sqlite3.Connection, questions, today: date) -> dict:
     by_id = {q.id: q for q in questions}
     rows = conn.execute(
         "SELECT question_id, is_correct FROM attempts"
@@ -47,4 +50,5 @@ def compute_stats(conn: sqlite3.Connection, questions) -> dict:
         "by_subject": by_subject,
         "by_difficulty": by_difficulty,
         "weakest_questions": weakest,
+        "due_today": due_count(conn, today),
     }

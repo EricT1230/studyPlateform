@@ -33,3 +33,14 @@ def test_stats_skips_attempts_for_unknown_questions(client):
     assert all(q["question_id"] != "deleted-question" for q in data["weakest_questions"])
     total_attempted = sum(r["attempted"] for r in data["by_subject"])
     assert total_attempted == 1
+
+
+def test_stats_reports_due_today(client):
+    from datetime import date
+    from app.db.schedule import upsert_schedule
+
+    # one due today, one due in the future
+    upsert_schedule(client.app.state.db, "ds-arrays-001", 1, date.today(), date.today())
+    upsert_schedule(client.app.state.db, "en-vocab-001", 3, date(2099, 1, 1), date.today())
+    data = client.get("/stats").json()
+    assert data["due_today"] == 1
