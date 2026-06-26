@@ -11,6 +11,9 @@ node_modules/
 dist/
 .vite/
 
+# Private source material
+source_materials/private/
+
 # OS
 .DS_Store
 Thumbs.db
