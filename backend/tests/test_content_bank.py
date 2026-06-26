@@ -67,3 +67,35 @@ def test_every_topic_has_tutorial_markdown():
 
     assert missing == []
     assert incomplete == []
+
+
+def test_every_topic_has_english_tutorial_markdown():
+    missing = []
+    incomplete = []
+    required_sections = [
+        "Core Concepts",
+        "Problem-Solving Focus",
+        "Common Pitfalls",
+        "Pre-Practice Checklist",
+    ]
+
+    for yaml_file in sorted(CONTENT_DIR.glob("*/*.yaml")):
+        tutorial = yaml_file.with_name(f"{yaml_file.stem}.en.md")
+        if not tutorial.exists():
+            missing.append(str(tutorial.relative_to(CONTENT_DIR)))
+            continue
+
+        markdown = tutorial.read_text(encoding="utf-8")
+        missing_sections = [
+            section for section in required_sections if section not in markdown
+        ]
+        if missing_sections:
+            incomplete.append(
+                {
+                    "file": str(tutorial.relative_to(CONTENT_DIR)),
+                    "missing_sections": missing_sections,
+                }
+            )
+
+    assert missing == []
+    assert incomplete == []

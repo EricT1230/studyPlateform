@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getQuestions, getSubjects } from "../api/client";
+import useLanguage from "../components/useLanguage";
 
 export default function Learn() {
+  const { t } = useLanguage();
   const [subjects, setSubjects] = useState([]);
   const [questions, setQuestions] = useState([]);
 
@@ -22,17 +24,17 @@ export default function Learn() {
     return byTopic;
   }, [questions]);
 
-  if (subjects.length === 0) return <p className="loading">載入中…</p>;
+  if (subjects.length === 0) return <p className="loading">{t.loading}</p>;
 
   return (
     <div>
-      <h2>學習</h2>
+      <h2>{t.learn}</h2>
       <div className="learn-grid">
         {subjects.map((subject) => (
           <section className="learn-section" key={subject.subject}>
             <div className="learn-section-head">
               <h3>{subject.subject}</h3>
-              <span className="tag">{subject.topics.length} topics</span>
+              <span className="tag">{subject.topics.length} {t.topics}</span>
             </div>
             <div className="learn-topic-list">
               {subject.topics.map((topic) => {
@@ -44,18 +46,18 @@ export default function Learn() {
                         {topic}
                       </Link>
                       <div className="card-meta">
-                        <span className="tag">{total} 題</span>
+                        <span className="tag">{total} {t.questions}</span>
                       </div>
                     </div>
                     <div className="learn-actions">
                       <Link className="tag tag-link" to={`/tutorial/${subject.subject}/${topic}`}>
-                        看教學
+                        {t.tutorial}
                       </Link>
                       <Link
                         className="tag tag-link"
                         to={`/practice?subject=${encodeURIComponent(subject.subject)}&topic=${encodeURIComponent(topic)}`}
                       >
-                        練習
+                        {t.startPractice}
                       </Link>
                     </div>
                   </div>

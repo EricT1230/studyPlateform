@@ -52,6 +52,8 @@ export async function saveNotes(subject, topic, markdown) {
   return res.json();
 }
 
-export function getTutorial(subject, topic) {
-  return get(`/tutorials/${subject}/${topic}`);
+export function getTutorial(subject, topic, language = "zh") {
+  const p = new URLSearchParams();
+  p.set("lang", language);
+  return get(`/tutorials/${subject}/${topic}?${p.toString()}`);
 }

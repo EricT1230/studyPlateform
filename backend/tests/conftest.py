@@ -17,6 +17,10 @@ def content_dir(tmp_path):
   explanation: Direct address computation.
 """, encoding="utf-8")
     (ds / "arrays.md").write_text("# Arrays\n\nContiguous memory.", encoding="utf-8")
+    (ds / "arrays.en.md").write_text(
+        "# Arrays\n\nEnglish contiguous memory tutorial.",
+        encoding="utf-8",
+    )
     en = tmp_path / "english"
     en.mkdir()
     (en / "vocabulary.yaml").write_text("""

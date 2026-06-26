@@ -10,7 +10,11 @@ const EMPTY = { subject: "", topic: "", difficulty: "", onlyWrong: false };
 export default function Practice() {
   const [searchParams] = useSearchParams();
   const [subjects, setSubjects] = useState([]);
-  const [filters, setFilters] = useState(EMPTY);
+  const [filters, setFilters] = useState(() => ({
+    ...EMPTY,
+    subject: searchParams.get("subject") || "",
+    topic: searchParams.get("topic") || "",
+  }));
   const [queue, setQueue] = useState([]);
   const [idx, setIdx] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -18,14 +22,6 @@ export default function Practice() {
   useEffect(() => {
     getSubjects().then(setSubjects);
   }, []);
-
-  useEffect(() => {
-    const subject = searchParams.get("subject") || "";
-    const topic = searchParams.get("topic") || "";
-    if (subject || topic) {
-      setFilters((current) => ({ ...current, subject, topic }));
-    }
-  }, [searchParams]);
 
   async function start() {
     setLoading(true);
