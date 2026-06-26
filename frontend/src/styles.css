@@ -413,6 +413,63 @@ a { color: var(--accent-strong); }
 }
 
 /* ============================================================
+   Learn topic index
+   ============================================================ */
+.learn-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.learn-section {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
+}
+
+.learn-section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.learn-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.learn-topic-list {
+  display: grid;
+  gap: 10px;
+}
+
+.learn-topic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.learn-topic:last-child { border-bottom: 0; }
+
+.learn-topic-title {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.learn-topic-title:hover { color: var(--accent-strong); }
+
+.learn-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ============================================================
    Tutorial (markdown)
    ============================================================ */
 .tutorial {
@@ -504,6 +561,8 @@ a { color: var(--accent-strong); }
   .nav-link { padding: 7px 11px; font-size: 0.88rem; }
   .card { padding: var(--space-3); }
   .filters select, .filters label { flex: 1 1 auto; }
+  .learn-topic { grid-template-columns: 1fr; }
+  .learn-actions { justify-content: flex-start; }
 }
 
 /* ============================================================

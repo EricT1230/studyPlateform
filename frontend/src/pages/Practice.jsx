@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getSubjects, getQuestions } from "../api/client";
 import Filters from "../components/Filters";
 import QuestionCard from "../components/QuestionCard";
@@ -7,6 +8,7 @@ import NotesPanel from "../components/NotesPanel";
 const EMPTY = { subject: "", topic: "", difficulty: "", onlyWrong: false };
 
 export default function Practice() {
+  const [searchParams] = useSearchParams();
   const [subjects, setSubjects] = useState([]);
   const [filters, setFilters] = useState(EMPTY);
   const [queue, setQueue] = useState([]);
@@ -16,6 +18,14 @@ export default function Practice() {
   useEffect(() => {
     getSubjects().then(setSubjects);
   }, []);
+
+  useEffect(() => {
+    const subject = searchParams.get("subject") || "";
+    const topic = searchParams.get("topic") || "";
+    if (subject || topic) {
+      setFilters((current) => ({ ...current, subject, topic }));
+    }
+  }, [searchParams]);
 
   async function start() {
     setLoading(true);

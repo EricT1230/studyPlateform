@@ -40,3 +40,30 @@ def test_question_bank_has_at_least_one_thousand_questions():
     questions = load_questions(CONTENT_DIR)
 
     assert len(questions) >= 1000
+
+
+def test_every_topic_has_tutorial_markdown():
+    missing = []
+    incomplete = []
+    required_sections = ["核心概念", "解題重點", "常見陷阱", "練習前檢查"]
+
+    for yaml_file in sorted(CONTENT_DIR.glob("*/*.yaml")):
+        tutorial = yaml_file.with_suffix(".md")
+        if not tutorial.exists():
+            missing.append(str(tutorial.relative_to(CONTENT_DIR)))
+            continue
+
+        markdown = tutorial.read_text(encoding="utf-8")
+        missing_sections = [
+            section for section in required_sections if section not in markdown
+        ]
+        if missing_sections:
+            incomplete.append(
+                {
+                    "file": str(tutorial.relative_to(CONTENT_DIR)),
+                    "missing_sections": missing_sections,
+                }
+            )
+
+    assert missing == []
+    assert incomplete == []
