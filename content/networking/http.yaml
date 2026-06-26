@@ -1,0 +1,260 @@
+- id: net-http-001
+  difficulty: basic
+  tags: [http, stateless]
+  question: |
+    HTTP 協定本身被設計為「無狀態 (stateless)」，意思是？
+  options:
+    - "伺服器預設不會在不同請求之間保留用戶端的狀態資訊"
+    - "HTTP 無法傳送任何資料"
+    - "每個連線只能發一次請求"
+    - "伺服器永遠記得每個用戶"
+  answer: 0
+  explanation: |
+    無狀態指每個請求獨立、伺服器預設不記得先前請求。要維持登入等狀態需額外機制（如 cookie、session、token）。
+- id: net-http-002
+  difficulty: basic
+  tags: [http, methods]
+  question: |
+    GET 與 POST 方法的典型差別是？
+  options:
+    - "GET 用於取得資源、參數通常放在 URL；POST 用於提交資料、放在請求主體 (body)"
+    - "GET 會修改伺服器資料，POST 不會"
+    - "POST 不能送出任何資料"
+    - "兩者完全相同"
+  answer: 0
+  explanation: |
+    GET 語意上是取得、應為安全且不改變狀態，參數常在查詢字串；POST 用於提交/建立，資料放 body，可攜帶較大且不顯露於 URL 的內容。
+- id: net-http-003
+  difficulty: basic
+  tags: [http, status-code]
+  question: |
+    HTTP 狀態碼 2xx、4xx、5xx 分別代表？
+  options:
+    - "2xx 成功、4xx 用戶端錯誤、5xx 伺服器端錯誤"
+    - "2xx 重新導向、4xx 成功、5xx 用戶端錯誤"
+    - "2xx 伺服器錯誤、4xx 成功、5xx 重新導向"
+    - "全部都代表成功"
+  answer: 0
+  explanation: |
+    1xx 資訊、2xx 成功、3xx 重新導向、4xx 用戶端錯誤（如請求有誤）、5xx 伺服器端錯誤。
+- id: net-http-004
+  difficulty: basic
+  tags: [http, status-code]
+  question: |
+    狀態碼 404 代表？
+  options:
+    - "伺服器內部錯誤"
+    - "找不到請求的資源 (Not Found)"
+    - "請求成功"
+    - "需要授權"
+  answer: 1
+  explanation: |
+    404 Not Found 表示伺服器找不到對應 URI 的資源。它屬於 4xx 用戶端錯誤類別。
+- id: net-http-005
+  difficulty: basic
+  tags: [https, tls]
+  question: |
+    HTTPS 與 HTTP 的關係是？
+  options:
+    - "HTTPS 是完全不同的協定，與 HTTP 無關"
+    - "HTTPS 是 HTTP 跑在 TLS/SSL 之上，提供加密、完整性與伺服器身分驗證"
+    - "HTTPS 只是換了埠號，沒有加密"
+    - "HTTPS 比 HTTP 不安全"
+  answer: 1
+  explanation: |
+    HTTPS = HTTP over TLS。TLS 在傳輸前協商金鑰並加密通道，提供機密性、完整性與（透過憑證的）伺服器身分驗證，預設埠 443。
+- id: net-http-006
+  difficulty: intermediate
+  tags: [http, idempotent]
+  question: |
+    下列哪一組 HTTP 方法通常被視為「冪等 (idempotent)」？
+  options:
+    - "GET、PUT、DELETE（重複執行對伺服器狀態的最終效果相同）"
+    - "POST、PATCH"
+    - "只有 POST"
+    - "所有方法都不是冪等"
+  answer: 0
+  explanation: |
+    冪等指重複執行多次與執行一次的「結果狀態」相同。GET（不改狀態）、PUT（覆寫為相同值）、DELETE（刪除後再刪仍是不存在）皆冪等；POST 通常非冪等（多次可建立多筆）。
+- id: net-http-007
+  difficulty: intermediate
+  tags: [http, cookies, state]
+  question: |
+    Cookie 在 HTTP 中的主要用途是？
+  options:
+    - "加密整個連線"
+    - "在無狀態的 HTTP 上維持狀態，例如識別 session、記住登入"
+    - "壓縮回應內容"
+    - "做 DNS 查詢"
+  answer: 1
+  explanation: |
+    伺服器透過 Set-Cookie 下發小段資料，瀏覽器後續請求自動附帶該 cookie，使伺服器能跨請求識別用戶/會話，彌補 HTTP 無狀態的特性。
+- id: net-http-008
+  difficulty: intermediate
+  tags: [http, redirect]
+  question: |
+    301 與 302 的差別是？
+  options:
+    - "301 是永久重新導向（可被快取、利於 SEO 轉移）；302 是暫時重新導向"
+    - "301 是暫時，302 是永久"
+    - "兩者都代表錯誤"
+    - "301 代表成功，302 代表失敗"
+  answer: 0
+  explanation: |
+    301 Moved Permanently 表示資源永久搬移，用戶端/搜尋引擎應更新連結；302 Found（暫時）表示暫時位於他處，原 URL 仍是正規位置。
+- id: net-http-009
+  difficulty: intermediate
+  tags: [http, headers]
+  question: |
+    HTTP 標頭 Content-Type 的作用是？
+  options:
+    - "指定請求或回應主體的媒體型別 (MIME type)，如 application/json、text/html"
+    - "指定來源 IP"
+    - "設定快取時間"
+    - "宣告使用的 TCP 埠"
+  answer: 0
+  explanation: |
+    Content-Type 告訴對方主體的資料格式與字元集，讓接收端正確解析（例如瀏覽器決定要渲染 HTML 還是解析 JSON）。
+- id: net-http-010
+  difficulty: intermediate
+  tags: [http, caching]
+  question: |
+    HTTP 回應標頭 Cache-Control 的用途是？
+  options:
+    - "指示用戶端/中介快取如何快取此回應（如 max-age、no-store、private）"
+    - "加密回應"
+    - "重新導向請求"
+    - "驗證使用者身分"
+  answer: 0
+  explanation: |
+    Cache-Control 控制快取行為：max-age 設定新鮮期、no-store 禁止儲存、no-cache 需再驗證、public/private 決定共享或僅限單一用戶快取。
+- id: net-http-011
+  difficulty: intermediate
+  tags: [http, keep-alive]
+  question: |
+    HTTP/1.1 預設的「持久連線 (persistent connection / keep-alive)」帶來的好處是？
+  options:
+    - "同一條 TCP 連線可重複用於多個請求/回應，省去反覆建立連線的開銷"
+    - "讓每個請求都開新連線以提升安全"
+    - "強制加密"
+    - "停用快取"
+  answer: 0
+  explanation: |
+    HTTP/1.1 預設保持連線開啟，多個請求可重用同一條 TCP 連線，避免每次都三向交握與慢啟動，降低延遲與開銷。
+- id: net-http-012
+  difficulty: intermediate
+  tags: [http, status-code]
+  question: |
+    建立資源成功後，RESTful API 最適合回傳的狀態碼是？
+  options:
+    - "200 OK"
+    - "201 Created"
+    - "204 No Content"
+    - "404 Not Found"
+  answer: 1
+  explanation: |
+    201 Created 表示請求已成功且建立了新資源，通常在 Location 標頭附上新資源 URI。200 是一般成功、204 是成功但無回應主體。
+- id: net-http-013
+  difficulty: advanced
+  tags: [http2, multiplexing]
+  question: |
+    HTTP/2 相對於 HTTP/1.1 的關鍵改進是？
+  options:
+    - "在單一連線上多工 (multiplexing) 多個串流，並用標頭壓縮 (HPACK)，緩解 HTTP/1.1 的隊頭阻塞"
+    - "改用純文字協定"
+    - "移除了狀態碼"
+    - "強制每個請求開新連線"
+  answer: 0
+  explanation: |
+    HTTP/2 採二進位分幀，可在一條 TCP 連線上交錯傳送多個串流（多工），並壓縮標頭，減少 HTTP/1.1 需多連線或排隊造成的延遲。（但仍受 TCP 層隊頭阻塞影響，HTTP/3 改用 QUIC 解決。）
+- id: net-http-014
+  difficulty: advanced
+  tags: [rest]
+  question: |
+    下列何者「最」符合 REST 架構風格的原則？
+  options:
+    - "以資源 (resource) 為中心、用 URI 識別、以標準 HTTP 方法操作，且通訊無狀態"
+    - "所有操作都用 POST 到單一端點，並在伺服器保存用戶端狀態"
+    - "用 GET 來刪除資源"
+    - "把方法名稱放在 URL 裡，如 /getUserById"
+  answer: 0
+  explanation: |
+    REST 強調資源導向（名詞化 URI）、統一介面（用 HTTP 動詞表達操作）、無狀態通訊與適當使用狀態碼。把動詞塞進 URL 或全用 POST 都偏離 REST。
+- id: net-http-015
+  difficulty: advanced
+  tags: [cors, security]
+  question: |
+    CORS (Cross-Origin Resource Sharing) 機制的目的是？
+  options:
+    - "在瀏覽器的同源政策下，讓伺服器透過回應標頭明確「授權」特定跨來源的網頁存取其資源"
+    - "加密跨網域流量"
+    - "阻擋所有跨網域請求"
+    - "取代 HTTPS"
+  answer: 0
+  explanation: |
+    瀏覽器預設以同源政策限制跨來源存取。CORS 讓伺服器用 Access-Control-Allow-Origin 等標頭聲明允許哪些來源、方法與標頭，受控地開放跨來源存取。
+- id: net-http-016
+  difficulty: advanced
+  tags: [http, status-code, auth]
+  question: |
+    401 與 403 的差別是？
+  options:
+    - "401 未驗證（需登入/憑證）；403 已驗證但「無權限」存取該資源"
+    - "401 代表成功，403 代表重新導向"
+    - "兩者完全相同"
+    - "403 表示資源不存在"
+  answer: 0
+  explanation: |
+    401 Unauthorized 實指「未驗證」——缺少或無效的身分憑證；403 Forbidden 指身分已知但被拒絕授權，再提供憑證也沒用。
+- id: net-http-017
+  difficulty: advanced
+  tags: [http, chunked]
+  question: |
+    分塊傳輸編碼 (chunked transfer encoding) 解決的問題是？
+  options:
+    - "在「事先不知道回應總長度」時，仍能以一連串大小已知的區塊串流傳送，免去先算 Content-Length"
+    - "加密回應內容"
+    - "壓縮標頭"
+    - "做負載平衡"
+  answer: 0
+  explanation: |
+    動態產生的內容常無法預先得知總長度。chunked encoding 把主體切成標明大小的區塊逐一送出，以一個 0 長度區塊作結，讓伺服器邊產生邊串流。
+- id: net-http-018
+  difficulty: advanced
+  tags: [http, conditional, etag]
+  question: |
+    條件式請求搭配 ETag 與 304 Not Modified 的效益是？
+  options:
+    - "用戶端附帶 If-None-Match: <etag>，若資源未變，伺服器回 304 不重送主體，節省頻寬"
+    - "強制每次都重新下載完整內容"
+    - "加密快取內容"
+    - "停用快取"
+  answer: 0
+  explanation: |
+    ETag 是資源版本識別。用戶端帶 If-None-Match 詢問是否更新；未變則回 304（無主體），用戶端沿用本地快取，省下重傳整份資源的成本。
+- id: net-http-019
+  difficulty: master
+  tags: [http3, quic]
+  question: |
+    HTTP/3 相對於 HTTP/2 的根本變化是？
+  options:
+    - "改以 QUIC（建構在 UDP 上、含加密與多工）取代 TCP，消除 TCP 層的隊頭阻塞並加快連線建立"
+    - "回到純文字協定"
+    - "移除多工功能"
+    - "不再使用加密"
+  answer: 0
+  explanation: |
+    HTTP/2 的多工仍受底層單一 TCP 串流的隊頭阻塞影響。HTTP/3 改用 QUIC（over UDP），每串流獨立排序、整合 TLS 1.3、支援 0-RTT 與連線遷移，降低延遲。
+- id: net-http-020
+  difficulty: master
+  tags: [http, security, headers]
+  question: |
+    回應標頭 Strict-Transport-Security (HSTS) 的作用是？
+  options:
+    - "指示瀏覽器在指定期間內「只」用 HTTPS 連到此站，防止降級 (SSL stripping) 攻擊"
+    - "強制停用 cookie"
+    - "壓縮回應"
+    - "允許任意跨來源存取"
+  answer: 0
+  explanation: |
+    HSTS 讓瀏覽器記住此網域只能走 HTTPS，後續即使使用者輸入 http:// 也自動改用 https://，避免中間人把連線降級為明文 HTTP。

@@ -1,0 +1,260 @@
+- id: net-model-001
+  difficulty: basic
+  tags: [osi, layers]
+  question: |
+    OSI 參考模型由下而上共有幾層？
+  options:
+    - "4 層"
+    - "5 層"
+    - "7 層"
+    - "8 層"
+  answer: 2
+  explanation: |
+    OSI 七層由下而上為：實體層、資料連結層、網路層、傳輸層、會議層、表達層、應用層。
+- id: net-model-002
+  difficulty: basic
+  tags: [osi, network-layer]
+  question: |
+    「路由 (routing)」與 IP 定址主要發生在 OSI 的哪一層？
+  options:
+    - "資料連結層 (L2)"
+    - "網路層 (L3)"
+    - "傳輸層 (L4)"
+    - "應用層 (L7)"
+  answer: 1
+  explanation: |
+    網路層 (L3) 負責邏輯定址（IP）與跨網路的封包路由，決定封包該往哪條路徑送。
+- id: net-model-003
+  difficulty: basic
+  tags: [tcp-ip, model]
+  question: |
+    TCP/IP（四層）模型「不」包含下列哪一層？
+  options:
+    - "應用層 (Application)"
+    - "傳輸層 (Transport)"
+    - "網際網路層 (Internet)"
+    - "會議層 (Session)"
+  answer: 3
+  explanation: |
+    TCP/IP 四層為應用層、傳輸層、網際網路層、網路介面（連結）層。會議層是 OSI 模型才獨立分出的層，TCP/IP 把它併入應用層。
+- id: net-model-004
+  difficulty: basic
+  tags: [encapsulation]
+  question: |
+    資料由上層往下層傳遞時，每一層加上自己的標頭，這個過程稱為？
+  options:
+    - "封裝 (encapsulation)"
+    - "分段 (segmentation)"
+    - "路由 (routing)"
+    - "多工 (multiplexing)"
+  answer: 0
+  explanation: |
+    封裝是每經過一層就在資料前（有時也加在後）附上該層標頭/標尾；接收端則逐層解封裝 (decapsulation) 取出上層資料。
+- id: net-model-005
+  difficulty: basic
+  tags: [data-link, mac]
+  question: |
+    MAC 位址 (硬體位址) 屬於 OSI 的哪一層？
+  options:
+    - "實體層 (L1)"
+    - "資料連結層 (L2)"
+    - "網路層 (L3)"
+    - "傳輸層 (L4)"
+  answer: 1
+  explanation: |
+    MAC 位址是資料連結層 (L2) 的實體網卡識別位址，用於同一區域網段內的訊框定址。IP 則是 L3 的邏輯位址。
+- id: net-model-006
+  difficulty: intermediate
+  tags: [switch, router]
+  question: |
+    交換器 (switch) 與路由器 (router) 的層級差別是？
+  options:
+    - "switch 主要在 L2 依 MAC 轉送；router 在 L3 依 IP 路由"
+    - "switch 在 L3，router 在 L2"
+    - "兩者都在 L1"
+    - "兩者完全相同"
+  answer: 0
+  explanation: |
+    傳統交換器在資料連結層 (L2) 依 MAC 位址表轉送訊框；路由器在網路層 (L3) 依 IP 與路由表跨網段轉送封包（L3 交換器則兼具部分路由功能）。
+- id: net-model-007
+  difficulty: intermediate
+  tags: [pdu]
+  question: |
+    下列 PDU（協定資料單元）與層級的對應，何者正確？
+  options:
+    - "傳輸層→訊框、網路層→封包、資料連結層→區段"
+    - "傳輸層→區段 (segment)、網路層→封包 (packet)、資料連結層→訊框 (frame)"
+    - "全部都叫封包"
+    - "網路層→區段、傳輸層→封包、資料連結層→位元"
+  answer: 1
+  explanation: |
+    常見命名：傳輸層為 segment（TCP）/datagram（UDP）、網路層為 packet/datagram、資料連結層為 frame、實體層為 bit。
+- id: net-model-008
+  difficulty: intermediate
+  tags: [ip, network-layer]
+  question: |
+    關於 IP（網際網路協定），下列敘述何者正確？
+  options:
+    - "IP 是傳輸層協定，提供可靠傳輸"
+    - "IP 是網路層協定，提供「盡力而為 (best-effort)」、非連線式的封包傳遞，不保證送達或順序"
+    - "IP 保證封包不會遺失"
+    - "IP 內建壅塞控制"
+  answer: 1
+  explanation: |
+    IP 在網路層提供非連線、盡力而為的傳遞，不保證送達、不保證順序、不保證不重複。可靠性與順序由上層（如 TCP）負責。
+- id: net-model-009
+  difficulty: intermediate
+  tags: [physical-layer]
+  question: |
+    實體層 (physical layer) 的職責是？
+  options:
+    - "把位元轉成實體訊號（電壓、光、無線電）並在媒介上傳輸"
+    - "依 IP 路由封包"
+    - "建立端到端的可靠連線"
+    - "加密應用資料"
+  answer: 0
+  explanation: |
+    實體層處理位元與實體訊號之間的轉換、纜線/接頭規格、編碼與傳輸速率等，不理解訊框或封包的內容意義。
+- id: net-model-010
+  difficulty: intermediate
+  tags: [presentation-layer]
+  question: |
+    OSI 表達層 (presentation layer) 的典型職責是？
+  options:
+    - "路由選擇"
+    - "資料格式轉換、編碼、（傳統上）加密與壓縮，使不同系統能正確解讀資料"
+    - "實體訊號傳輸"
+    - "流量控制"
+  answer: 1
+  explanation: |
+    表達層處理資料表示法：字元編碼轉換、序列化、壓縮、加解密等，讓應用層不必理會底層位元表示差異。
+- id: net-model-011
+  difficulty: intermediate
+  tags: [session-layer]
+  question: |
+    OSI 會議層 (session layer) 的功能是？
+  options:
+    - "建立、管理與終止應用程式間的對話 (session)，含對話同步與恢復"
+    - "依 MAC 轉送訊框"
+    - "計算最短路徑"
+    - "把位元編碼成訊號"
+  answer: 0
+  explanation: |
+    會議層負責對話控制：開啟/維持/關閉 session、設定同步點以便中斷後恢復。在 TCP/IP 中這些功能多由應用層自行處理。
+- id: net-model-012
+  difficulty: intermediate
+  tags: [transport, ports]
+  question: |
+    連接埠號 (port number) 用於識別「主機上的應用程式/服務」，它屬於哪一層？
+  options:
+    - "資料連結層"
+    - "網路層"
+    - "傳輸層"
+    - "應用層"
+  answer: 2
+  explanation: |
+    傳輸層用埠號做多工：同一台主機上多個應用可同時通訊，靠 (IP, port) 的組合區分各條連線。
+- id: net-model-013
+  difficulty: advanced
+  tags: [arp]
+  question: |
+    ARP (Address Resolution Protocol) 的功能是？
+  options:
+    - "把網域名稱解析為 IP"
+    - "在同一區網內，把已知的 IP 位址解析為對應的 MAC 位址"
+    - "把 MAC 位址路由到遠端網路"
+    - "分配動態 IP"
+  answer: 1
+  explanation: |
+    ARP 在區域網路中以廣播詢問「誰擁有這個 IP？」取得其 MAC 位址，供 L2 訊框定址。把名稱→IP 的是 DNS，動態配 IP 的是 DHCP。
+- id: net-model-014
+  difficulty: advanced
+  tags: [mtu, fragmentation]
+  question: |
+    MTU (Maximum Transmission Unit) 與分段 (fragmentation) 的關係是？
+  options:
+    - "封包大小超過鏈路 MTU 時，需切成較小片段傳送（IPv4 可由路由器分段，IPv6 改由來源端處理）"
+    - "MTU 越小傳輸越快"
+    - "分段只發生在傳輸層"
+    - "MTU 與封包大小無關"
+  answer: 0
+  explanation: |
+    每條鏈路有最大可承載的 MTU。IPv4 封包超過時可被分段、由目的端重組；IPv6 不允許路由器分段，改用 Path MTU Discovery 由來源端調整大小。
+- id: net-model-015
+  difficulty: advanced
+  tags: [hub, switch, collision-domain]
+  question: |
+    集線器 (hub) 與交換器 (switch) 在「碰撞網域 (collision domain)」上的差別是？
+  options:
+    - "hub 的所有埠共用單一碰撞網域；switch 每個埠各自獨立一個碰撞網域"
+    - "兩者都只有一個碰撞網域"
+    - "switch 把所有埠合成一個碰撞網域"
+    - "hub 沒有碰撞網域"
+  answer: 0
+  explanation: |
+    hub 在實體層單純複製訊號，所有埠共享同一碰撞網域（需 CSMA/CD）。switch 為每個埠隔離碰撞網域、可全雙工，大幅提升效率。
+- id: net-model-016
+  difficulty: advanced
+  tags: [nat]
+  question: |
+    NAT (Network Address Translation) 主要在哪一層運作、解決什麼問題？
+  options:
+    - "L2；解決 MAC 衝突"
+    - "L3/L4；改寫 IP（與埠），讓多台私有 IP 主機共用少數公有 IP，緩解 IPv4 位址不足"
+    - "L7；翻譯網域名稱"
+    - "L1；放大訊號"
+  answer: 1
+  explanation: |
+    NAT（常見為 PAT/overload）改寫封包的來源/目的 IP 與埠，使內網多台私有 IP 主機透過單一公有 IP 對外通訊，延緩 IPv4 位址耗盡。
+- id: net-model-017
+  difficulty: advanced
+  tags: [icmp]
+  question: |
+    ICMP（如 ping、traceroute 使用）的定位是？
+  options:
+    - "傳輸層的可靠協定"
+    - "網路層的輔助/診斷協定，用於回報錯誤與網路狀態，不用於一般資料傳輸"
+    - "應用層協定"
+    - "資料連結層協定"
+  answer: 1
+  explanation: |
+    ICMP 與 IP 同屬網路層，負責回報錯誤（如目的不可達、TTL 逾時）與診斷（echo request/reply）。ping、traceroute 即建構在其上。
+- id: net-model-018
+  difficulty: advanced
+  tags: [collision-domain, broadcast-domain]
+  question: |
+    關於碰撞網域與廣播網域，下列何者正確？
+  options:
+    - "交換器分隔碰撞網域但不分隔廣播網域；路由器（或 VLAN）才能分隔廣播網域"
+    - "交換器同時分隔碰撞網域與廣播網域"
+    - "路由器不分隔廣播網域"
+    - "廣播網域與碰撞網域是同義詞"
+  answer: 0
+  explanation: |
+    L2 交換器每埠是獨立碰撞網域，但廣播訊框仍會洪泛到整個 L2 網段（同一廣播網域）。要切分廣播網域需用路由器或在交換器上劃分 VLAN。
+- id: net-model-019
+  difficulty: master
+  tags: [layering, encapsulation]
+  question: |
+    分層架構 (layered architecture) 帶來模組化好處，但其固有「代價」之一是？
+  options:
+    - "完全無法互通"
+    - "每層各自加標頭造成額外負擔 (overhead)，且嚴格分層可能導致跨層資訊重複或無法做跨層最佳化"
+    - "封包一定會遺失"
+    - "讓網路速度歸零"
+  answer: 1
+  explanation: |
+    分層讓各層可獨立演進、互換實作，但每層標頭累加造成 overhead，且某些最佳化需要跨層資訊（cross-layer），與嚴格分層的封裝原則衝突。
+- id: net-model-020
+  difficulty: master
+  tags: [switching, cut-through]
+  question: |
+    交換器的「直通 (cut-through)」與「儲存轉送 (store-and-forward)」相比，主要取捨是？
+  options:
+    - "cut-through 延遲較低（讀到目的 MAC 即開始轉送），但無法在轉送前做完整 CRC 檢查，可能轉送出壞訊框"
+    - "store-and-forward 延遲一定較低"
+    - "cut-through 一定會檢查整個訊框"
+    - "兩者延遲與錯誤處理完全相同"
+  answer: 0
+  explanation: |
+    cut-through 只讀到目的 MAC 就開始轉送，延遲低但可能在收完整個訊框前就轉送、無法過濾 CRC 錯誤訊框。store-and-forward 收完整訊框並驗 CRC 才轉送，較可靠但延遲較高。

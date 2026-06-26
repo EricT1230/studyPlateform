@@ -1,0 +1,260 @@
+- id: net-transport-001
+  difficulty: basic
+  tags: [tcp, udp]
+  question: |
+    TCP 與 UDP 最根本的差別是？
+  options:
+    - "TCP 是非連線式，UDP 是連線導向"
+    - "TCP 是連線導向、提供可靠傳輸；UDP 是非連線、盡力而為"
+    - "兩者都保證可靠傳輸"
+    - "UDP 比 TCP 多了重傳機制"
+  answer: 1
+  explanation: |
+    TCP 在傳輸前建立連線，提供可靠、有序、含流量與壅塞控制的位元組串流；UDP 無連線、無可靠保證，標頭小、延遲低。
+- id: net-transport-002
+  difficulty: basic
+  tags: [udp]
+  question: |
+    下列何者「不是」UDP 的特性？
+  options:
+    - "無需三向交握即可直接送出資料"
+    - "不保證送達、不保證順序"
+    - "提供自動重傳與壅塞控制"
+    - "標頭小（僅 8 bytes），開銷低"
+  answer: 2
+  explanation: |
+    UDP 不提供重傳、排序或壅塞控制，這些若需要得由應用層自行實作。它的優點是簡單、低延遲，適合即時串流、DNS 查詢等。
+- id: net-transport-003
+  difficulty: basic
+  tags: [tcp, handshake]
+  question: |
+    TCP 建立連線的「三向交握 (three-way handshake)」順序是？
+  options:
+    - "SYN → SYN-ACK → ACK"
+    - "ACK → SYN → SYN-ACK"
+    - "SYN → ACK → FIN"
+    - "SYN → FIN → ACK"
+  answer: 0
+  explanation: |
+    用戶端送 SYN（帶初始序號），伺服端回 SYN-ACK，用戶端再回 ACK，雙方同步初始序號後連線建立。
+- id: net-transport-004
+  difficulty: basic
+  tags: [tcp, udp, applications]
+  question: |
+    下列應用通常使用 UDP 的是？
+  options:
+    - "網頁 (HTTP) 與檔案傳輸 (FTP)"
+    - "電子郵件 (SMTP)"
+    - "即時語音/視訊串流與 DNS 查詢"
+    - "遠端登入 (SSH)"
+  answer: 2
+  explanation: |
+    即時串流可容忍少量遺失但要求低延遲，DNS 查詢短小、追求快速，皆常用 UDP。HTTP、FTP、SMTP、SSH 需可靠傳輸，使用 TCP。
+- id: net-transport-005
+  difficulty: basic
+  tags: [ports]
+  question: |
+    「知名埠 (well-known ports)」的範圍是？
+  options:
+    - "0 – 1023"
+    - "1024 – 49151"
+    - "49152 – 65535"
+    - "0 – 65535"
+  answer: 0
+  explanation: |
+    0–1023 為知名埠（如 HTTP 80、HTTPS 443、DNS 53）；1024–49151 為註冊埠；49152–65535 為動態/私有埠。
+- id: net-transport-006
+  difficulty: intermediate
+  tags: [tcp, reliability]
+  question: |
+    TCP 達成「可靠傳輸」主要依靠哪組機制？
+  options:
+    - "序號 + 確認 (ACK) + 逾時重傳"
+    - "廣播 + 洪泛"
+    - "純靠底層 IP 保證"
+    - "加密 + 壓縮"
+  answer: 0
+  explanation: |
+    TCP 為每個位元組編序號，接收端以 ACK 回報已收到的資料，傳送端在逾時或收到重複 ACK 時重傳遺失片段，藉此保證資料完整且有序。
+- id: net-transport-007
+  difficulty: intermediate
+  tags: [tcp, sequence-number]
+  question: |
+    TCP 標頭中的「序號 (sequence number)」主要用途是？
+  options:
+    - "標記封包的優先權"
+    - "標示本段資料第一個位元組在整個位元組串流中的位置，供排序與偵測遺失/重複"
+    - "記錄來源 IP"
+    - "計算路由跳數"
+  answer: 1
+  explanation: |
+    序號讓接收端能把亂序到達的片段重新排序、偵測遺漏與重複，是 TCP 提供「有序位元組串流」的基礎。
+- id: net-transport-008
+  difficulty: intermediate
+  tags: [tcp, flow-control]
+  question: |
+    TCP 的「流量控制 (flow control)」目的是？
+  options:
+    - "避免傳送端送太快淹沒「接收端」的緩衝區（以接收視窗 rwnd 通告可接收量）"
+    - "避免網路核心壅塞"
+    - "選擇最短路徑"
+    - "加密傳輸內容"
+  answer: 0
+  explanation: |
+    流量控制是端到端的：接收端透過通告視窗 (receive window) 告知還能接收多少，傳送端據此限制在途資料量，避免壓垮接收端。壅塞控制才是處理網路核心的負載。
+- id: net-transport-009
+  difficulty: intermediate
+  tags: [tcp, teardown]
+  question: |
+    TCP 正常關閉連線通常需要幾次交握（雙向各自關閉）？
+  options:
+    - "1 次"
+    - "2 次"
+    - "三向（3 次）"
+    - "四向（4 次，雙方各送一次 FIN 與 ACK）"
+  answer: 3
+  explanation: |
+    TCP 連線是雙向的，關閉時雙方各自送 FIN 並收到對方的 ACK，故典型為四向交握（其中 SYN/FIN 可能因情況合併，但概念上是各方向各關一次）。
+- id: net-transport-010
+  difficulty: intermediate
+  tags: [udp, header]
+  question: |
+    UDP 標頭包含下列哪些欄位？
+  options:
+    - "來源埠、目的埠、長度、檢查碼"
+    - "序號、確認號、視窗大小、旗標"
+    - "IP 位址、TTL、協定"
+    - "MAC 位址、VLAN ID"
+  answer: 0
+  explanation: |
+    UDP 標頭僅 8 bytes：來源埠、目的埠、長度、檢查碼。沒有序號、ACK、視窗等，因此無法提供可靠或順序保證。
+- id: net-transport-011
+  difficulty: intermediate
+  tags: [checksum]
+  question: |
+    傳輸層檢查碼 (checksum) 的功能是？
+  options:
+    - "保證封包不會遺失"
+    - "偵測（非更正）傳輸過程中位元是否被改變，損壞則丟棄"
+    - "加密資料"
+    - "壓縮資料以節省頻寬"
+  answer: 1
+  explanation: |
+    檢查碼用於偵錯：接收端重算並比對，若不符表示資料毀損即丟棄（TCP 會重傳）。它只偵測錯誤，不負責更正，也不防遺失。
+- id: net-transport-012
+  difficulty: intermediate
+  tags: [tcp, udp, tradeoff]
+  question: |
+    選用 UDP 而非 TCP 的典型理由是？
+  options:
+    - "需要保證每個封包都送達"
+    - "可容忍少量遺失但極在意延遲與額外開銷（如即時遊戲、語音）"
+    - "需要自動排序與重傳"
+    - "需要壅塞控制"
+  answer: 1
+  explanation: |
+    當低延遲比完整可靠更重要、或應用自有恢復機制時，UDP 的低開銷與無交握延遲更合適；TCP 的重傳反而會在即時場景造成卡頓。
+- id: net-transport-013
+  difficulty: advanced
+  tags: [tcp, congestion-control, slow-start]
+  question: |
+    TCP「慢啟動 (slow start)」階段壅塞視窗 (cwnd) 如何變化？
+  options:
+    - "每個 RTT 線性加 1"
+    - "每收到一個 ACK 約使 cwnd 加倍成長（每 RTT 指數成長），直到達 ssthresh"
+    - "保持固定不變"
+    - "每次逾時就加倍"
+  answer: 1
+  explanation: |
+    慢啟動時 cwnd 從很小開始，每 RTT 約呈指數成長（每個 ACK 增加，使視窗倍增），直到到達慢啟動門檻 ssthresh 後轉入壅塞避免（線性成長）。
+- id: net-transport-014
+  difficulty: advanced
+  tags: [tcp, aimd]
+  question: |
+    TCP 壅塞避免採用 AIMD，其含義是？
+  options:
+    - "加法增加、乘法減少：無壅塞時每 RTT 線性加大視窗，偵測到丟包時視窗乘性（如減半）縮小"
+    - "乘法增加、加法減少"
+    - "視窗永遠倍增"
+    - "視窗固定不調整"
+  answer: 0
+  explanation: |
+    AIMD（Additive Increase, Multiplicative Decrease）讓視窗緩慢線性成長探測可用頻寬，一旦偵測壅塞就大幅（乘性）降低，兼顧效率與公平、避免壅塞崩潰。
+- id: net-transport-015
+  difficulty: advanced
+  tags: [tcp, fast-retransmit]
+  question: |
+    TCP「快速重傳 (fast retransmit)」的觸發條件是？
+  options:
+    - "等待重傳計時器逾時"
+    - "連續收到 3 個重複 ACK（dup ACK），即在逾時前重傳被推測遺失的片段"
+    - "收到 RST"
+    - "視窗縮為 0"
+  answer: 1
+  explanation: |
+    收到 3 個重複 ACK 暗示某片段遺失但後續片段已到達，TCP 不等逾時就立即重傳該片段，縮短恢復延遲。
+- id: net-transport-016
+  difficulty: advanced
+  tags: [tcp, time-wait]
+  question: |
+    主動關閉連線的一方進入 TIME_WAIT 狀態並等待 2·MSL 的主要原因是？
+  options:
+    - "讓 CPU 休息"
+    - "確保最後的 ACK 能送達對方、並讓網路中延遲的舊封包消散，避免干擾後續使用相同四元組的新連線"
+    - "加密殘留資料"
+    - "釋放 IP 位址"
+  answer: 1
+  explanation: |
+    TIME_WAIT 等待約兩倍最大封包存活時間 (MSL)，以便重送遺失的最終 ACK，並確保此連線的延遲舊封包在網路中過期，不會被誤認為屬於新連線。
+- id: net-transport-017
+  difficulty: advanced
+  tags: [tcp, nagle]
+  question: |
+    Nagle 演算法的目的是？
+  options:
+    - "把多個小資料合併成較大段再送出，減少大量小封包 (tinygram) 造成的開銷"
+    - "加密小封包"
+    - "加快小封包傳送、降低延遲"
+    - "丟棄小封包"
+  answer: 0
+  explanation: |
+    Nagle 在已有未確認資料時，緩衝小寫入直到湊足一個 MSS 或收到 ACK，減少小封包數量。但對互動式低延遲應用可能增加延遲，故有時需關閉 (TCP_NODELAY)。
+- id: net-transport-018
+  difficulty: advanced
+  tags: [tcp, syn-flood, security]
+  question: |
+    SYN flood 攻擊利用 TCP 交握的哪個弱點？
+  options:
+    - "大量送出 SYN 卻不完成交握，耗盡伺服器的半開連線佇列資源"
+    - "竄改封包檢查碼"
+    - "猜測序號注入資料"
+    - "放大 DNS 回應"
+  answer: 0
+  explanation: |
+    攻擊者送出大量 SYN（常偽造來源）但不回最後的 ACK，使伺服器累積大量半開連線、佔滿佇列而無法服務正常用戶。對策如 SYN cookies。
+- id: net-transport-019
+  difficulty: master
+  tags: [tcp, window-scaling, bdp]
+  question: |
+    在高頻寬·高延遲（long fat network）鏈路上，TCP 需要「視窗縮放 (window scaling)」的原因是？
+  options:
+    - "原始 16-bit 視窗欄位最大僅 64KB，不足以填滿頻寬延遲乘積 (BDP)，限制了吞吐"
+    - "序號空間不足"
+    - "檢查碼太弱"
+    - "埠號不夠用"
+  answer: 0
+  explanation: |
+    吞吐 ≈ 視窗 / RTT。原始視窗上限 64KB 在高 BDP 鏈路會嚴重限制吞吐；視窗縮放選項以位移擴大有效視窗，使在途資料量能填滿 BDP。
+- id: net-transport-020
+  difficulty: master
+  tags: [tcp, head-of-line-blocking, quic]
+  question: |
+    TCP 的「隊頭阻塞 (head-of-line blocking)」在多串流應用中的問題是？
+  options:
+    - "單一封包遺失會阻塞「同一條 TCP 連線」上所有後續資料（含其他邏輯串流）直到重傳完成"
+    - "封包亂序時自動丟棄全部"
+    - "視窗永遠為 0"
+    - "與多串流無關"
+  answer: 0
+  explanation: |
+    因 TCP 提供單一有序位元組串流，一個片段遺失會卡住其後所有資料的交付，即使屬於不同邏輯串流。QUIC（基於 UDP）為每個串流獨立排序，避免跨串流的隊頭阻塞。

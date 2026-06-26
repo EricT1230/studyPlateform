@@ -1,0 +1,260 @@
+- id: net-dns-001
+  difficulty: basic
+  tags: [dns, basics]
+  question: |
+    DNS (Domain Name System) 的核心功能是？
+  options:
+    - "把人類可讀的網域名稱解析成 IP 位址"
+    - "加密網路流量"
+    - "配置動態 IP"
+    - "路由封包"
+  answer: 0
+  explanation: |
+    DNS 是分散式的名稱解析系統，把如 example.com 的網域名稱對應到伺服器的 IP 位址（也支援反查與多種紀錄）。
+- id: net-dns-002
+  difficulty: basic
+  tags: [dns, port]
+  question: |
+    DNS 服務預設使用的埠號是？
+  options:
+    - "53"
+    - "80"
+    - "443"
+    - "25"
+  answer: 0
+  explanation: |
+    DNS 預設埠為 53（查詢多用 UDP/53，區域傳送或大型回應改用 TCP/53）。
+- id: net-dns-003
+  difficulty: basic
+  tags: [dns, hierarchy]
+  question: |
+    DNS 名稱空間的階層由上而下是？
+  options:
+    - "根 (root) → 頂級網域 (TLD) → 權威網域伺服器"
+    - "權威伺服器 → TLD → root"
+    - "TLD → root → 主機"
+    - "完全沒有階層"
+  answer: 0
+  explanation: |
+    DNS 是樹狀階層：根（.）之下是 TLD（如 .com、.tw），再往下是各組織的權威網域與主機名稱，解析時由上而下委派。
+- id: net-dns-004
+  difficulty: basic
+  tags: [dns, records]
+  question: |
+    A 紀錄與 AAAA 紀錄的差別是？
+  options:
+    - "A 對應 IPv4 位址，AAAA 對應 IPv6 位址"
+    - "A 對應 IPv6，AAAA 對應 IPv4"
+    - "兩者都對應 MAC 位址"
+    - "A 是郵件紀錄，AAAA 是別名"
+  answer: 0
+  explanation: |
+    A 紀錄把名稱對應到 32 位元的 IPv4 位址；AAAA 紀錄對應到 128 位元的 IPv6 位址。
+- id: net-dns-005
+  difficulty: basic
+  tags: [dns, transport]
+  question: |
+    一般 DNS 查詢主要使用哪種傳輸協定？
+  options:
+    - "TCP，因為需要可靠交握"
+    - "UDP，因查詢短小、追求低延遲（大型回應或區域傳送才用 TCP）"
+    - "ICMP"
+    - "只用 HTTP"
+  answer: 1
+  explanation: |
+    多數查詢/回應小於封包上限，使用無連線的 UDP 最快。當回應過大（被截斷，TC 旗標）或進行區域傳送 (zone transfer) 時改用 TCP。
+- id: net-dns-006
+  difficulty: intermediate
+  tags: [dns, recursive, iterative]
+  question: |
+    遞迴查詢 (recursive) 與疊代查詢 (iterative) 的差別是？
+  options:
+    - "遞迴：解析器代為一路問到答案再回傳給用戶；疊代：被問的伺服器只回「下一步該問誰」"
+    - "兩者完全相同"
+    - "疊代查詢一定比遞迴快"
+    - "遞迴查詢不需要任何伺服器"
+  answer: 0
+  explanation: |
+    用戶端通常對本地解析器發遞迴查詢（要它負責拿到最終答案）；解析器再對各層伺服器做疊代查詢，每次得到「去問下一層」的指引，直到取得權威答案。
+- id: net-dns-007
+  difficulty: intermediate
+  tags: [dns, caching, ttl]
+  question: |
+    DNS 紀錄的 TTL (Time To Live) 控制什麼？
+  options:
+    - "封包的最大跳數"
+    - "解析結果可被快取多久，到期後需重新查詢"
+    - "連線逾時時間"
+    - "DNS 伺服器的執行時間"
+  answer: 1
+  explanation: |
+    TTL 指定該筆紀錄可被快取的秒數。TTL 大→快取久、查詢少但更新慢；TTL 小→更新快但查詢量大。換 IP 前常先調小 TTL。
+- id: net-dns-008
+  difficulty: intermediate
+  tags: [dns, cname]
+  question: |
+    CNAME 紀錄的用途是？
+  options:
+    - "把一個名稱設為另一個名稱的別名 (canonical name)，解析時轉去查目標名稱"
+    - "指定郵件伺服器"
+    - "對應 IPv4 位址"
+    - "做反向解析"
+  answer: 0
+  explanation: |
+    CNAME 讓某名稱別名到另一個正規名稱（例如 www.example.com → example.com）。查詢遇到 CNAME 會接續解析其目標。注意網域頂點 (apex) 一般不可用 CNAME。
+- id: net-dns-009
+  difficulty: intermediate
+  tags: [dns, mx]
+  question: |
+    MX 紀錄的功能是？
+  options:
+    - "指定該網域的郵件伺服器及其優先序"
+    - "對應網站 IP"
+    - "設定別名"
+    - "儲存文字驗證資訊"
+  answer: 0
+  explanation: |
+    MX (Mail Exchange) 紀錄指明負責接收該網域電子郵件的伺服器主機名稱，並以優先值決定嘗試順序（數字小者優先）。
+- id: net-dns-010
+  difficulty: intermediate
+  tags: [dns, ns]
+  question: |
+    NS 紀錄的作用是？
+  options:
+    - "指明該網域由哪些「權威名稱伺服器」負責"
+    - "對應主機的 IPv6 位址"
+    - "設定郵件優先序"
+    - "記錄反向解析"
+  answer: 0
+  explanation: |
+    NS (Name Server) 紀錄列出對某區域具權威的名稱伺服器，是父區域把子區域「委派」出去的依據。
+- id: net-dns-011
+  difficulty: intermediate
+  tags: [dns, root-servers]
+  question: |
+    DNS 根伺服器 (root servers) 在解析中的角色是？
+  options:
+    - "儲存全世界所有網域的完整 IP 對應"
+    - "解析過程的起點，告知解析器各 TLD（如 .com）的權威伺服器在哪"
+    - "負責加密所有查詢"
+    - "分配 IP 位址"
+  answer: 1
+  explanation: |
+    根伺服器不存所有紀錄，而是回應「該去問哪個 TLD 伺服器」。解析器從根開始，逐層被導向 TLD、再到權威伺服器取得最終答案。
+- id: net-dns-012
+  difficulty: intermediate
+  tags: [dns, ptr, reverse]
+  question: |
+    反向 DNS 查詢使用哪種紀錄、做什麼？
+  options:
+    - "PTR 紀錄；由 IP 位址反查對應的網域名稱"
+    - "A 紀錄；由名稱查 IP"
+    - "MX 紀錄；查郵件伺服器"
+    - "CNAME；查別名"
+  answer: 0
+  explanation: |
+    反向解析用 PTR 紀錄，在 in-addr.arpa（IPv4）或 ip6.arpa（IPv6）特殊網域下，把 IP 對應回主機名稱，常用於郵件伺服器信譽檢查與日誌。
+- id: net-dns-013
+  difficulty: advanced
+  tags: [dns, tcp]
+  question: |
+    DNS 何時會改用 TCP 而非 UDP？
+  options:
+    - "回應過大被截斷（TC 旗標）、或進行區域傳送 (zone transfer) 等大量資料傳輸時"
+    - "永遠只用 TCP"
+    - "查詢失敗時"
+    - "從不使用 TCP"
+  answer: 0
+  explanation: |
+    當 UDP 回應超過大小限制被截斷（設 TC bit），用戶端會以 TCP 重試以取得完整回應；主從伺服器同步整個區域 (AXFR/IXFR) 也用 TCP 確保可靠。
+- id: net-dns-014
+  difficulty: advanced
+  tags: [dns, security, poisoning]
+  question: |
+    DNS 快取毒化 (cache poisoning) 攻擊的本質是？
+  options:
+    - "讓解析器快取「偽造的」名稱→IP 對應，把使用者導向惡意伺服器"
+    - "讓 DNS 伺服器當機"
+    - "竊取 DNS 伺服器的硬碟"
+    - "加密所有查詢"
+  answer: 0
+  explanation: |
+    攻擊者搶在真正權威回應前注入偽造紀錄，使解析器快取錯誤的對應，之後所有使用該快取的用戶都被導向惡意 IP。DNSSEC 與來源埠/交易 ID 隨機化可緩解。
+- id: net-dns-015
+  difficulty: advanced
+  tags: [dns, dnssec]
+  question: |
+    DNSSEC 提供的主要安全保證是？
+  options:
+    - "對 DNS 回應做數位簽章，確保來源真實性與資料完整性（防偽造/竄改），但不加密查詢內容"
+    - "加密整個查詢使其無法被窺看"
+    - "隱藏查詢者的 IP"
+    - "壓縮 DNS 回應"
+  answer: 0
+  explanation: |
+    DNSSEC 用公鑰簽章建立信任鏈，讓解析器驗證回應確實來自權威且未被竄改，防止毒化/偽造。它不提供機密性（加密）——那是 DoT/DoH 的範疇。
+- id: net-dns-016
+  difficulty: advanced
+  tags: [dns, doh, dot, privacy]
+  question: |
+    DNS over HTTPS (DoH) 與 DNS over TLS (DoT) 主要解決什麼問題？
+  options:
+    - "加密 DNS 查詢，防止路徑上的竊聽與竄改、提升隱私"
+    - "提供紀錄真實性簽章"
+    - "加速解析"
+    - "分配 IP 位址"
+  answer: 0
+  explanation: |
+    傳統 DNS 為明文，易被監看或竄改。DoT（TLS over 853 埠）與 DoH（包在 HTTPS 內）加密查詢，保護隱私與完整性。與 DNSSEC（簽章驗證）目的互補。
+- id: net-dns-017
+  difficulty: advanced
+  tags: [dns, anycast]
+  question: |
+    根與大型 DNS 服務常用 anycast，其效果是？
+  options:
+    - "同一 IP 由全球多個節點宣告，路由把查詢導向「最近」的節點，提升效能與抗 DDoS 能力"
+    - "把查詢廣播給所有節點"
+    - "讓每個查詢都走最遠的節點"
+    - "停用快取"
+  answer: 0
+  explanation: |
+    anycast 讓多個地理分散的伺服器共用同一 IP，BGP 路由把使用者導到拓樸上最近的實例，降低延遲並分散負載、增強對 DDoS 的韌性。
+- id: net-dns-018
+  difficulty: advanced
+  tags: [dns, ttl, tradeoff]
+  question: |
+    把某網域的 TTL 設「很短」的取捨是？
+  options:
+    - "切換 IP/做容錯時生效快，但快取命中率下降、查詢量與解析延遲上升"
+    - "完全沒有任何缺點"
+    - "讓快取永久有效"
+    - "會停用 DNS"
+  answer: 0
+  explanation: |
+    短 TTL 讓變更快速傳播（利於故障切換、負載調度），代價是快取較常過期、查詢量增加，對權威伺服器與使用者延遲都有壓力。需在敏捷與效率間權衡。
+- id: net-dns-019
+  difficulty: master
+  tags: [dns, amplification, ddos]
+  question: |
+    DNS 放大攻擊 (amplification) 為何具破壞力？
+  options:
+    - "攻擊者偽造受害者來源 IP 發出小查詢，誘使開放解析器回傳「大很多」的回應到受害者，放大流量做 DDoS"
+    - "讓 DNS 伺服器加密所有流量"
+    - "竄改 DNS 紀錄"
+    - "耗盡 DNS 伺服器硬碟"
+  answer: 0
+  explanation: |
+    利用 UDP 可偽造來源位址，攻擊者以受害者 IP 對開放解析器發出會產生大回應的查詢（如 ANY/DNSSEC），讓大量放大後的流量湧向受害者。對策包括關閉開放遞迴、來源位址驗證 (BCP38)、回應速率限制。
+- id: net-dns-020
+  difficulty: master
+  tags: [dns, negative-caching, soa]
+  question: |
+    「否定快取 (negative caching)」與 SOA 紀錄的關係是？
+  options:
+    - "當查詢回 NXDOMAIN（名稱不存在）時，解析器可依 SOA 中的 minimum/負快取 TTL 將「不存在」的結果快取一段時間"
+    - "SOA 用來加密回應"
+    - "否定快取會永久封鎖該名稱"
+    - "兩者無關"
+  answer: 0
+  explanation: |
+    否定快取讓解析器記住「此名稱不存在 (NXDOMAIN)」一段時間，避免重複查詢不存在的名稱。其快取時長由該區域 SOA 紀錄的負快取 TTL（minimum 欄位）決定。
