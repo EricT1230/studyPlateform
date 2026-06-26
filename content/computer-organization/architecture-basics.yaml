@@ -1,0 +1,195 @@
+- id: co-arch-001
+  difficulty: basic
+  tags: [isa, microarchitecture]
+  question: |
+    關於 ISA (Instruction Set Architecture) 與 microarchitecture 的差異，下列何者正確？
+  options:
+    - "ISA 定義程式可見的指令、暫存器與位址模式；microarchitecture 是實作 ISA 的內部設計"
+    - "ISA 只描述電晶體排列，microarchitecture 只描述組合語言語法"
+    - "同一個 ISA 必定只能有一種 microarchitecture"
+    - "microarchitecture 改變時，所有既有二進位程式必定無法執行"
+  answer: 0
+  explanation: |
+    ISA 是軟硬體之間的介面，例如指令格式、可見暫存器與例外行為；microarchitecture 則是管線、cache、執行單元等實作方式。同一 ISA 可以有多種不同效能與成本的實作。
+- id: co-arch-002
+  difficulty: basic
+  tags: [performance, cpi]
+  question: |
+    一個程式執行了 2,000,000 條指令，平均 CPI 為 1.5，處理器時脈為 1 GHz。忽略其他開銷，執行時間約為多少？
+  options:
+    - "0.000003 秒"
+    - "0.003 秒"
+    - "3 秒"
+    - "300 秒"
+  answer: 1
+  explanation: |
+    CPU time = instruction count × CPI ÷ clock rate = 2,000,000 × 1.5 ÷ 1,000,000,000 = 0.003 秒。CPI 與指令數都會直接影響總 cycle 數。
+- id: co-arch-003
+  difficulty: basic
+  tags: [cache, locality]
+  question: |
+    陣列連續掃描通常比隨機跳著存取更容易命中 cache，主要是因為哪一種局部性？
+  options:
+    - "Temporal locality"
+    - "Control locality"
+    - "Spatial locality"
+    - "Register locality"
+  answer: 2
+  explanation: |
+    Spatial locality 指程式存取某個位址後，近期也可能存取附近位址。連續陣列元素通常落在同一個或相鄰 cache line，因此一次載入可服務多個後續存取。
+- id: co-arch-004
+  difficulty: basic
+  tags: [pipeline, throughput]
+  question: |
+    理想的五階段 pipeline 在沒有 hazard 與 stall 的情況下，主要改善的是什麼？
+  options:
+    - "單一指令從開始到完成的 latency 大幅低於單週期設計"
+    - "完全不需要 clock"
+    - "讓所有指令都變成只需 0 個 cycle"
+    - "同時重疊多條指令的不同階段，提高長串指令的 throughput"
+  answer: 3
+  explanation: |
+    Pipeline 把不同指令的階段重疊，穩定後可接近每個 cycle 完成一條指令，因此改善 throughput。單一指令仍需通過多個階段，latency 不一定比非管線設計更低。
+- id: co-arch-005
+  difficulty: basic
+  tags: [memory-hierarchy]
+  question: |
+    在典型 memory hierarchy 中，下列哪個方向通常代表容量變大但延遲也變高？
+  options:
+    - "從 register 往 L1 cache、主記憶體、SSD 移動"
+    - "從 SSD 往主記憶體、L1 cache、register 移動"
+    - "從主記憶體往 register 移動"
+    - "所有層級容量與延遲都相同"
+  answer: 0
+  explanation: |
+    越靠近 CPU 的 register 與 cache 通常容量小、速度快；越往主記憶體與儲存裝置，容量增加但延遲變高。這個階層利用局部性讓平均存取時間下降。
+- id: co-arch-006
+  difficulty: intermediate
+  tags: [pipeline, hazards]
+  question: |
+    在五階段 pipeline 中，指令 B 需要使用前一條指令 A 剛計算出的 ALU 結果。若硬體可用 forwarding，通常可減少哪一類 hazard 的 stall？
+  options:
+    - "Structural hazard"
+    - "Data hazard"
+    - "Control hazard"
+    - "Exception hazard"
+  answer: 1
+  explanation: |
+    A 的結果尚未寫回 register file，但 B 已需要讀取，這是 data hazard。Forwarding 可把 ALU 輸出直接送到後續指令的輸入，避免等到 write-back 才使用。
+- id: co-arch-007
+  difficulty: intermediate
+  tags: [amdahl-law, performance]
+  question: |
+    某程式有 40% 的時間可被加速 4 倍，其餘部分不變。依 Amdahl's Law，整體 speedup 約為多少？
+  options:
+    - "2.50 倍"
+    - "4.00 倍"
+    - "1.43 倍"
+    - "10.00 倍"
+  answer: 2
+  explanation: |
+    新時間比例 = 不可加速的 0.6 + 可加速部分 0.4/4 = 0.7，因此 speedup = 1/0.7 約 1.43。只有部分程式被加速時，未加速部分會限制整體效益。
+- id: co-arch-008
+  difficulty: intermediate
+  tags: [endianness, memory]
+  question: |
+    在 little-endian 系統中，32-bit 整數 0x12345678 存到位址 A 開始的 4 個 byte。位址 A 存的是哪個 byte？
+  options:
+    - "0x12"
+    - "0x34"
+    - "0x56"
+    - "0x78"
+  answer: 3
+  explanation: |
+    Little-endian 會把最低有效位元組放在最低位址。0x12345678 的 byte 由高到低是 12、34、56、78，因此位址 A 會存最低有效 byte 0x78。
+- id: co-arch-009
+  difficulty: intermediate
+  tags: [cache, miss]
+  question: |
+    一個 direct-mapped cache 因兩個常用記憶體區塊映射到同一個 cache line，導致它們反覆互相替換。這主要是哪一種 cache miss？
+  options:
+    - "Conflict miss"
+    - "Compulsory miss"
+    - "Capacity miss"
+    - "Coherence miss"
+  answer: 0
+  explanation: |
+    Conflict miss 發生在 cache 尚有其他空間，但因映射限制使多個 block 必須競爭同一位置。Direct-mapped cache 特別容易出現這種互相驅逐的情況。
+- id: co-arch-010
+  difficulty: intermediate
+  tags: [cache, write-policy]
+  question: |
+    關於 write-through 與 write-back cache，下列何者正確？
+  options:
+    - "Write-back 不需要 dirty bit"
+    - "Write-through 每次寫 cache 都同步寫到下一層；write-back 通常等替換髒區塊時才寫回"
+    - "Write-through 永遠比 write-back 需要更少記憶體頻寬"
+    - "兩者都禁止 CPU 寫入 cache"
+  answer: 1
+  explanation: |
+    Write-through 讓下一層記憶體較即時保持最新，但寫入頻寬需求較高。Write-back 先只改 cache 並標記 dirty，等該 block 被替換時再寫回，通常可減少重複寫入。
+- id: co-arch-011
+  difficulty: intermediate
+  tags: [two-complement, overflow]
+  question: |
+    以 8-bit two's complement 表示，127 加 1 的硬體位元結果是 10000000。若把結果仍解讀為 signed 8-bit，代表什麼情況？
+  options:
+    - "結果為 +128，沒有 overflow"
+    - "結果為 0，因為進位被丟棄"
+    - "結果為 -128，且發生 signed overflow"
+    - "結果不可用 two's complement 表示任何值"
+  answer: 2
+  explanation: |
+    8-bit signed two's complement 範圍是 -128 到 127。127 + 1 超出可表示範圍，位元結果 10000000 解讀為 -128，因此這是 signed overflow 的典型例子。
+- id: co-arch-012
+  difficulty: intermediate
+  tags: [interrupts, io]
+  question: |
+    相較於 polling，interrupt-driven I/O 的主要優點是什麼？
+  options:
+    - "所有 I/O 都變成不需要裝置控制器"
+    - "中斷會保證 I/O 延遲為 0"
+    - "CPU 永遠不需要保存執行狀態"
+    - "CPU 不必持續反覆檢查裝置狀態，可在事件發生時再處理"
+  answer: 3
+  explanation: |
+    Polling 需要 CPU 主動重複查詢裝置是否就緒；interrupt 讓裝置在需要服務時通知 CPU，使 CPU 可先執行其他工作。中斷仍有保存狀態與服務常式的成本。
+- id: co-arch-013
+  difficulty: advanced
+  tags: [cache, address-decomposition]
+  question: |
+    一個 32-bit 位址、direct-mapped cache 有 256 個 line，每個 block 為 64 bytes。位址中的 tag、index、block offset 位元數分別是多少？
+  options:
+    - "tag 18、index 8、offset 6"
+    - "tag 20、index 6、offset 6"
+    - "tag 16、index 10、offset 6"
+    - "tag 24、index 4、offset 4"
+  answer: 0
+  explanation: |
+    Block size 64 bytes 需要 6 個 offset bits；256 個 line 需要 8 個 index bits。32-bit 位址剩下 32 - 8 - 6 = 18 個 bits 作為 tag。
+- id: co-arch-014
+  difficulty: advanced
+  tags: [branch-prediction, pipeline]
+  question: |
+    在深 pipeline 中，branch prediction 錯誤通常會造成什麼主要成本？
+  options:
+    - "只需重跑 branch 指令，錯路徑指令仍可全部提交"
+    - "需要清掉錯路徑上的已取指或部分執行指令，浪費多個 cycle"
+    - "只清除 branch predictor 或 BTB entry，不影響 pipeline 中已取指的指令"
+    - "固定只造成 1 cycle stall，與 pipeline 深度無關"
+  answer: 1
+  explanation: |
+    分支預測錯誤時，pipeline 中已沿錯誤路徑取進或部分執行的指令必須被 flush，然後從正確目標重新取指。Pipeline 越深，錯誤路徑累積的工作通常越多，penalty 越高。
+- id: co-arch-015
+  difficulty: advanced
+  tags: [virtual-memory, tlb]
+  question: |
+    若系統使用多層 page table 且 TLB miss，但目標頁已在實體記憶體中，下列敘述何者最精確？
+  options:
+    - "一定發生 page fault，必須從磁碟載入頁面"
+    - "TLB miss 代表程式存取非法位址"
+    - "需要查 page table 完成位址轉換；若頁表項有效，通常不需要磁碟 I/O"
+    - "CPU 可以不經任何轉換直接使用虛擬位址存取 DRAM"
+  answer: 2
+  explanation: |
+    TLB miss 只表示快取中沒有該位址轉換。硬體或作業系統仍可走 page table 找到有效映射並回填 TLB；只有頁表項顯示頁不在記憶體或權限不符時，才會觸發 page fault 或 protection fault。

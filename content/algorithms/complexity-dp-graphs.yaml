@@ -1,0 +1,260 @@
+- id: algo-cdg-001
+  difficulty: basic
+  tags: [complexity, asymptotic-analysis]
+  question: |
+    若一段程式包含兩個連續迴圈：第一個執行 n 次，第二個執行 3n + 10 次，整體時間複雜度的最緊漸近界限為何？
+  options:
+    - "Theta(n)"
+    - "Theta(1)"
+    - "Theta(log n)"
+    - "Theta(n^2)"
+  answer: 0
+  explanation: |
+    兩個連續迴圈的成本相加為 n + 3n + 10。忽略常數係數與低階項後，成長率為 Theta(n)。因為題目問最緊界限，不能選較鬆的上界如 O(n^2)。
+- id: algo-cdg-002
+  difficulty: intermediate
+  tags: [complexity, recurrence, divide-and-conquer]
+  question: |
+    遞迴式 T(n) = 2T(n/2) + Theta(n) 的最緊漸近時間複雜度是多少？
+  options:
+    - "Theta(log n)"
+    - "Theta(n log n)"
+    - "Theta(n)"
+    - "Theta(n^2)"
+  answer: 1
+  explanation: |
+    每一層遞迴總工作量為 Theta(n)，遞迴深度為 Theta(log n)，因此總時間是 Theta(n log n)。這對應 Master Theorem 中 a = 2、b = 2、f(n) = Theta(n) 的情況。
+- id: algo-cdg-003
+  difficulty: intermediate
+  tags: [complexity, recurrence, binary-search]
+  question: |
+    Binary search 的遞迴式可寫成 T(n) = T(n/2) + Theta(1)。它的最緊時間複雜度為何？
+  options:
+    - "Theta(1)"
+    - "Theta(n)"
+    - "Theta(log n)"
+    - "Theta(n log n)"
+  answer: 2
+  explanation: |
+    每次比較後搜尋範圍減半，每層只做常數工作。最多減半 Theta(log n) 次後到達大小 1，因此最緊時間複雜度是 Theta(log n)。
+- id: algo-cdg-004
+  difficulty: advanced
+  tags: [complexity, amortized-analysis, dynamic-array]
+  question: |
+    Dynamic array 以容量倍增策略處理 append。哪個敘述最能說明 append 的攤還時間？
+  options:
+    - "每次 append 都必定是 O(n)，所以攤還也是 O(n)"
+    - "只要使用陣列，append 一定是 O(log n)"
+    - "容量倍增會讓元素永遠不需要複製"
+    - "偶爾 resize 是 O(n)，但分攤後每次 append 為 O(1)"
+  answer: 3
+  explanation: |
+    Resize 發生時需要搬動既有元素，但兩次 resize 之間會有許多 O(1) append。把搬移成本分攤到這些 append 上，每次操作的攤還時間為 O(1)。
+- id: algo-cdg-005
+  difficulty: advanced
+  tags: [complexity, lower-bound, comparison]
+  question: |
+    對任意 comparison-based sorting algorithm，在最壞情況下為什麼需要 Omega(n log n) 次比較？
+  options:
+    - "因為決策樹必須能區分 n! 種可能排列"
+    - "因為每次比較都會移動所有元素"
+    - "因為所有排序都必須使用 recursion"
+    - "因為輸入陣列一定已經反向排序"
+  answer: 0
+  explanation: |
+    比較排序的執行可視為二元決策樹，葉節點至少要涵蓋 n! 種排列。高度至少為 log2(n!)，而 log(n!) = Omega(n log n)，所以最壞情況比較次數有此下界。
+- id: algo-cdg-006
+  difficulty: basic
+  tags: [dynamic-programming, optimal-substructure]
+  question: |
+    一個問題適合用 dynamic programming 的常見條件是什麼？
+  options:
+    - "子問題彼此完全無關，且不會重複"
+    - "存在重疊子問題與 optimal substructure"
+    - "輸入必須已經排序"
+    - "答案必須能用 hash table 直接查到"
+  answer: 1
+  explanation: |
+    Dynamic programming 通常利用重疊子問題避免重複計算，並利用 optimal substructure 由子問題最佳解組合出原問題最佳解。這兩個性質是判斷是否適合 DP 的核心線索。
+- id: algo-cdg-007
+  difficulty: intermediate
+  tags: [dynamic-programming, memoization, tabulation]
+  question: |
+    Memoization 與 tabulation 的主要差異是什麼？
+  options:
+    - "Memoization 只能用在 graph；tabulation 只能用在 tree"
+    - "Memoization 不會使用額外記憶體；tabulation 一定是 O(1) 空間"
+    - "Memoization 通常是 top-down，需要時才算子問題；tabulation 通常是 bottom-up，依序填表"
+    - "兩者都不能處理重疊子問題"
+  answer: 2
+  explanation: |
+    Memoization 從原問題遞迴展開，遇到子問題才計算並快取；tabulation 則先決定狀態順序，再由小到大填表。兩者都可處理重疊子問題，但計算方向不同。
+- id: algo-cdg-008
+  difficulty: intermediate
+  tags: [dynamic-programming, knapsack]
+  question: |
+    0/1 knapsack 中，若 dp[i][w] 表示只考慮前 i 個物品、容量上限為 w 的最大價值，轉移式通常需要比較哪兩種情況？
+  options:
+    - "容量 w 增加或減少 1"
+    - "物品價值排序或重量排序"
+    - "從左子樹或右子樹取答案"
+    - "第 i 個物品選或不選"
+  answer: 3
+  explanation: |
+    0/1 knapsack 的每個物品只能選一次，因此狀態轉移要比較不選第 i 個物品的 dp[i-1][w]，以及在容量足夠時選它的 dp[i-1][w-weight[i]] + value[i]。
+- id: algo-cdg-009
+  difficulty: advanced
+  tags: [dynamic-programming, longest-increasing-subsequence]
+  question: |
+    Longest Increasing Subsequence 的 O(n log n) 解法中，維護 tails 陣列的核心意義是什麼？
+  options:
+    - "tails[k] 儲存長度 k+1 的遞增子序列可能達成的最小結尾值"
+    - "tails[k] 儲存第 k 個元素的前一個 index"
+    - "tails 永遠等於實際的唯一最長子序列"
+    - "tails 用來記錄每個元素出現次數"
+  answer: 0
+  explanation: |
+    對每個長度保留越小的結尾值，未來越容易接上更大的元素。每次用 binary search 找到可替換的位置，因此整體可在 O(n log n) 完成長度計算。
+- id: algo-cdg-010
+  difficulty: advanced
+  tags: [dynamic-programming, edit-distance]
+  question: |
+    Edit distance 的典型 DP 中，dp[i][j] 表示字串 A 前 i 個字元轉成字串 B 前 j 個字元的最少操作數。若 A[i-1] != B[j-1]，常見轉移會取哪三種操作的最小值再加一？
+  options:
+    - "insert、delete、match"
+    - "insert、delete、replace"
+    - "delete、replace、swap"
+    - "insert、match、swap"
+  answer: 1
+  explanation: |
+    當最後一個字元不同時，可透過插入、刪除或替換其中一種操作解決最後一步差異。match 只適用於最後字元相同；swap 不是標準 Levenshtein edit distance 的基本操作。
+- id: algo-cdg-011
+  difficulty: master
+  tags: [dynamic-programming, matrix-chain, optimization]
+  question: |
+    Matrix chain multiplication 的 DP 為何不能只用 greedy 選擇「當下乘法成本最小」的相鄰矩陣先乘？
+  options:
+    - "因為矩陣乘法沒有結合律"
+    - "因為 DP 不能處理二維狀態"
+    - "因為局部最小乘法成本不一定導致全域最小總成本"
+    - "因為每個矩陣都只能乘一次"
+  answer: 2
+  explanation: |
+    矩陣乘法的括號化會改變中間矩陣尺寸，進而影響後續成本。當下看起來便宜的相鄰乘法可能造成昂貴的中間結果，因此需要 DP 枚舉切分點以保證全域最佳。
+- id: algo-cdg-012
+  difficulty: basic
+  tags: [graphs, shortest-path, bfs]
+  question: |
+    在所有邊權都相同且可視為 1 的 graph 中，求單一來源到各點的最短距離，最適合使用哪個演算法？
+  options:
+    - "DFS"
+    - "Kruskal"
+    - "Floyd-Warshall"
+    - "BFS"
+  answer: 3
+  explanation: |
+    邊權皆為 1 時，最短路徑等同最少邊數。BFS 會按距離層次擴展，因此可在線性時間 O(V + E) 求出單一來源最短距離。
+- id: algo-cdg-013
+  difficulty: intermediate
+  tags: [graphs, shortest-path, dijkstra]
+  question: |
+    Dijkstra algorithm 對邊權有什麼關鍵限制？
+  options:
+    - "不能有負權邊"
+    - "所有邊權必須為負數"
+    - "圖必須是 complete graph"
+    - "圖必須沒有任何 cycle"
+  answer: 0
+  explanation: |
+    Dijkstra 依賴「目前取出的最小暫定距離已經確定」這個性質。負權邊可能在之後把已確定頂點的距離變小，破壞此假設，因此一般要求沒有負權邊。
+- id: algo-cdg-014
+  difficulty: advanced
+  tags: [graphs, shortest-path, bellman-ford]
+  question: |
+    Bellman-Ford 在完成 V - 1 輪 edge relaxation 後，再做第 V 輪仍能更新距離，代表什麼？
+  options:
+    - "所有最短路徑都已不存在"
+    - "圖中存在從來源可達的 negative-weight cycle"
+    - "圖必定是 undirected tree"
+    - "Dijkstra 會得到同一組 parent pointer"
+  answer: 1
+  explanation: |
+    沒有負環時，任一 simple shortest path 最多包含 V - 1 條邊，因此 V - 1 輪 relaxation 應已足夠。若第 V 輪還能變小，表示可透過某個可達負權環繼續降低距離。
+- id: algo-cdg-015
+  difficulty: intermediate
+  tags: [graphs, minimum-spanning-tree, kruskal]
+  question: |
+    Kruskal algorithm 建立 minimum spanning tree 時，為何需要 Disjoint Set Union？
+  options:
+    - "計算每條邊的 shortest path distance"
+    - "把 directed graph 轉成 DAG"
+    - "快速判斷加入一條邊是否會形成 cycle"
+    - "維護每個頂點的 topological order"
+  answer: 2
+  explanation: |
+    Kruskal 依邊權由小到大考慮邊，只有當邊的兩端位於不同連通分量時才加入。DSU 可有效查詢與合併連通分量，用來避免形成 cycle。
+- id: algo-cdg-016
+  difficulty: advanced
+  tags: [graphs, minimum-spanning-tree, prim]
+  question: |
+    Prim algorithm 與 Dijkstra algorithm 在資料結構上常都使用 priority queue，但 priority queue 中 key 的意義有何不同？
+  options:
+    - "Prim 的 key 是頂點編號；Dijkstra 的 key 是 DFS finish time"
+    - "Prim 的 key 是負權環數量；Dijkstra 的 key 是連通分量大小"
+    - "兩者 key 完全相同，都是最小生成樹總重量"
+    - "Prim 的 key 是連到目前樹的最小邊權；Dijkstra 的 key 是來源到頂點的目前最短距離"
+  answer: 3
+  explanation: |
+    Prim 每次選擇跨越目前 MST cut 的最便宜邊，所以 key 是接入目前樹的最小邊權。Dijkstra 則維護從來源到各頂點的暫定最短距離，兩者貪婪選擇的量不同。
+- id: algo-cdg-017
+  difficulty: intermediate
+  tags: [graphs, topological-sort, dag]
+  question: |
+    Topological sort 可以存在的必要條件是什麼？
+  options:
+    - "圖是 directed acyclic graph"
+    - "圖是 complete graph"
+    - "圖中每條邊權都相同"
+    - "圖的頂點數必須是偶數"
+  answer: 0
+  explanation: |
+    Topological order 要求每條 directed edge u -> v 中，u 都排在 v 前面。若有 directed cycle，cycle 中每個點都必須排在下一個點前面，形成矛盾，因此圖必須是 DAG。
+- id: algo-cdg-018
+  difficulty: advanced
+  tags: [graphs, all-pairs-shortest-path, floyd-warshall]
+  question: |
+    Floyd-Warshall algorithm 的典型時間複雜度是多少？
+  options:
+    - "O(V + E)"
+    - "O(V^3)"
+    - "O(E log V)"
+    - "O(V^2)"
+  answer: 1
+  explanation: |
+    Floyd-Warshall 以每個頂點 k 作為可能中繼點，並更新所有 ordered pair (i, j) 的距離。三層頂點迴圈各為 V，因此時間複雜度是 O(V^3)。
+- id: algo-cdg-019
+  difficulty: master
+  tags: [graphs, max-flow, residual-graph]
+  question: |
+    在 max-flow 演算法中，residual graph 的主要用途是什麼？
+  options:
+    - "把所有邊權改成負數以便 Bellman-Ford 使用"
+    - "只保留 minimum spanning tree 的邊"
+    - "表示還能增加或回退流量的可用容量"
+    - "刪除所有 source 可達的頂點"
+  answer: 2
+  explanation: |
+    Residual graph 記錄每條邊剩餘可推送的容量，也包含可取消既有流量的反向邊。Augmenting path 就是在 residual graph 中尋找仍可增加總流量的路徑。
+- id: algo-cdg-020
+  difficulty: master
+  tags: [dynamic-programming, graph-algorithms, shortest-path]
+  question: |
+    在 DAG 上求單一來源 shortest paths，即使存在負權邊也可用 topological order 做線性時間 DP。原因是什麼？
+  options:
+    - "負權邊在 DAG 中會自動變成正權邊"
+    - "Topological order 會把所有邊依權重排序"
+    - "DAG 的 shortest path 一定只包含一條邊"
+    - "DAG 沒有 cycle，因此依拓樸序 relaxation 時，每個前驅的最佳距離已先被處理"
+  answer: 3
+  explanation: |
+    DAG 沒有環，拓樸序能保證所有邊都從較早位置指向較晚位置。依此順序放鬆邊時，到達某頂點的所有可能前驅都已處理，因此可用 DP 思路在 O(V + E) 完成，即使邊權為負也不會遇到負環問題。

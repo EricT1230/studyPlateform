@@ -1,0 +1,195 @@
+- id: ps-prob-001
+  difficulty: basic
+  tags: [events, union]
+  question: |
+    對兩個事件 A 與 B，下列哪一個公式永遠正確？
+  options:
+    - "P(A ∪ B) = P(A) + P(B) - P(A ∩ B)"
+    - "P(A ∪ B) = P(A)P(B)"
+    - "P(A ∩ B) = P(A) + P(B)"
+    - "P(A ∩ B) = P(A) - P(B)"
+  answer: 0
+  explanation: |
+    P(A) + P(B) 會把 A∩B 重複算一次，所以要扣掉 P(A∩B)。這是兩事件 union 的一般公式。
+- id: ps-prob-002
+  difficulty: basic
+  tags: [independence, events]
+  question: |
+    若事件 A 與 B independent，且 P(A)、P(B) 都已定義，下列哪個等式必定成立？
+  options:
+    - "P(A ∪ B) = 0"
+    - "P(A ∩ B) = P(A)P(B)"
+    - "P(A | B) = P(B | A) 一定成立"
+    - "P(A) + P(B) = 1"
+  answer: 1
+  explanation: |
+    Independence 的核心定義是共同發生機率等於個別機率乘積，也就是 P(A∩B)=P(A)P(B)。
+- id: ps-prob-003
+  difficulty: basic
+  tags: [conditional-probability, events]
+  question: |
+    當 P(B) > 0 時，P(A | B) 的定義是什麼？
+  options:
+    - "P(A ∪ B) / P(A)"
+    - "P(A) / P(B)"
+    - "P(A ∩ B) / P(B)"
+    - "P(B | A) / P(A)"
+  answer: 2
+  explanation: |
+    Conditional probability P(A|B) 是在 B 已發生的樣本空間中 A 也發生的比例，因此為 P(A∩B)/P(B)。
+- id: ps-prob-004
+  difficulty: basic
+  tags: [expectation, discrete-random-variable]
+  question: |
+    擲一顆公平六面骰一次，點數 X 的 expected value 是多少？
+  options:
+    - "3"
+    - "4"
+    - "6"
+    - "3.5"
+  answer: 3
+  explanation: |
+    公平骰的期望值是 (1+2+3+4+5+6)/6 = 21/6 = 3.5。
+- id: ps-prob-005
+  difficulty: basic
+  tags: [bernoulli, variance]
+  question: |
+    若 X ~ Bernoulli(p)，則 Var(X) 是多少？
+  options:
+    - "p(1-p)"
+    - "p^2"
+    - "1-p"
+    - "1/p"
+  answer: 0
+  explanation: |
+    Bernoulli random variable 的 E[X]=p 且 E[X^2]=p，因此 Var(X)=E[X^2]-E[X]^2=p-p^2=p(1-p)。
+- id: ps-prob-006
+  difficulty: intermediate
+  tags: [binomial-distribution, probability-mass]
+  question: |
+    若 X ~ Binomial(n=5, p=0.2)，則 P(X = 2) 等於哪一個式子？
+  options:
+    - "C(5,2)(0.2)^3(0.8)^2"
+    - "C(5,2)(0.2)^2(0.8)^3"
+    - "(0.2)^2(0.8)^2"
+    - "5(0.2)(0.8)"
+  answer: 1
+  explanation: |
+    Binomial 機率為 C(n,k)p^k(1-p)^(n-k)。代入 n=5、k=2、p=0.2，得到 C(5,2)(0.2)^2(0.8)^3。
+- id: ps-prob-007
+  difficulty: intermediate
+  tags: [bayes-theorem, conditional-probability]
+  question: |
+    某疾病盛行率為 1%。檢測 sensitivity 為 90%，false positive rate 為 5%。若某人檢測陽性，他實際有病的機率約是多少？
+  options:
+    - "約 50.0%"
+    - "約 90.0%"
+    - "約 15.4%"
+    - "約 95.0%"
+  answer: 2
+  explanation: |
+    Bayes theorem 給出 P(病|陽性)=0.01*0.90/(0.01*0.90+0.99*0.05)=0.009/0.0585，約為 15.4%。
+- id: ps-prob-008
+  difficulty: intermediate
+  tags: [expectation, linearity]
+  question: |
+    若 E[X] = 4，則 E[2X + 3] 是多少？
+  options:
+    - "8"
+    - "14"
+    - "22"
+    - "11"
+  answer: 3
+  explanation: |
+    期望值有 linearity：E[2X+3] = 2E[X] + 3 = 2*4 + 3 = 11。
+- id: ps-prob-009
+  difficulty: intermediate
+  tags: [variance, transformations]
+  question: |
+    若 Var(X) = 9，則 Var(2X - 5) 是多少？
+  options:
+    - "36"
+    - "13"
+    - "18"
+    - "31"
+  answer: 0
+  explanation: |
+    Var(aX+b)=a^2 Var(X)。常數平移不影響 variance，而乘以 2 會讓 variance 乘以 4，所以是 4*9=36。
+- id: ps-prob-010
+  difficulty: intermediate
+  tags: [geometric-distribution, expectation]
+  question: |
+    若每次獨立嘗試成功機率 p = 0.25，令 X 為直到第一次成功所需的嘗試次數。E[X] 是多少？
+  options:
+    - "0.25"
+    - "4"
+    - "1"
+    - "2"
+  answer: 1
+  explanation: |
+    以嘗試次數定義的 geometric distribution，其 expectation 是 1/p。代入 p=0.25，得到 E[X]=4。
+- id: ps-prob-011
+  difficulty: intermediate
+  tags: [central-limit-theorem, sampling]
+  question: |
+    關於 Central Limit Theorem，下列哪個敘述最準確？
+  options:
+    - "任意單一觀測值都會變成 normal distribution"
+    - "只要樣本數增加，母體 variance 必定變成 0"
+    - "在適當條件下，樣本平均數標準化後會近似 normal distribution"
+    - "CLT 只適用於 Bernoulli random variables"
+  answer: 2
+  explanation: |
+    CLT 描述的是許多獨立同分布且具有有限 variance 的樣本，其 sample mean 經標準化後近似 normal distribution，而不是單一觀測值變成常態。
+- id: ps-prob-012
+  difficulty: intermediate
+  tags: [cdf, continuous-random-variable]
+  question: |
+    對 continuous random variable X，下列哪個敘述一定正確？
+  options:
+    - "P(X > a) 一定等於 P(X < a)"
+    - "CDF 必定是嚴格遞增"
+    - "PDF 的最大值一定小於等於 1"
+    - "P(X = a) = 0 對任意單點 a 成立"
+  answer: 3
+  explanation: |
+    連續型 random variable 在單一點上的機率為 0。PDF 可以大於 1，CDF 只需非遞減，不一定嚴格遞增。
+- id: ps-prob-013
+  difficulty: advanced
+  tags: [law-of-total-expectation, conditional-expectation]
+  question: |
+    下列哪個式子表達 law of total expectation？
+  options:
+    - "E[E[X | Y]] = E[X]"
+    - "E[X | Y] = E[Y | X]"
+    - "E[X + Y] = E[X]E[Y]"
+    - "E[X^2] = E[X]^2"
+  answer: 0
+  explanation: |
+    Law of total expectation 說明先對 Y 條件化取 X 的條件期望，再對 Y 的分布取期望，會回到 X 的整體期望。
+- id: ps-prob-014
+  difficulty: advanced
+  tags: [covariance, independence]
+  question: |
+    關於 independence 與 covariance，下列哪個敘述正確？
+  options:
+    - "只要 Cov(X,Y)=0，X 與 Y 一定 independent"
+    - "若 X 與 Y independent 且 variance 有限，則 Cov(X,Y)=0；反過來不一定成立"
+    - "若 X 與 Y independent，則 Var(X+Y)=0"
+    - "Cov(X,Y) 永遠不能是負數"
+  answer: 1
+  explanation: |
+    Independence 會推出 E[XY]=E[X]E[Y]，因此 covariance 為 0。但 zero covariance 只表示線性關聯為 0，不足以保證 independence。
+- id: ps-prob-015
+  difficulty: advanced
+  tags: [chebyshev-inequality, concentration]
+  question: |
+    若 random variable X 的 mean 為 mu、standard deviation 為 sigma > 0，Chebyshev inequality 對 P(|X-mu| >= 2sigma) 給出的上界是多少？
+  options:
+    - "1/2"
+    - "1/8"
+    - "1/4"
+    - "1/16"
+  answer: 2
+  explanation: |
+    Chebyshev inequality 表示 P(|X-mu| >= k sigma) <= 1/k^2。令 k=2，上界為 1/4。

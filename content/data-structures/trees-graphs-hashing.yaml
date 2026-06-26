@@ -1,0 +1,260 @@
+- id: ds-tgh-001
+  difficulty: basic
+  tags: [trees, binary-tree, traversal]
+  question: |
+    對一棵 binary tree 做 inorder traversal 時，下列哪一個走訪順序是正確的？
+  options:
+    - "左子樹、節點本身、右子樹"
+    - "節點本身、左子樹、右子樹"
+    - "左子樹、右子樹、節點本身"
+    - "右子樹、節點本身、左子樹"
+  answer: 0
+  explanation: |
+    Inorder traversal 的定義是先走訪左子樹，再處理目前節點，最後走訪右子樹。若這棵樹同時是 binary search tree，這個順序也會得到由小到大的鍵值序列。
+- id: ds-tgh-002
+  difficulty: basic
+  tags: [trees, bst, search]
+  question: |
+    在高度為 h 的 binary search tree 中，搜尋一個 key 的最緊最壞情況時間為何？
+  options:
+    - "Theta(1)"
+    - "Theta(h)"
+    - "Theta(log h)"
+    - "Theta(h log h)"
+  answer: 1
+  explanation: |
+    BST 搜尋每一步只會往左子樹或右子樹前進，最多沿著根到葉子的路徑走完。路徑長度受樹高 h 限制，因此最緊最壞情況是 Theta(h)。
+- id: ds-tgh-003
+  difficulty: intermediate
+  tags: [trees, bst, balancing]
+  question: |
+    若把已排序的 n 個 key 依序插入一棵沒有自動平衡的 binary search tree，最壞情況下樹高的最緊界限會是多少？
+  options:
+    - "Theta(1)"
+    - "Theta(log n)"
+    - "Theta(n)"
+    - "Theta(n log n)"
+  answer: 2
+  explanation: |
+    已排序資料依序插入一般 BST 時，每個新 key 可能都成為前一個節點的同一側 child，整棵樹退化成 linked list。因此樹高的最緊最壞情況界限是 Theta(n)。
+- id: ds-tgh-004
+  difficulty: intermediate
+  tags: [trees, avl-tree, rotations]
+  question: |
+    在 AVL tree 中，某節點的左子樹較高，且新節點插入在該左子樹的右子樹中。這通常屬於哪一種失衡型態？
+  options:
+    - "LL case，需要一次右旋"
+    - "RL case，需要先右旋再左旋"
+    - "RR case，需要一次左旋"
+    - "LR case，需要先左旋再右旋"
+  answer: 3
+  explanation: |
+    失衡節點偏左，但插入位置落在左 child 的右側，這是 LR case。修正方式是先對左 child 做 left rotation，再對失衡節點做 right rotation。
+- id: ds-tgh-005
+  difficulty: advanced
+  tags: [trees, red-black-tree, invariants]
+  question: |
+    Red-black tree 用來保證搜尋、插入、刪除仍為 O(log n) 的關鍵原因是什麼？
+  options:
+    - "任一路徑的 black-height 相同，且最長 root-to-NIL path 至多為最短的兩倍"
+    - "每個節點都必須同時有兩個 child"
+    - "所有葉節點都存放實際資料"
+    - "樹中所有紅色節點一定比黑色節點多"
+  answer: 0
+  explanation: |
+    Red-black tree 透過相同 black-height 與紅節點不能連續等限制，讓最長 root-to-NIL path 至多是最短 path 的常數倍。這使樹高維持在 O(log n)，搜尋、插入、刪除也維持 O(log n)。
+- id: ds-tgh-006
+  difficulty: intermediate
+  tags: [trees, heap, priority-queue]
+  question: |
+    在 binary min-heap 中，若刪除最小元素後把最後一個節點移到 root，接下來主要需要做什麼操作？
+  options:
+    - "由 root 往上 sift up，恢復 heap property"
+    - "由 root 往下 sift down，恢復 heap property"
+    - "對整個陣列做完整排序"
+    - "重新建立每個節點的 parent pointer"
+  answer: 1
+  explanation: |
+    刪除最小值後，root 可能比 child 大，所以要把它和較小的 child 交換並一路往下調整。這個 sift down 過程最多走樹高 O(log n)。
+- id: ds-tgh-007
+  difficulty: advanced
+  tags: [trees, b-tree, storage]
+  question: |
+    B-tree 特別適合用在磁碟或 SSD 上的索引結構，主要原因是什麼？
+  options:
+    - "它完全不需要比較 key"
+    - "它的所有操作都是 O(1)"
+    - "每個節點可存多個 key，降低樹高與 I/O 次數"
+    - "它只能儲存整數 key，所以節省空間"
+  answer: 2
+  explanation: |
+    B-tree 節點通常設計成接近一個 disk page 或 storage block，可一次讀入多個 key 和 child pointer。較大的 branching factor 會降低樹高，因此查找時的 I/O 次數較少。
+- id: ds-tgh-008
+  difficulty: basic
+  tags: [graphs, representation, adjacency-list]
+  question: |
+    對一個有 V 個頂點、E 條邊的 sparse graph，若常需要列舉某個頂點的鄰居，通常較適合使用哪種表示法？
+  options:
+    - "Adjacency matrix"
+    - "排序後的一維邊權陣列"
+    - "只存每個頂點的 degree"
+    - "Adjacency list"
+  answer: 3
+  explanation: |
+    Sparse graph 的 E 通常遠小於 V^2，adjacency list 只需 O(V + E) 空間，列舉某頂點鄰居也可直接掃該頂點的 list。Adjacency matrix 需要 O(V^2) 空間，對 sparse graph 較浪費。
+- id: ds-tgh-009
+  difficulty: intermediate
+  tags: [graphs, representation, adjacency-matrix]
+  question: |
+    若 graph 有 V 個頂點，使用 adjacency matrix 表示時，判斷邊 (u, v) 是否存在的時間複雜度通常是多少？
+  options:
+    - "O(1)"
+    - "O(log V)"
+    - "O(deg(u))"
+    - "O(V + E)"
+  answer: 0
+  explanation: |
+    Adjacency matrix 直接用 matrix[u][v] 儲存兩點是否相鄰，因此查一條指定邊是否存在是陣列索引操作，時間為 O(1)。
+- id: ds-tgh-010
+  difficulty: intermediate
+  tags: [graphs, traversal, bfs]
+  question: |
+    在 unweighted graph 中，BFS 從來源點 s 開始後，第一次發現某頂點 v 時得到的距離有什麼意義？
+  options:
+    - "s 到 v 的最大邊數"
+    - "s 到 v 的最短邊數"
+    - "s 到 v 的最小邊權總和"
+    - "v 在 DFS forest 中的深度"
+  answer: 1
+  explanation: |
+    BFS 以層次方式擴展，先處理距離 s 為 0 的點，再處理距離 1、距離 2 的點。因為每條邊成本相同，第一次發現 v 時的層數就是最短邊數。
+- id: ds-tgh-011
+  difficulty: advanced
+  tags: [graphs, traversal, dfs]
+  question: |
+    在 directed graph 的 DFS 中，若發現一條指向目前 recursion stack 中祖先節點的邊，這代表什麼？
+  options:
+    - "圖一定是 bipartite"
+    - "所有頂點都已經完成走訪"
+    - "圖中存在 directed cycle"
+    - "這條邊一定是最短路徑的一部分"
+  answer: 2
+  explanation: |
+    指向 recursion stack 中祖先的 back edge 表示目前路徑可以回到先前尚未完成的節點，形成一個有方向的環。因此 directed graph 中存在 cycle。
+- id: ds-tgh-012
+  difficulty: advanced
+  tags: [graphs, disjoint-set, union-find]
+  question: |
+    Disjoint Set Union 同時使用 path compression 與 union by rank 時，m 次操作在 n 個元素上的標準攤還上界通常如何最精確地描述？
+  options:
+    - "O(mn)"
+    - "O(m log n)"
+    - "O(n^2 + m)"
+    - "O(m alpha(n))，alpha 為 inverse Ackermann function"
+  answer: 3
+  explanation: |
+    Path compression 讓 find 後的節點直接靠近 root，union by rank 則避免樹高快速增加。兩者合用時，m 次 make/find/union 的標準攤還上界為 O(m alpha(n))，其中 alpha(n) 成長極慢，幾乎可視為線性。
+- id: ds-tgh-013
+  difficulty: basic
+  tags: [hashing, hash-table, complexity]
+  question: |
+    在 hash table 中，若 hash function 分散良好且 load factor 維持在常數範圍，查找操作的標準期望時間通常是多少？
+  options:
+    - "Theta(1)"
+    - "Theta(log n)"
+    - "Theta(n)"
+    - "Theta(n log n)"
+  answer: 0
+  explanation: |
+    分散良好的 hash function 會讓 key 大致平均落在 bucket 中，且 load factor 為常數時每個 bucket 的期望長度也是常數。因此標準期望查找時間為 Theta(1)，但最壞情況仍可能退化。
+- id: ds-tgh-014
+  difficulty: intermediate
+  tags: [hashing, collision, chaining]
+  question: |
+    使用 separate chaining 的 hash table 中，load factor alpha = n / m 代表什麼？
+  options:
+    - "每個 key 的 bit 數"
+    - "平均每個 bucket 中的元素數"
+    - "hash function 的執行時間"
+    - "table 中空 bucket 的精確數量"
+  answer: 1
+  explanation: |
+    n 是已存元素數，m 是 bucket 數，因此 alpha = n / m 表示平均每個 bucket 分到多少元素。Separate chaining 的平均查找成本通常會與 alpha 相關。
+- id: ds-tgh-015
+  difficulty: advanced
+  tags: [hashing, open-addressing, probing]
+  question: |
+    Linear probing 在 open addressing 中容易出現 primary clustering。這個現象會造成什麼問題？
+  options:
+    - "所有 key 都會被強制放到同一個 slot"
+    - "刪除操作完全不需要 tombstone"
+    - "相鄰的 occupied slot 區段變長，使後續碰撞更容易落入同一群"
+    - "hash table 的空間複雜度變成 O(n^2)"
+  answer: 2
+  explanation: |
+    Linear probing 遇到碰撞會往下一格一格找，連續被占用的區段會吸引更多碰撞並繼續變長。這會增加搜尋與插入的 probe 次數。
+- id: ds-tgh-016
+  difficulty: intermediate
+  tags: [hashing, open-addressing, deletion]
+  question: |
+    在 open addressing hash table 中，刪除元素時常使用 tombstone 標記。主要原因是什麼？
+  options:
+    - "讓 table 永遠不需要 resize"
+    - "讓 hash function 變成 perfect hash"
+    - "保證每次查找都只需要一次 probe"
+    - "避免破壞後續查找的 probing chain"
+  answer: 3
+  explanation: |
+    Open addressing 的查找依賴從原始 hash 位置開始的 probe sequence。若刪除時直接清空 slot，可能讓後面因碰撞而放入的 key 被誤判不存在；tombstone 可保留查找路徑。
+- id: ds-tgh-017
+  difficulty: advanced
+  tags: [hashing, resizing, amortized-analysis]
+  question: |
+    Dynamic hash table 在 load factor 超過門檻時通常會擴容並 rehash。若容量每次約倍增，為什麼插入仍可有 O(1) amortized time？
+  options:
+    - "因為昂貴的 rehash 被分攤到前面許多次便宜插入上"
+    - "因為 rehash 永遠只搬動一個元素"
+    - "因為每次插入都會重新分配整張 table"
+    - "因為倍增後 hash collision 不可能再發生"
+  answer: 0
+  explanation: |
+    Rehash 一次可能需要 O(n)，但它只在累積足夠多插入後才發生。用 aggregate 或 accounting 分析可把搬移成本分攤到多次插入，因此每次插入的攤還成本仍是 O(1)。
+- id: ds-tgh-018
+  difficulty: intermediate
+  tags: [trees, trie, strings]
+  question: |
+    Trie 用來儲存字串集合時，查找長度為 L 的字串，時間主要取決於什麼？
+  options:
+    - "字典中所有字串的總數 n"
+    - "字串長度 L"
+    - "所有字元排序所需時間"
+    - "root 的 degree 平方"
+  answer: 1
+  explanation: |
+    Trie 查找會沿著查詢字串的每個字元往下走，最多走 L 層。若 child 存取可視為 O(1)，查找時間就是 O(L)，與集合中有多少字串不直接成正比。
+- id: ds-tgh-019
+  difficulty: master
+  tags: [graphs, representation, memory]
+  question: |
+    一個 directed graph 有 V 個頂點且非常接近 complete graph。若主要操作是快速判斷任兩點是否有邊，哪個表示法最合理？
+  options:
+    - "Adjacency list，因為不論 dense 或 sparse 都一定比 matrix 省空間"
+    - "只存 topological order，因為可直接回答所有邊查詢"
+    - "Adjacency matrix，因為 O(V^2) 空間在 dense graph 可接受且查邊 O(1)"
+    - "Disjoint Set Union，因為可表示 directed edge 的方向"
+  answer: 2
+  explanation: |
+    Dense directed graph 的邊數接近 V^2，adjacency matrix 的 O(V^2) 空間不再是明顯浪費，而且可 O(1) 回答任意 (u, v) 是否存在。Adjacency list 查邊通常需掃鄰居，DSU 也不適合表示 directed adjacency。
+- id: ds-tgh-020
+  difficulty: master
+  tags: [trees, hashing, tradeoff]
+  question: |
+    若資料結構需要支援快速 exact lookup，也需要按照 key 的排序範圍做 range query，且資料會持續新增或刪除，下列哪個選擇最合理？
+  options:
+    - "只用 hash table，且不維護任何有序結構"
+    - "只用 sorted array，並假設頻繁插入刪除也不需要搬移元素"
+    - "只用 binary heap，因為 heap order 足以支援任意 range scan"
+    - "使用 balanced search tree，或 hash table 搭配額外排序索引"
+  answer: 3
+  explanation: |
+    Hash table 適合 exact lookup，但不保留 key order，因此不擅長 range query。Sorted array 對靜態資料可行，但頻繁更新會有搬移成本。Balanced search tree 可同時支援 O(log n) 查找、更新與有序範圍掃描；若使用 hash table，通常需要額外排序索引補足 range query。

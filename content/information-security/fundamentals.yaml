@@ -1,0 +1,195 @@
+- id: sec-fund-001
+  difficulty: basic
+  tags: [cia-triad, fundamentals]
+  question: |
+    Information security 中 CIA triad 的三個核心目標是什麼？
+  options:
+    - "Confidentiality、Integrity、Availability"
+    - "Compression、Indexing、Authentication"
+    - "Compilation、Isolation、Automation"
+    - "Caching、Interruption、Allocation"
+  answer: 0
+  explanation: |
+    CIA triad 指機密性、完整性與可用性。機密性防止未授權讀取，完整性防止資料被未授權或未偵測地竄改，可用性確保合法使用者能取得服務。
+- id: sec-fund-002
+  difficulty: basic
+  tags: [hashing, encryption]
+  question: |
+    Cryptographic hash 與 encryption 最主要的差異是什麼？
+  options:
+    - "Hash 必須使用 public key；encryption 永遠不使用 key"
+    - "Hash 是單向摘要；encryption 在有正確 key 時應可解密回原文"
+    - "Hash 會讓資料變短且可完整還原"
+    - "Encryption 只能用來檢查檔案是否被修改，不能保密"
+  answer: 1
+  explanation: |
+    加密的目標是保密，授權方可用 key 還原明文；cryptographic hash 產生固定長度摘要，設計上應難以從摘要反推出原文。兩者用途與安全性質不同。
+- id: sec-fund-003
+  difficulty: basic
+  tags: [passwords, salt]
+  question: |
+    儲存使用者密碼時，為什麼每個密碼雜湊通常都要搭配唯一 salt？
+  options:
+    - "讓伺服器可以不需要驗證密碼"
+    - "讓 hash 可以被解密回原始密碼"
+    - "讓相同密碼在資料庫中產生不同 hash，降低 rainbow table 與批次猜測效果"
+    - "讓密碼長度固定為 8 個字元"
+  answer: 2
+  explanation: |
+    Salt 讓相同密碼在不同帳號或不同資料庫中產生不同 hash，降低 rainbow table 與批次比對效果。Salt 通常是公開並與 hash 一起儲存，不能單獨阻止離線猜測；密碼仍應使用 Argon2id、bcrypt、scrypt 或 PBKDF2 這類慢速 password hashing/KDF，而不是一般快速 hash。
+- id: sec-fund-004
+  difficulty: basic
+  tags: [symmetric-crypto, asymmetric-crypto]
+  question: |
+    Symmetric encryption 與 asymmetric encryption 的基本差異是什麼？
+  options:
+    - "Symmetric 不需要任何 key；asymmetric 只能處理明文"
+    - "Symmetric 只能簽章；asymmetric 只能壓縮"
+    - "兩者在 key 管理上完全相同"
+    - "Symmetric 使用同一把 shared secret key；asymmetric 使用 public/private key pair"
+  answer: 3
+  explanation: |
+    對稱式加密由通訊雙方共享同一把秘密金鑰，速度通常較快但 key distribution 是挑戰。非對稱式密碼使用公私鑰配對，可支援加密、簽章與金鑰交換等用途。
+- id: sec-fund-005
+  difficulty: basic
+  tags: [least-privilege, access-control]
+  question: |
+    Least privilege 原則要求系統如何配置權限？
+  options:
+    - "每個使用者與程式只取得完成工作所需的最小權限"
+    - "所有內部服務都使用 administrator 權限以減少設定"
+    - "只有外部使用者需要權限控管，內部使用者不需要"
+    - "權限越多越安全，因為不會被拒絕存取"
+  answer: 0
+  explanation: |
+    最小權限原則會限制帳號、程序與服務的權限範圍。即使某個元件被攻擊，攻擊者能利用的能力也會被縮小，降低橫向移動與破壞範圍。
+- id: sec-fund-006
+  difficulty: intermediate
+  tags: [tls, certificates]
+  question: |
+    使用 HTTPS 連線時，瀏覽器驗證伺服器憑證的主要目的為何？
+  options:
+    - "保證網站內容沒有任何軟體漏洞"
+    - "確認伺服器身分與網域相符，並建立可被信任的加密連線基礎"
+    - "讓使用者不需要更新瀏覽器"
+    - "把所有 HTTP response 永久存到本機"
+  answer: 1
+  explanation: |
+    TLS 憑證驗證會檢查憑證鏈、有效期限、網域名稱與信任根等，目標是確認連線對象不是被冒充的站台。這是後續保密與完整性保護能可信成立的前提。
+- id: sec-fund-007
+  difficulty: intermediate
+  tags: [sql-injection, input-handling]
+  question: |
+    防止 SQL injection 最核心的做法通常是什麼？
+  options:
+    - "把使用者輸入直接串接進 SQL 字串"
+    - "只在前端檢查輸入長度"
+    - "使用 parameterized query 或 prepared statement，把資料與 SQL 語法分離"
+    - "把資料庫錯誤訊息改成英文"
+  answer: 2
+  explanation: |
+    SQL injection 來自不可信輸入被當成 SQL 語法解讀。Parameterized query 讓資料以參數傳入，不會改變 SQL 結構，是比手動字串過濾更穩定的防線。
+- id: sec-fund-008
+  difficulty: intermediate
+  tags: [xss, output-encoding]
+  question: |
+    對 reflected XSS，若網站會把使用者輸入顯示回 HTML 頁面，最直接的重要防護是什麼？
+  options:
+    - "把資料庫改成 NoSQL"
+    - "只允許使用者在白天送出表單"
+    - "把伺服器硬碟加密"
+    - "依輸出情境做正確 output encoding，避免輸入被瀏覽器當成 script 或 HTML 執行"
+  answer: 3
+  explanation: |
+    XSS 的關鍵是攻擊者輸入進入頁面後被瀏覽器解讀為可執行內容。依 HTML、attribute、JavaScript 等不同 context 做正確輸出編碼，可讓輸入以資料而非程式碼呈現。
+- id: sec-fund-009
+  difficulty: intermediate
+  tags: [csrf, web-security]
+  question: |
+    CSRF 攻擊主要利用了什麼條件？
+  options:
+    - "瀏覽器會在跨站請求中自動帶上目標站台的既有 cookie 或憑證"
+    - "使用者密碼一定儲存在 URL 中"
+    - "TLS 會自動關閉伺服器驗證"
+    - "資料庫會自動執行圖片檔"
+  answer: 0
+  explanation: |
+    CSRF 讓受害者瀏覽器對已登入站台送出攻擊者安排的請求，而瀏覽器可能自動附上 cookie。常見防護包括 CSRF token、SameSite cookie 與對敏感操作檢查來源。
+- id: sec-fund-010
+  difficulty: intermediate
+  tags: [digital-signature, public-key]
+  question: |
+    Digital signature 的一般驗證流程中，簽章者與驗證者分別使用什麼 key？
+  options:
+    - "簽章者用 public key 簽章，驗證者用 private key 驗證"
+    - "簽章者用 private key 簽章，驗證者用對應 public key 驗證"
+    - "雙方都用同一把公開 key 修改訊息"
+    - "不需要任何 key，只要有 hash 即可"
+  answer: 1
+  explanation: |
+    數位簽章提供來源認證、完整性與不可否認性的基礎。只有 private key 持有者能產生有效簽章，而任何持有對應 public key 的人都可驗證簽章是否匹配訊息。
+- id: sec-fund-011
+  difficulty: intermediate
+  tags: [hmac, integrity]
+  question: |
+    HMAC 相較於單純把訊息做 hash，額外提供了什麼重要性質？
+  options:
+    - "讓任何人都能修改訊息但 hash 不變"
+    - "把訊息自動加密成不可讀"
+    - "使用 shared secret key 驗證訊息完整性與來源認證"
+    - "保證訊息永遠不會被重送"
+  answer: 2
+  explanation: |
+    HMAC 會用 shared secret 與訊息一起計算 MAC，接收方用同一把 secret 驗證。它可驗證訊息來自持有 shared secret 的一方，並提供完整性；若多方共享同一把 key，HMAC 不提供數位簽章式的公開可驗證性或不可否認性。
+- id: sec-fund-012
+  difficulty: intermediate
+  tags: [buffer-overflow, memory-safety]
+  question: |
+    Buffer overflow 的本質最接近下列何者？
+  options:
+    - "硬碟可用空間太多，導致檔案系統變慢"
+    - "使用者輸入太短，所以伺服器等待逾時"
+    - "Hash function 輸出太長，無法顯示在螢幕上"
+    - "程式寫入超過緩衝區邊界，可能覆蓋相鄰記憶體並改變控制流程或資料"
+  answer: 3
+  explanation: |
+    Buffer overflow 是記憶體安全問題，常見於缺乏邊界檢查的語言或 API。越界寫入可能破壞資料結構、return address 或 function pointer，因此可造成 crash 或任意程式碼執行。
+- id: sec-fund-013
+  difficulty: advanced
+  tags: [replay-attack, nonce]
+  question: |
+    為了抵抗 replay attack，通訊協定常加入 nonce 或 timestamp。它們的主要作用是什麼？
+  options:
+    - "讓每次有效訊息都具有新鮮性，舊訊息重送時可被辨識並拒絕"
+    - "讓加密演算法不需要 key"
+    - "讓攻擊者無法看見封包長度"
+    - "把所有封包永久保存在伺服器"
+  answer: 0
+  explanation: |
+    Replay attack 是把先前合法訊息重新送出，使接收方誤以為是新的請求。Nonce、序號或 timestamp 必須納入 MAC 或簽章保護；接收方也要追蹤已用 nonce、遞增序號或有效時間窗，才能有效拒絕重放。
+- id: sec-fund-014
+  difficulty: advanced
+  tags: [aead, nonce-reuse]
+  question: |
+    對 AES-GCM 這類 AEAD 模式，重複使用同一把 key 搭配同一個 nonce 會有什麼風險？
+  options:
+    - "只會讓加密速度變慢，不影響安全"
+    - "可能破壞機密性與完整性保證，因此 nonce 必須在同一 key 下保持唯一"
+    - "會自動升級成更強的 key"
+    - "只影響壓縮率，與密碼安全無關"
+  answer: 1
+  explanation: |
+    GCM 等 AEAD 模式通常要求同一 key 下 nonce 不可重複。Nonce reuse 可能洩漏明文關係，甚至讓攻擊者偽造有效 authentication tag，直接破壞安全保證。
+- id: sec-fund-015
+  difficulty: advanced
+  tags: [certificate-chain, trust]
+  question: |
+    驗證 X.509 certificate chain 時，下列哪項檢查最能避免接受被冒用的站台憑證？
+  options:
+    - "只要憑證檔案存在即可，不需要檢查內容"
+    - "只檢查憑證鏈是否連到受信任 root，不必檢查網域名稱"
+    - "檢查鏈是否連到受信任 root、簽章有效、未過期，且 SAN 中的 dNSName 或 iPAddress 符合目標網域或位址"
+    - "只看憑證是否使用 RSA，其他欄位不重要"
+  answer: 2
+  explanation: |
+    現代 TLS 伺服器身分驗證需要確認憑證鏈、簽章、有效期限、撤銷狀態等，並以 subjectAltName 中的 dNSName 或 iPAddress 驗證目標服務身分。Common Name 屬於舊式背景，不應作為現代題目的合格 hostname validation 依據。

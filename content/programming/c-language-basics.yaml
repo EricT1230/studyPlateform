@@ -1,0 +1,195 @@
+- id: prog-c-001
+  difficulty: basic
+  tags: [pointers, variables]
+  question: |
+    在 C 語言中，`int *p;` 最精確的意思是什麼？
+  options:
+    - "p 是一個指向 int 的 pointer，但尚未自動指向有效物件"
+    - "p 是一個 int 變數"
+    - "p 是一個 int array，長度固定為 1"
+    - "p 是一個不能改變的常數"
+  answer: 0
+  explanation: |
+    `int *p;` 宣告 p 的型別為 pointer to int。若它是未初始化的區域變數，其值不保證是有效位址；必須先讓它指向有效的 int 物件或配置出的記憶體才能解參考。
+- id: prog-c-002
+  difficulty: basic
+  tags: [arrays, indexing]
+  question: |
+    對宣告 `int a[5];` 而言，哪一個索引範圍是有效的？
+  options:
+    - "`a[1]` 到 `a[5]`"
+    - "`a[0]` 到 `a[4]`"
+    - "`a[-1]` 到 `a[3]`"
+    - "任何非負整數都有效"
+  answer: 1
+  explanation: |
+    C 陣列使用 0-based indexing，長度為 5 的陣列有效元素是第 0 到第 4 個。存取 `a[5]` 或負索引都超出該陣列物件範圍，行為未定義。
+- id: prog-c-003
+  difficulty: basic
+  tags: [strings, null-terminator]
+  question: |
+    `char s[] = "cat";` 中，`sizeof(s)` 在一般 C 實作中會是多少？
+  options:
+    - "3，因為字串有三個可見字元"
+    - "取決於 pointer 大小"
+    - "4，因為還包含結尾的 null character"
+    - "編譯錯誤，字串不能初始化陣列"
+  answer: 2
+  explanation: |
+    字串常值 `"cat"` 的內容是 `c`、`a`、`t` 與結尾的 `'\0'`。用它初始化 `char s[]` 時，陣列大小會包含 null terminator，因此 `sizeof(s)` 是 4。
+- id: prog-c-004
+  difficulty: basic
+  tags: [functions, pass-by-value]
+  question: |
+    C 函式參數預設採 pass-by-value。若函式需要修改呼叫端的一個 `int x`，常見做法是什麼？
+  options:
+    - "把 `x` 的值直接傳入，函式內改參數即可影響呼叫端"
+    - "把 `x` 宣告成 `register` 就會自動同步"
+    - "只能使用全域變數，沒有其他方法"
+    - "傳入 `&x`，讓函式透過 `int *` 修改該物件"
+  answer: 3
+  explanation: |
+    C 會複製參數值；函式內修改一般 `int` 參數只會改到副本。傳入位址 `&x` 後，函式可透過 pointer 解參考寫回呼叫端的物件。
+- id: prog-c-005
+  difficulty: basic
+  tags: [memory, allocation]
+  question: |
+    `malloc(n)` 成功時回傳的記憶體內容有什麼保證？
+  options:
+    - "內容未初始化，讀取前應先寫入有效值"
+    - "每個 byte 都保證為 0"
+    - "內容一定等於上一次 `free` 前的資料"
+    - "一定配置在 stack 上"
+  answer: 0
+  explanation: |
+    `malloc` 只配置指定大小的物件空間，不保證內容被清零。這些位元組或物件值在初始化前是 indeterminate；對一般 typed object 而言，寫入有效值前讀取沒有有意義的保證，若型別存在 trap representation 還可能導致 undefined behavior。若需要零初始化，常用 `calloc` 或自行初始化。
+- id: prog-c-006
+  difficulty: intermediate
+  tags: [arrays, sizeof]
+  question: |
+    在函式 `void f(int a[])` 內使用 `sizeof(a)`，最精確的說法是什麼？
+  options:
+    - "會得到呼叫端原始陣列的元素總數"
+    - "`a` 在參數中調整為 `int *`，所以 `sizeof(a)` 是 pointer 大小"
+    - "會得到呼叫端原始陣列的總 byte 數"
+    - "C 語言禁止在函式參數上使用 `sizeof`"
+  answer: 1
+  explanation: |
+    函式參數寫成 `int a[]` 會調整為 `int *a`，不保留原陣列長度。因此函式內 `sizeof(a)` 量到的是 pointer 本身大小，不是陣列元素數量。
+- id: prog-c-007
+  difficulty: intermediate
+  tags: [pointer-arithmetic, arrays]
+  question: |
+    若 `int a[10]; int *p = &a[2];`，則 `p + 3` 指向哪個元素？
+  options:
+    - "`a[3]`"
+    - "`a[6]`"
+    - "`a[5]`"
+    - "一定超出陣列範圍"
+  answer: 2
+  explanation: |
+    Pointer arithmetic 會依 pointed-to 型別的大小移動。`p` 指向 `a[2]`，`p + 3` 前進三個 `int` 元素，因此指向 `a[5]`。
+- id: prog-c-008
+  difficulty: intermediate
+  tags: [undefined-behavior, signed-overflow]
+  question: |
+    關於 signed integer overflow，下列何者正確？
+  options:
+    - "C 標準保證 signed overflow 一定以 two's complement wrap around"
+    - "Signed overflow 只在 64-bit 平台才可能發生"
+    - "Signed overflow 會自動丟出 C exception"
+    - "Signed overflow 是 undefined behavior，編譯器可假設它不會發生來最佳化"
+  answer: 3
+  explanation: |
+    C 對 signed integer overflow 定義為 undefined behavior。雖然許多硬體位元結果看似 wrap around，但標準不保證；編譯器可能利用「不會 overflow」的假設進行最佳化。
+- id: prog-c-009
+  difficulty: intermediate
+  tags: [strings, undefined-behavior]
+  question: |
+    下列哪段程式最可能造成 undefined behavior？
+  options:
+    - "`char *p = \"hi\"; p[0] = 'H';`"
+    - "`char s[] = \"hi\"; s[0] = 'H';`"
+    - "`const char *p = \"hi\"; puts(p);`"
+    - "`char s[3] = {'h', 'i', '\\0'}; puts(s);`"
+  answer: 0
+  explanation: |
+    字串常值通常存放在不可修改的儲存區，C 標準也不允許修改 string literal；透過 `char *p = "hi"` 再寫入 `p[0]` 是 undefined behavior。用陣列複製出的 `char s[]` 則可修改。
+- id: prog-c-010
+  difficulty: intermediate
+  tags: [storage-duration, static]
+  question: |
+    函式內的 `static int count;` 與一般區域變數最重要的差異是什麼？
+  options:
+    - "`count` 每次進入函式都會重新配置並保留不定值"
+    - "`count` 具有 static storage duration，值會在多次呼叫之間保留"
+    - "`count` 一定存放在 CPU register 中"
+    - "`count` 只能被其他檔案直接存取"
+  answer: 1
+  explanation: |
+    區域 `static` 變數的 scope 仍在函式內，但 lifetime 是整個程式執行期間。它只初始化一次，之後函式再次被呼叫時會保留上次的值。
+- id: prog-c-011
+  difficulty: intermediate
+  tags: [const, pointers]
+  question: |
+    `const int *p` 的意思是什麼？
+  options:
+    - "p 不能改指向其他位址，但可透過 p 修改 int"
+    - "p 與所指向的 int 都不能改"
+    - "p 可改指向其他 `int`，但不能透過 p 修改所指向的 int"
+    - "p 一定指向編譯期常數"
+  answer: 2
+  explanation: |
+    `const int *p` 表示 p 指向的物件經由 p 觀察時是 const，因此不能寫 `*p = ...`。但 p 本身不是 const pointer，所以仍可改成指向其他相容物件。
+- id: prog-c-012
+  difficulty: intermediate
+  tags: [io, buffer-safety]
+  question: |
+    讀取一行文字到固定大小的 `char buf[32]` 時，哪個做法較能避免 buffer overflow？
+  options:
+    - "`gets(buf)`"
+    - "`scanf(\"%s\", buf)` 且不限制欄寬"
+    - "先呼叫 `strlen(buf)` 再讀入"
+    - "`fgets(buf, sizeof buf, stdin)`"
+  answer: 3
+  explanation: |
+    `fgets` 會接收緩衝區大小，最多讀入 size-1 個字元並補上 null terminator。`gets` 無法限制長度，已自標準移除；未限制欄寬的 `%s` 也可能寫爆緩衝區。
+- id: prog-c-013
+  difficulty: advanced
+  tags: [struct, padding]
+  question: |
+    關於 C 的 `struct` padding，下列何者正確？
+  options:
+    - "編譯器可能插入 padding 以滿足 alignment，因此 `sizeof(struct)` 可能大於各欄位大小總和"
+    - "C 標準保證所有 struct 欄位之間沒有 padding"
+    - "Padding bytes 一定會自動初始化為 0"
+    - "有 padding 的 struct 不能建立陣列"
+  answer: 0
+  explanation: |
+    為了讓欄位位址符合硬體 alignment 要求，編譯器可在欄位間或尾端插入 padding。因此 struct 大小可能超過欄位大小總和，且 padding 內容不應被當作語意資料依賴。
+- id: prog-c-014
+  difficulty: advanced
+  tags: [aliasing, optimization]
+  question: |
+    Strict aliasing rule 的核心目的最接近下列何者？
+  options:
+    - "規定任意兩種不相容型別的 pointer 都可安全指向同一物件"
+    - "讓編譯器可假設多數不相容型別的 pointer 不會別名同一物件，以便最佳化"
+    - "保證所有 pointer 都與 `void *` 大小不同"
+    - "禁止使用 `char *` 讀取物件的 byte 表示"
+  answer: 1
+  explanation: |
+    Strict aliasing 限制用不相容型別存取同一物件。這讓編譯器能推論某些 pointer 不會互相影響而做最佳化；違反規則可能導致 undefined behavior。`char *` 對物件 byte 表示有特別例外。
+- id: prog-c-015
+  difficulty: advanced
+  tags: [integer-promotion, types]
+  question: |
+    若 `unsigned char x = 250; unsigned char y = 10;`，且平台滿足 `INT_MAX >= UCHAR_MAX`（典型 8-bit unsigned char 平台），運算式 `x + y` 通常先發生什麼？
+  options:
+    - "`x` 和 `y` 保持 `unsigned char` 相加後立刻以 8-bit wrap"
+    - "C 語言禁止 `unsigned char` 相加"
+    - "`x` 和 `y` 先經 integer promotion 成 `int`，再進行加法"
+    - "結果型別必定是 `double`"
+  answer: 2
+  explanation: |
+    小於 `int` 等級的整數型別在算術運算前會經 integer promotion。若 `INT_MAX >= UCHAR_MAX`，`unsigned char` 的所有值都可由 `int` 表示，因此 `x` 和 `y` 會先提升為 `int`，中間結果是 int 260，而不是 8-bit 立即 wrap。

@@ -1,0 +1,195 @@
+- id: dm-found-001
+  difficulty: basic
+  tags: [logic, implication]
+  question: |
+    在命題邏輯中，什麼情況會讓 implication「P => Q」為假？
+  options:
+    - "P 為真且 Q 為假"
+    - "P 為假且 Q 為真"
+    - "P 為假且 Q 為假"
+    - "P 與 Q 同時為真"
+  answer: 0
+  explanation: |
+    Implication 只在前件 P 成立、後件 Q 不成立時失敗。因此 P 為真且 Q 為假是唯一讓 P => Q 為假的情況。
+- id: dm-found-002
+  difficulty: basic
+  tags: [sets, distributive-law]
+  question: |
+    對任意集合 A、B、C，下列哪一個式子正確表達集合的 distributive law？
+  options:
+    - "A ∩ (B ∪ C) = (A ∪ B) ∩ (A ∪ C)"
+    - "A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)"
+    - "A ∪ (B ∩ C) = (A ∩ B) ∪ (A ∩ C)"
+    - "A - (B ∪ C) = (A - B) ∪ (A - C)"
+  answer: 1
+  explanation: |
+    交集對聯集有分配律：一個元素在 A 且在 B 或 C 中，等價於它在 A∩B 或在 A∩C 中。
+- id: dm-found-003
+  difficulty: basic
+  tags: [functions, cardinality]
+  question: |
+    若 |A| = 5 且 |B| = 7，考慮從 A 到 B 的函數。下列哪個敘述正確？
+  options:
+    - "存在 surjective function，但不存在 injective function"
+    - "每個從 A 到 B 的 function 都同時是 injective 與 surjective"
+    - "存在 injective function；但不存在 surjective function"
+    - "不存在任何從 A 到 B 的 function"
+  answer: 2
+  explanation: |
+    5 個元素可以一對一映到 B 中不同的 5 個元素，所以 injective function 存在。但 domain 較小，無法覆蓋 B 的全部 7 個元素，因此不存在從 A 到 B 的 surjective function。
+- id: dm-found-004
+  difficulty: basic
+  tags: [relations, equivalence-relation]
+  question: |
+    在整數集合 Z 上定義 a ~ b 若且唯若 a - b 可被 3 整除。這個 relation 的 equivalence classes 是什麼？
+  options:
+    - "依照整數的正負分成三類"
+    - "每個整數各自成為一類"
+    - "所有整數都在同一類"
+    - "依照除以 3 的餘數分成三類"
+  answer: 3
+  explanation: |
+    a - b 可被 3 整除代表 a 與 b 有相同的 modulo 3 餘數，所以 equivalence classes 分別對應餘數 0、1、2。
+- id: dm-found-005
+  difficulty: basic
+  tags: [pigeonhole-principle, counting]
+  question: |
+    有 13 個人，每個人都有一個出生月份。只用 pigeonhole principle，最少可以保證有幾個人同月出生？
+  options:
+    - "2"
+    - "3"
+    - "4"
+    - "13"
+  answer: 0
+  explanation: |
+    13 個人放入 12 個月份，若每個月份最多 1 人只能容納 12 人。因此至少有一個月份有 2 人。
+- id: dm-found-006
+  difficulty: intermediate
+  tags: [proof, contrapositive]
+  question: |
+    若要證明「若 n^2 是偶數，則 n 是偶數」，下列哪一個是最直接的 contrapositive？
+  options:
+    - "若 n 是偶數，則 n^2 是偶數"
+    - "若 n 是奇數，則 n^2 是奇數"
+    - "若 n^2 是奇數，則 n 是奇數"
+    - "若 n^2 不是偶數，則 n 不是整數"
+  answer: 1
+  explanation: |
+    命題 P => Q 的 contrapositive 是 not Q => not P。這裡 P 是「n^2 是偶數」，Q 是「n 是偶數」，所以得到「n 是奇數 => n^2 是奇數」。
+- id: dm-found-007
+  difficulty: intermediate
+  tags: [combinations, bitstrings]
+  question: |
+    長度為 8 的 bitstring 中，恰好有 3 個 1 的字串共有幾個？
+  options:
+    - "24"
+    - "64"
+    - "56"
+    - "336"
+  answer: 2
+  explanation: |
+    只要選出 8 個位置中的 3 個位置放 1，其餘放 0，因此數量是 C(8, 3) = 56。
+- id: dm-found-008
+  difficulty: intermediate
+  tags: [inclusion-exclusion, sets]
+  question: |
+    某班 60 人中，35 人熟悉 Python、28 人熟悉 SQL、12 人兩者都熟悉。兩者都不熟悉的人有幾人？
+  options:
+    - "3"
+    - "7"
+    - "12"
+    - "9"
+  answer: 3
+  explanation: |
+    至少熟悉一項的人數為 35 + 28 - 12 = 51。全班 60 人，所以兩者都不熟悉的人數是 60 - 51 = 9。
+- id: dm-found-009
+  difficulty: intermediate
+  tags: [recurrence, asymptotic-analysis]
+  question: |
+    若 T(n) = 2T(n/2) + n，且 T(1) = Theta(1)，下列哪一個是 T(n) 的 asymptotic order？
+  options:
+    - "Theta(n log n)"
+    - "Theta(n)"
+    - "Theta(n^2)"
+    - "Theta(log n)"
+  answer: 0
+  explanation: |
+    每一層 recursion tree 的總成本都是 n，共有 log n 層，因此總成本為 Theta(n log n)。
+- id: dm-found-010
+  difficulty: intermediate
+  tags: [partial-order, powerset]
+  question: |
+    對集合 S = {a, b} 的 powerset 使用 subset relation「⊆」。下列哪個敘述正確？
+  options:
+    - "它不是 reflexive，因此不是 partial order"
+    - "它是 partial order，但不是 total order"
+    - "它是 equivalence relation，因為所有集合可比較"
+    - "它是 total order，因為 powerset 內元素有限"
+  answer: 1
+  explanation: |
+    Subset relation 具有 reflexive、antisymmetric、transitive，所以是 partial order。但 {a} 與 {b} 互不包含，並非任兩元素都可比較，因此不是 total order。
+- id: dm-found-011
+  difficulty: intermediate
+  tags: [modular-arithmetic, inverse]
+  question: |
+    在 modulo 12 下，5 的 multiplicative inverse 是哪一個數？
+  options:
+    - "2"
+    - "7"
+    - "5"
+    - "10"
+  answer: 2
+  explanation: |
+    因為 5 × 5 = 25，且 25 mod 12 = 1，所以 5 在 modulo 12 下的 multiplicative inverse 是 5。
+- id: dm-found-012
+  difficulty: intermediate
+  tags: [graph-theory, degree-sequence]
+  question: |
+    一個 simple graph 有 4 個頂點。下列哪個 degree sequence 不可能出現？
+  options:
+    - "(2, 2, 1, 1)"
+    - "(3, 2, 2, 1)"
+    - "(1, 1, 1, 1)"
+    - "(3, 3, 3, 1)"
+  answer: 3
+  explanation: |
+    若有三個頂點 degree 為 3，它們都必須連到其他所有頂點，因此第四個頂點至少會連到這三個頂點，degree 不可能只有 1。
+- id: dm-found-013
+  difficulty: advanced
+  tags: [surjection, inclusion-exclusion]
+  question: |
+    從 4 個元素的集合到 3 個元素的集合，onto function 共有幾個？
+  options:
+    - "36"
+    - "18"
+    - "24"
+    - "81"
+  answer: 0
+  explanation: |
+    用 inclusion-exclusion 計算 surjection 數量：3^4 - C(3,1)2^4 + C(3,2)1^4 = 81 - 48 + 3 = 36。
+- id: dm-found-014
+  difficulty: advanced
+  tags: [recurrence, characteristic-equation]
+  question: |
+    線性遞迴 a_n = 3a_{n-1} - 2a_{n-2} 的 characteristic roots 是哪一組？
+  options:
+    - "-1 與 2"
+    - "1 與 2"
+    - "1 與 -2"
+    - "3 與 -2"
+  answer: 1
+  explanation: |
+    Characteristic equation 是 r^2 - 3r + 2 = 0，分解為 (r - 1)(r - 2) = 0，所以 roots 是 1 與 2。
+- id: dm-found-015
+  difficulty: advanced
+  tags: [poset, divisibility]
+  question: |
+    在集合 {2, 3, 4, 6, 12} 上，以「整除」作為 partial order。哪些元素是 minimal elements？
+  options:
+    - "4 與 6"
+    - "只有 12"
+    - "2 與 3"
+    - "2、3、4、6、12 全部都是"
+  answer: 2
+  explanation: |
+    Minimal element 指集合內沒有其他不同元素能整除它。2 與 3 沒有更小的集合內因數；4 可被 2 整除，6 可被 2 與 3 整除，12 也可被多個元素整除。
