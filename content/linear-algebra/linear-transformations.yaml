@@ -1,0 +1,279 @@
+- id: la-trans-001
+  difficulty: basic
+  tags: [linear-transformations, definition]
+  question: |
+    Transformation T 稱為 linear 的兩個核心條件是什麼？
+  options:
+    - "T(u+v)=T(u)+T(v) 且 T(cu)=cT(u)"
+    - "T(u+v)=T(u)T(v) 且 T(cu)=T(u)+c"
+    - "T 必須把所有向量映到 0"
+    - "T 必須只接受 scalar 作為輸入"
+  answer: 0
+  explanation: |
+    Linear transformation 必須保留向量加法與 scalar multiplication，這兩個條件合起來也可寫成 T(au+bv)=aT(u)+bT(v)。
+
+- id: la-trans-002
+  difficulty: basic
+  tags: [linear-transformations, zero-vector]
+  question: |
+    若 T 是 linear transformation，則 T(0) 必為何？
+  options:
+    - "0"
+    - "1"
+    - "任意非零向量"
+    - "無法定義"
+  answer: 0
+  explanation: |
+    由 T(0)=T(0+0)=T(0)+T(0)，兩邊減去 T(0) 得 T(0)=0。
+
+- id: la-trans-003
+  difficulty: basic
+  tags: [matrix-representation, standard-basis]
+  question: |
+    T: R^n -> R^m 的 standard matrix 的第 j 欄是什麼？
+  options:
+    - "T(e_j)"
+    - "T 的 determinant"
+    - "T(0)"
+    - "e_j 的長度"
+  answer: 0
+  explanation: |
+    Standard matrix A 滿足 Ax=T(x)。其第 j 欄等於 A e_j，也就是 T(e_j)。
+
+- id: la-trans-004
+  difficulty: basic
+  tags: [kernel, image]
+  question: |
+    Linear transformation T 的 kernel 是哪個集合？
+  options:
+    - "{x | T(x)=0}"
+    - "{T(x) | x 在 domain 中}"
+    - "所有不在 domain 中的向量"
+    - "所有 scalar 的集合"
+  answer: 0
+  explanation: |
+    Kernel 或 null space 是所有被映到 zero vector 的輸入集合；image/range 則是所有可能輸出。
+
+- id: la-trans-005
+  difficulty: intermediate
+  tags: [rank-nullity, kernel]
+  question: |
+    若 T: R^7 -> R^4 的 rank 為 3，則 nullity 為多少？
+  options:
+    - "1"
+    - "3"
+    - "4"
+    - "7"
+  answer: 2
+  explanation: |
+    Rank-nullity theorem 給 dim(domain)=rank+nullity，因此 7=3+nullity，nullity=4。
+
+- id: la-trans-006
+  difficulty: intermediate
+  tags: [composition, matrices]
+  question: |
+    若 T(x)=Ax、S(y)=By，則 S o T 的 matrix 是什麼？
+  options:
+    - "BA"
+    - "AB"
+    - "A+B"
+    - "A^T B"
+  answer: 0
+  explanation: |
+    S(T(x))=B(Ax)=(BA)x，因此先做 T 再做 S 的矩陣乘積順序是 BA。
+
+- id: la-trans-007
+  difficulty: intermediate
+  tags: [linear-transformations, injective]
+  question: |
+    Linear transformation T 為 injective 的等價條件是什麼？
+  options:
+    - "kernel(T) 只包含 zero vector"
+    - "image(T) 只包含 zero vector"
+    - "T 的 domain 必須是一維"
+    - "T(0) 不等於 0"
+  answer: 0
+  explanation: |
+    對 linear map，T(x)=T(y) 等價於 T(x-y)=0。若 kernel 只有 0，則 x-y=0，故 x=y；反向也成立。
+
+- id: la-trans-008
+  difficulty: intermediate
+  tags: [linear-transformations, surjective]
+  question: |
+    T: R^n -> R^m 為 surjective 的矩陣條件是什麼？
+  options:
+    - "standard matrix 的 rank 為 m"
+    - "standard matrix 的 rank 為 0"
+    - "n 必須小於 m 且 rank 為 n"
+    - "所有 entries 都非零"
+  answer: 0
+  explanation: |
+    Surjective 到 R^m 表示 image 等於整個 codomain，因此 column space 維度必須是 m，也就是 rank=m。
+
+- id: la-trans-009
+  difficulty: intermediate
+  tags: [projections, linearity]
+  question: |
+    將 R^2 中向量 (x,y) 映到 (x,0) 的 transformation 是什麼？
+  options:
+    - "linear projection onto x-axis"
+    - "nonlinear translation"
+    - "rotation by 90 degrees"
+    - "mapping to polar coordinates"
+  answer: 0
+  explanation: |
+    T(x,y)=(x,0) 保留加法與 scalar multiplication，是投影到 x-axis 的 linear transformation。
+
+- id: la-trans-010
+  difficulty: intermediate
+  tags: [change-of-basis, coordinates]
+  question: |
+    若 P 的 columns 是 basis B 的向量，且 [v]_B 是 v 在 B 下的座標，則 v 的 standard coordinates 為何？
+  options:
+    - "P[v]_B"
+    - "P^{-1}[v]_B"
+    - "P^T[v]_B 永遠成立"
+    - "[v]_B P"
+  answer: 0
+  explanation: |
+    P 的 columns 是 basis vectors，因此用 B-coordinates 當係數做線性組合，就是 matrix product P[v]_B。
+
+- id: la-trans-011
+  difficulty: intermediate
+  tags: [rotations, matrices]
+  question: |
+    R^2 中逆時針旋轉角度 theta 的 standard matrix 是哪一個？
+  options:
+    - "[[cos theta, -sin theta], [sin theta, cos theta]]"
+    - "[[cos theta, sin theta], [sin theta, -cos theta]]"
+    - "[[1, theta], [0, 1]]"
+    - "[[theta, 0], [0, theta]]"
+  answer: 0
+  explanation: |
+    逆時針 rotation 將 e1 映到 (cos theta, sin theta)，將 e2 映到 (-sin theta, cos theta)，這兩個像作為 columns 得到標準旋轉矩陣。
+
+- id: la-trans-012
+  difficulty: intermediate
+  tags: [linear-transformations, affine]
+  question: |
+    T(x)=Ax+b 在 b != 0 時通常不是 linear transformation，主要原因是什麼？
+  options:
+    - "T(0)=b，不等於 0"
+    - "A 無法乘向量"
+    - "b 一定不是向量"
+    - "所有 affine maps 都沒有 domain"
+  answer: 0
+  explanation: |
+    Linear transformation 必須滿足 T(0)=0。當 b != 0 時，T(0)=b，所以此 mapping 是 affine，不是 linear。
+
+- id: la-trans-013
+  difficulty: advanced
+  tags: [isomorphism, vector-spaces]
+  question: |
+    Vector spaces V 與 W 稱為 isomorphic 的意思是什麼？
+  options:
+    - "存在 bijective linear transformation T: V -> W"
+    - "V 與 W 的所有向量完全相同"
+    - "V 的每個向量長度都等於 W 的每個向量長度"
+    - "V 與 W 必須都是 R^2"
+  answer: 0
+  explanation: |
+    Isomorphism 是結構保持的雙射。對 vector spaces，必須是 linear 且 bijective，才能保留線性結構並可逆。
+
+- id: la-trans-014
+  difficulty: advanced
+  tags: [dual-space, linear-functionals]
+  question: |
+    Linear functional 通常指什麼？
+  options:
+    - "從 vector space 到其 scalar field 的 linear map"
+    - "從 scalar 到 graph 的 map"
+    - "任何 nonlinear loss function"
+    - "只定義在 matrix determinant 上的函數"
+  answer: 0
+  explanation: |
+    Linear functional 是輸出為 scalar 的 linear transformation，例如 T: V -> R 或 T: V -> C。
+
+- id: la-trans-015
+  difficulty: advanced
+  tags: [change-of-basis, similarity]
+  question: |
+    同一 linear operator 在不同 basis 下的矩陣通常彼此滿足什麼關係？
+  options:
+    - "similarity relation"
+    - "entry-wise equality"
+    - "orthogonality relation 永遠成立"
+    - "rank 一定不同"
+  answer: 0
+  explanation: |
+    Basis 改變會使表示矩陣變成 P^{-1}AP 形式，因此這些矩陣是 similar，代表同一 operator 的不同座標描述。
+
+- id: la-trans-016
+  difficulty: advanced
+  tags: [orthogonal-transformations, inner-product]
+  question: |
+    Orthogonal matrix Q 所定義的 transformation 保留哪一項？
+  options:
+    - "向量長度與 inner product"
+    - "每個向量的所有座標值"
+    - "所有向量都映到 zero vector"
+    - "matrix 的每個 entry 都變正"
+  answer: 0
+  explanation: |
+    Q^T Q=I，因此 (Qx) dot (Qy)=x dot y。令 x=y 可得長度也被保留。
+
+- id: la-trans-017
+  difficulty: advanced
+  tags: [linear-transformations, invariant-subspace]
+  question: |
+    Subspace W 稱為 T-invariant 的意思是什麼？
+  options:
+    - "對所有 w in W，都有 T(w) in W"
+    - "T 會把 W 中每個向量都映到 W 外"
+    - "W 必須等於整個 codomain"
+    - "W 不可包含 zero vector"
+  answer: 0
+  explanation: |
+    Invariant subspace 在 transformation 作用後仍留在自身內，這使得可在 W 上限制並研究 T 的行為。
+
+- id: la-trans-018
+  difficulty: advanced
+  tags: [matrix-representation, basis]
+  question: |
+    若 T 的矩陣表示依賴於 basis，哪一項不依賴 basis 而屬於 T 本身？
+  options:
+    - "rank"
+    - "矩陣的第 1 欄 entries"
+    - "矩陣的所有 diagonal entries 各自數值"
+    - "row 1 與 row 2 的排列"
+  answer: 0
+  explanation: |
+    Rank 是 image 的維度，是 linear transformation 的 intrinsic property。矩陣 entries 會隨 basis 改變。
+
+- id: la-trans-019
+  difficulty: master
+  tags: [quotient-spaces, induced-maps]
+  question: |
+    Linear map T: V -> W 要誘導 well-defined map V/U -> W，常見條件是什麼？
+  options:
+    - "U subset kernel(T)"
+    - "kernel(T) subset U 的補集合"
+    - "T 必須不是 linear"
+    - "U 必須沒有 zero vector"
+  answer: 0
+  explanation: |
+    若 v 與 v+u 代表同一 coset，誘導 map 需給出相同輸出。這要求 T(u)=0 對所有 u in U 成立，也就是 U subset kernel(T)。
+
+- id: la-trans-020
+  difficulty: master
+  tags: [spectral-theorem, operators]
+  question: |
+    在 finite-dimensional real inner product space 中，self-adjoint operator 的重要結論是什麼？
+  options:
+    - "存在 orthonormal basis 由 eigenvectors 組成"
+    - "一定沒有 eigenvalues"
+    - "一定不是 diagonalizable"
+    - "一定把所有向量映到同一個 scalar"
+  answer: 0
+  explanation: |
+    Spectral theorem 說 self-adjoint operator 可被 orthonormally diagonalized，因此存在 orthonormal eigenbasis 且 eigenvalues 為 real。

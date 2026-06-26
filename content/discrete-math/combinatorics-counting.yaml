@@ -1,0 +1,279 @@
+- id: dm-count-001
+  difficulty: basic
+  tags: [counting, product-rule]
+  question: |
+    一個密碼由 2 個英文字母後接 3 個數字組成，若字母有 26 種、數字有 10 種且可重複，總共有幾種密碼？
+  options:
+    - "26^2 * 10^3"
+    - "26 * 10"
+    - "26P2 * 10P3"
+    - "26^3 * 10^2"
+  answer: 0
+  explanation: |
+    每個位置的選擇互相獨立且可重複，依 product rule 為 26 * 26 * 10 * 10 * 10。
+
+- id: dm-count-002
+  difficulty: basic
+  tags: [permutations, factorial]
+  question: |
+    5 本不同的書排成一列，有幾種排列方式？
+  options:
+    - "5"
+    - "10"
+    - "25"
+    - "120"
+  answer: 3
+  explanation: |
+    5 個不同物件的 linear permutation 數量是 5! = 120。
+
+- id: dm-count-003
+  difficulty: basic
+  tags: [combinations, binomial-coefficient]
+  question: |
+    從 8 個人中選 3 人組成委員會，不考慮順序，有幾種選法？
+  options:
+    - "C(8,3)"
+    - "P(8,3)"
+    - "8^3"
+    - "3^8"
+  answer: 0
+  explanation: |
+    委員會只關心成員集合，不關心選出順序，因此使用 combination C(8,3)。
+
+- id: dm-count-004
+  difficulty: basic
+  tags: [pigeonhole-principle, counting]
+  question: |
+    將 11 顆球放入 5 個盒子，必定有某個盒子至少有幾顆球？
+  options:
+    - "2"
+    - "3"
+    - "4"
+    - "5"
+  answer: 1
+  explanation: |
+    由 pigeonhole principle，最大負載至少為 ceil(11/5) = 3。因此必定有某盒至少 3 顆。
+
+- id: dm-count-005
+  difficulty: intermediate
+  tags: [inclusion-exclusion, sets]
+  question: |
+    在 1 到 100 的整數中，可被 2 或 5 整除的數有幾個？
+  options:
+    - "50"
+    - "60"
+    - "70"
+    - "55"
+  answer: 1
+  explanation: |
+    可被 2 整除有 50 個，可被 5 整除有 20 個，重複計入可被 10 整除有 10 個，所以總數為 50 + 20 - 10 = 60。
+
+- id: dm-count-006
+  difficulty: intermediate
+  tags: [stars-and-bars, combinations]
+  question: |
+    非負整數解 x1 + x2 + x3 = 10 的數量是多少？
+  options:
+    - "C(10,3)"
+    - "C(12,2)"
+    - "3^10"
+    - "10!"
+  answer: 1
+  explanation: |
+    Stars and bars 給出 C(10+3-1,3-1) = C(12,2)。
+
+- id: dm-count-007
+  difficulty: intermediate
+  tags: [bitstrings, combinations]
+  question: |
+    長度 12 的 bit string 中，恰有 4 個 1 的數量是多少？
+  options:
+    - "C(12,4)"
+    - "12 * 4"
+    - "2^4"
+    - "4^12"
+  answer: 0
+  explanation: |
+    只需選出 12 個位置中哪 4 個放 1，其餘位置為 0，因此為 C(12,4)。
+
+- id: dm-count-008
+  difficulty: intermediate
+  tags: [permutations, repetition]
+  question: |
+    字串 BANANA 的不同排列數量是多少？
+  options:
+    - "6!"
+    - "6! / (3!2!)"
+    - "6! / 3!"
+    - "3!2!"
+  answer: 1
+  explanation: |
+    BANANA 有 6 個字元，其中 A 重複 3 次、N 重複 2 次，故不同排列數為 6!/(3!2!)。
+
+- id: dm-count-009
+  difficulty: intermediate
+  tags: [counting, complement]
+  question: |
+    長度 6 的十進位數字序列中，至少有一個位置是 0 的序列數量是多少？數字可重複且允許開頭為 0。
+  options:
+    - "10^6 - 9^6"
+    - "9^6"
+    - "6 * 9^5"
+    - "10^6 / 9"
+  answer: 0
+  explanation: |
+    所有序列有 10^6 個；沒有任何 0 的序列有 9^6 個。用 complement 得至少一個 0 為 10^6 - 9^6。
+
+- id: dm-count-010
+  difficulty: intermediate
+  tags: [combinations, committees]
+  question: |
+    從 6 位工程師與 4 位設計師中選 5 人小組，且至少 2 位是設計師，有幾種選法？
+  options:
+    - "C(10,5)"
+    - "C(4,2)C(6,3) + C(4,3)C(6,2) + C(4,4)C(6,1)"
+    - "C(4,2)C(6,3)"
+    - "C(6,5) + C(4,5)"
+  answer: 1
+  explanation: |
+    設計師人數可為 2、3、4，分別搭配工程師 3、2、1 人，將互斥情況相加。
+
+- id: dm-count-011
+  difficulty: intermediate
+  tags: [recurrence, counting]
+  question: |
+    用 1x1 與 1x2 磚鋪滿 1xn 長條的方式數 a_n 滿足哪個 recurrence？
+  options:
+    - "a_n = a_{n-1} + a_{n-2}"
+    - "a_n = 2a_{n-1}"
+    - "a_n = n!"
+    - "a_n = a_{n-1} - a_{n-2}"
+  answer: 0
+  explanation: |
+    最右端若放 1x1 磚，前面有 a_{n-1} 種；若放 1x2 磚，前面有 a_{n-2} 種，因此 a_n = a_{n-1} + a_{n-2}。
+
+- id: dm-count-012
+  difficulty: intermediate
+  tags: [binomial-theorem, coefficients]
+  question: |
+    (x + y)^8 中 x^5 y^3 的係數是多少？
+  options:
+    - "C(8,5)"
+    - "5!3!"
+    - "8"
+    - "C(5,3)"
+  answer: 0
+  explanation: |
+    Binomial theorem 中 x^5 y^3 的係數是選 8 個因子中哪 3 個提供 y，等同 C(8,3)=C(8,5)。
+
+- id: dm-count-013
+  difficulty: advanced
+  tags: [inclusion-exclusion, derangements]
+  question: |
+    4 個人各有一頂不同帽子，完全沒有人拿到自己帽子的分配數是多少？
+  options:
+    - "9"
+    - "12"
+    - "24"
+    - "6"
+  answer: 0
+  explanation: |
+    Derangement !4 = 4!(1 - 1/1! + 1/2! - 1/3! + 1/4!) = 24(1 - 1 + 1/2 - 1/6 + 1/24)=9。
+
+- id: dm-count-014
+  difficulty: advanced
+  tags: [generating-functions, combinations]
+  question: |
+    生成函數 (1 + x + x^2)^3 中 x^4 的係數代表什麼？
+  options:
+    - "三個變數各在 0 到 2 之間且總和為 4 的整數解數量"
+    - "三個變數各為正整數且乘積為 4 的數量"
+    - "長度 4 的三進位字串數量"
+    - "C(4,3)"
+  answer: 0
+  explanation: |
+    每個因子 1+x+x^2 代表一個變數可取 0、1、2；乘積中 x^4 的係數即三個選值總和為 4 的方式數。
+
+- id: dm-count-015
+  difficulty: advanced
+  tags: [surjections, inclusion-exclusion]
+  question: |
+    從 5 個不同元素到 3 個不同盒子的 onto functions 數量是多少？
+  options:
+    - "3^5 - 3*2^5 + 3"
+    - "3^5"
+    - "5^3 - 5"
+    - "C(5,3)"
+  answer: 0
+  explanation: |
+    用 inclusion-exclusion：所有 functions 為 3^5；扣掉至少一個盒子空的 3*2^5；加回兩個指定盒子空的 3*1^5，因此為 3^5 - 3*2^5 + 3。
+
+- id: dm-count-016
+  difficulty: advanced
+  tags: [catalan-numbers, counting]
+  question: |
+    有 4 對括號的合法括號字串數量是多少？
+  options:
+    - "14"
+    - "16"
+    - "24"
+    - "8"
+  answer: 0
+  explanation: |
+    n 對括號的合法字串數為 Catalan number C_n = 1/(n+1) * binom(2n,n)。n=4 時為 1/5 * binom(8,4)=14。
+
+- id: dm-count-017
+  difficulty: advanced
+  tags: [principle-of-inclusion-exclusion, constraints]
+  question: |
+    正整數解 x1 + x2 + x3 = 12 且每個 xi <= 5 的數量是多少？
+  options:
+    - "10"
+    - "15"
+    - "21"
+    - "28"
+  answer: 0
+  explanation: |
+    先令 yi=xi-1，得 y1+y2+y3=9 且 yi<=4。無上界有 C(11,2)=55。扣除某 yi>=5：令 zi=yi-5，剩 4，單一違規有 C(6,2)=15，共 45；兩個同時違規不可能超過總和 9。答案 55-45=10。
+
+- id: dm-count-018
+  difficulty: advanced
+  tags: [burnside-lemma, symmetry]
+  question: |
+    用 3 種顏色塗一個正方形的 4 個頂點，若旋轉後視為相同，依 Burnside's lemma 不同塗法有幾種？
+  options:
+    - "24"
+    - "21"
+    - "18"
+    - "81"
+  answer: 0
+  explanation: |
+    四個旋轉固定的塗法數分別為 3^4、3、3^2、3。平均為 (81+3+9+3)/4 = 24。
+
+- id: dm-count-019
+  difficulty: master
+  tags: [polya-counting, cycles]
+  question: |
+    對 6 顆珠子的環狀項鍊使用 2 種顏色，若只把旋轉視為相同、不考慮翻轉，Burnside 平均式中旋轉固定塗色數總和是多少？
+  options:
+    - "84"
+    - "64"
+    - "72"
+    - "96"
+  answer: 0
+  explanation: |
+    旋轉 k 格的 cycle 數為 gcd(6,k)，固定塗色數為 2^{gcd(6,k)}。總和為 2^6+2^1+2^2+2^3+2^2+2^1 = 64+2+4+8+4+2 = 84。
+
+- id: dm-count-020
+  difficulty: master
+  tags: [generating-functions, recurrence]
+  question: |
+    若序列 a_n 滿足 a_n = 2a_{n-1} 且 a_0 = 3，ordinary generating function A(x)=sum_{n>=0} a_n x^n 為何？
+  options:
+    - "3 / (1 - 2x)"
+    - "2 / (1 - 3x)"
+    - "3x / (1 - 2x)"
+    - "1 / (3 - 2x)"
+  answer: 0
+  explanation: |
+    Recurrence 給出 a_n = 3 * 2^n，因此 A(x)=sum 3(2x)^n = 3/(1-2x)，在 formal power series 意義下成立。

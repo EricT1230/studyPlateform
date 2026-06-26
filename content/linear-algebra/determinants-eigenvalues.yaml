@@ -1,0 +1,279 @@
+- id: la-eigen-001
+  difficulty: basic
+  tags: [determinants, invertibility]
+  question: |
+    對 square matrix A，det(A) != 0 可推出什麼？
+  options:
+    - "A 是 invertible"
+    - "A 的所有 entries 都是正數"
+    - "A 一定是 diagonal matrix"
+    - "A 的 rank 為 0"
+  answer: 0
+  explanation: |
+    Square matrix 可逆的充要條件之一是 determinant 非零。這也等價於 columns linearly independent 與 rank 滿。
+
+- id: la-eigen-002
+  difficulty: basic
+  tags: [eigenvalues, eigenvectors]
+  question: |
+    若 Av = lambda v 且 v != 0，則 v 稱為 A 的什麼？
+  options:
+    - "eigenvector"
+    - "determinant"
+    - "minor"
+    - "trace"
+  answer: 0
+  explanation: |
+    非零向量 v 在 A 作用後只被縮放為 lambda 倍，v 就是 eigenvector，lambda 是對應 eigenvalue。
+
+- id: la-eigen-003
+  difficulty: basic
+  tags: [determinants, triangular-matrix]
+  question: |
+    Upper triangular matrix 的 determinant 等於什麼？
+  options:
+    - "主對角線 entries 的乘積"
+    - "所有 entries 的總和"
+    - "第一列 entries 的乘積"
+    - "永遠等於 1"
+  answer: 0
+  explanation: |
+    Triangular matrix 的 determinant 是 diagonal entries 的乘積，因 determinant expansion 中其他 permutation 項會含有零。
+
+- id: la-eigen-004
+  difficulty: basic
+  tags: [trace, eigenvalues]
+  question: |
+    2x2 matrix 的 eigenvalues 為 3 與 -1，則 trace 為多少？
+  options:
+    - "2"
+    - "3"
+    - "-3"
+    - "-1"
+  answer: 0
+  explanation: |
+    Matrix 的 trace 等於 eigenvalues 的總和（計 algebraic multiplicity），所以 trace = 3 + (-1) = 2。
+
+- id: la-eigen-005
+  difficulty: intermediate
+  tags: [determinants, row-operations]
+  question: |
+    對 matrix 做「交換兩列」的 row operation，determinant 會如何改變？
+  options:
+    - "變號"
+    - "乘以 2"
+    - "不變"
+    - "變成 0"
+  answer: 0
+  explanation: |
+    交換兩列會使 determinant 乘以 -1。這是 determinant alternating property。
+
+- id: la-eigen-006
+  difficulty: intermediate
+  tags: [determinants, products]
+  question: |
+    對同尺寸 square matrices A 與 B，下列哪一項正確？
+  options:
+    - "det(AB) = det(A)det(B)"
+    - "det(A+B) = det(A)+det(B) 永遠成立"
+    - "det(AB) = det(A)+det(B)"
+    - "det(A^T) = -det(A) 永遠成立"
+  answer: 0
+  explanation: |
+    Determinant 對 matrix multiplication 具有 multiplicative property。它一般不對加法線性，且 det(A^T)=det(A)。
+
+- id: la-eigen-007
+  difficulty: intermediate
+  tags: [characteristic-polynomial, eigenvalues]
+  question: |
+    Matrix A 的 characteristic polynomial 通常定義為哪一個？
+  options:
+    - "det(lambda I - A)"
+    - "trace(A) + lambda"
+    - "det(A)lambda"
+    - "A - lambda"
+  answer: 0
+  explanation: |
+    Eigenvalues 是使 lambda I - A singular 的 lambda，因此 characteristic polynomial 可定義為 det(lambda I - A)。
+
+- id: la-eigen-008
+  difficulty: intermediate
+  tags: [eigenvalues, diagonal-matrix]
+  question: |
+    Diagonal matrix diag(2,5,-1) 的 eigenvalues 是哪些？
+  options:
+    - "2, 5, -1"
+    - "10, -5, -2"
+    - "6, 0, 0"
+    - "只有 2"
+  answer: 0
+  explanation: |
+    Diagonal matrix 的 standard basis vectors 都是 eigenvectors，對應 eigenvalues 正是主對角線 entries。
+
+- id: la-eigen-009
+  difficulty: intermediate
+  tags: [eigenvalues, singularity]
+  question: |
+    若 0 是 square matrix A 的 eigenvalue，則下列何者必然成立？
+  options:
+    - "A 不可逆"
+    - "A 是 identity matrix"
+    - "A 的 determinant 為 1"
+    - "A 沒有 null space"
+  answer: 0
+  explanation: |
+    0 是 eigenvalue 表示存在非零 v 使 Av=0，因此 null space 非平凡，A singular 且不可逆。
+
+- id: la-eigen-010
+  difficulty: intermediate
+  tags: [determinants, scaling]
+  question: |
+    對 n x n matrix A，det(cA) 等於什麼？
+  options:
+    - "c det(A)"
+    - "c^n det(A)"
+    - "det(A)^c"
+    - "det(A) + c"
+  answer: 1
+  explanation: |
+    將整個 matrix 乘以 c 等同每一列都乘以 c；n 列各貢獻一個 c，因此 determinant 乘上 c^n。
+
+- id: la-eigen-011
+  difficulty: intermediate
+  tags: [diagonalization, eigenvectors]
+  question: |
+    n x n matrix A 可 diagonalize 的充分且必要條件之一是什麼？
+  options:
+    - "A 有 n 個 linearly independent eigenvectors"
+    - "A 的所有 entries 非零"
+    - "det(A)=trace(A)"
+    - "A 一定 symmetric 才可 diagonalize"
+  answer: 0
+  explanation: |
+    A 可寫成 PDP^{-1} 的關鍵是 eigenvectors 能形成一組 basis，也就是有 n 個 linearly independent eigenvectors。
+
+- id: la-eigen-012
+  difficulty: intermediate
+  tags: [symmetric-matrices, eigenvalues]
+  question: |
+    Real symmetric matrix 的 eigenvalues 有何性質？
+  options:
+    - "全部都是 real numbers"
+    - "全部都是正數"
+    - "全部都是整數"
+    - "一定都不相同"
+  answer: 0
+  explanation: |
+    Spectral theorem 保證 real symmetric matrix 有 real eigenvalues 且可用 orthonormal eigenvectors diagonalize，但 eigenvalues 不一定正或互異。
+
+- id: la-eigen-013
+  difficulty: advanced
+  tags: [determinants, cofactor-expansion]
+  question: |
+    Cofactor expansion 沿著某一列展開 determinant 時，每一項的符號由什麼決定？
+  options:
+    - "(-1)^{i+j}"
+    - "該 entry 的絕對值"
+    - "matrix 的 rank"
+    - "該列是否有 pivot"
+  answer: 0
+  explanation: |
+    第 i 列第 j 欄 entry 的 cofactor 是 (-1)^{i+j} 乘上刪除第 i 列第 j 欄後的 minor determinant。
+
+- id: la-eigen-014
+  difficulty: advanced
+  tags: [eigenvalues, algebraic-geometric-multiplicity]
+  question: |
+    對某 eigenvalue lambda，下列哪一項一定成立？
+  options:
+    - "geometric multiplicity <= algebraic multiplicity"
+    - "geometric multiplicity 永遠大於 algebraic multiplicity"
+    - "algebraic multiplicity 一定等於 1"
+    - "geometric multiplicity 不能為正"
+  answer: 0
+  explanation: |
+    Eigenspace 維度稱為 geometric multiplicity，它至少 1 且不超過 characteristic polynomial 中該 root 的 algebraic multiplicity。
+
+- id: la-eigen-015
+  difficulty: advanced
+  tags: [positive-definite, eigenvalues]
+  question: |
+    Real symmetric matrix A 為 positive definite 的等價條件之一是什麼？
+  options:
+    - "所有 eigenvalues 都大於 0"
+    - "所有 eigenvalues 都等於 0"
+    - "det(A) < 0"
+    - "A 的每一列總和都為 1"
+  answer: 0
+  explanation: |
+    對 real symmetric matrix，positive definite 等價於所有 eigenvalues 為正，也等價於 x^T A x 對所有非零 x 都大於 0。
+
+- id: la-eigen-016
+  difficulty: advanced
+  tags: [eigenvalues, similarity]
+  question: |
+    若 B = P^{-1}AP 且 P invertible，則 A 與 B 必定共享什麼？
+  options:
+    - "相同的 characteristic polynomial"
+    - "完全相同的 entries"
+    - "相同的 row-reduced echelon form"
+    - "相同的 eigenvectors"
+  answer: 0
+  explanation: |
+    Similar matrices 代表同一線性算子在不同 basis 下的矩陣，det(lambda I - B)=det(P^{-1}(lambda I-A)P)=det(lambda I-A)，所以 characteristic polynomial 相同。
+
+- id: la-eigen-017
+  difficulty: advanced
+  tags: [jordan-form, diagonalization]
+  question: |
+    一個 eigenvalue 的 Jordan block 大小若大於 1，通常表示什麼？
+  options:
+    - "matrix 對該 eigenvalue 缺少足夠 eigenvectors，因此不可完全 diagonalize"
+    - "matrix 一定是 identity"
+    - "determinant 一定等於 0"
+    - "所有 eigenvalues 都不相同"
+  answer: 0
+  explanation: |
+    大於 1 的 Jordan block 代表存在 generalized eigenvectors，該 eigenvalue 的 eigenspace 維度不足以拆成全 diagonal。
+
+- id: la-eigen-018
+  difficulty: advanced
+  tags: [determinants, volume]
+  question: |
+    在 R^n 中，|det(A)| 的幾何意義是什麼？
+  options:
+    - "線性變換 A 對 n 維體積的縮放倍率"
+    - "A 的最大 entry"
+    - "A 的 row 數"
+    - "A 的 trace"
+  answer: 0
+  explanation: |
+    Determinant 的絕對值表示 linear transformation 對 signed volume 的縮放大小；符號則反映 orientation 是否反轉。
+
+- id: la-eigen-019
+  difficulty: master
+  tags: [spectral-radius, powers]
+  question: |
+    若 A 可 diagonalize 且所有 eigenvalues 的絕對值都小於 1，則 A^k 在 k -> infinity 時通常趨近什麼？
+  options:
+    - "zero matrix"
+    - "identity matrix"
+    - "A 本身"
+    - "不存在任何極限"
+  answer: 0
+  explanation: |
+    A=PDP^{-1} 時 A^k=PD^kP^{-1}。若每個 |lambda_i|<1，則 D^k 的對角 entries 都趨近 0，所以 A^k 趨近 zero matrix。
+
+- id: la-eigen-020
+  difficulty: master
+  tags: [cayley-hamilton, matrix-polynomials]
+  question: |
+    Cayley-Hamilton theorem 的內容是什麼？
+  options:
+    - "每個 square matrix 都滿足自己的 characteristic polynomial"
+    - "每個 matrix 都有 n 個不同 eigenvalues"
+    - "每個 non-square matrix 都可求 determinant"
+    - "det(A+B)=det(A)+det(B) 對所有 A,B 成立"
+  answer: 0
+  explanation: |
+    Cayley-Hamilton theorem 說若 p_A(lambda) 是 A 的 characteristic polynomial，則把 A 代入該 polynomial 得 p_A(A)=0。

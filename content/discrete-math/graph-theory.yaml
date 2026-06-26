@@ -1,0 +1,279 @@
+- id: dm-graph-001
+  difficulty: basic
+  tags: [graphs, degree]
+  question: |
+    在 undirected graph 中，所有頂點 degree 的總和等於什麼？
+  options:
+    - "邊數的兩倍"
+    - "邊數的一半"
+    - "頂點數的平方"
+    - "connected components 的數量"
+  answer: 0
+  explanation: |
+    Handshaking lemma 說每條邊會對兩個端點各貢獻 1 個 degree，因此 degree 總和為 2|E|。
+
+- id: dm-graph-002
+  difficulty: basic
+  tags: [graphs, simple-graph]
+  question: |
+    Simple graph 通常不允許哪兩種結構？
+  options:
+    - "self-loop 與 parallel edges"
+    - "vertices 與 edges"
+    - "paths 與 cycles"
+    - "connected components 與 isolated vertices"
+  answer: 0
+  explanation: |
+    Simple graph 的邊只連接兩個不同頂點，且任兩頂點之間最多一條邊，因此不允許 self-loop 與 parallel edges。
+
+- id: dm-graph-003
+  difficulty: basic
+  tags: [trees, edges]
+  question: |
+    一棵有 n 個頂點的 tree 有幾條邊？
+  options:
+    - "n - 1"
+    - "n"
+    - "n + 1"
+    - "2n"
+  answer: 0
+  explanation: |
+    Tree 是 connected 且 acyclic 的 graph。其基本性質是 n 個頂點必有 n-1 條邊。
+
+- id: dm-graph-004
+  difficulty: basic
+  tags: [graphs, connectedness]
+  question: |
+    Graph 稱為 connected 的意思是什麼？
+  options:
+    - "任兩頂點之間都存在 path"
+    - "每個頂點 degree 都相同"
+    - "graph 沒有 cycle"
+    - "邊數必為頂點數兩倍"
+  answer: 0
+  explanation: |
+    Connected graph 要求任何兩個頂點都在同一個 component 中，也就是存在連接它們的 path。
+
+- id: dm-graph-005
+  difficulty: intermediate
+  tags: [euler, graph-traversal]
+  question: |
+    一個 connected undirected graph 有 Euler circuit 的充分且必要條件是什麼？
+  options:
+    - "所有頂點 degree 都是偶數"
+    - "恰有兩個頂點 degree 為奇數"
+    - "沒有任何 cycle"
+    - "所有頂點 degree 都是 1"
+  answer: 0
+  explanation: |
+    Euler circuit 需從起點回到起點並每條邊走一次。在 connected undirected graph 中，這等價於每個頂點的 degree 都為偶數。
+
+- id: dm-graph-006
+  difficulty: intermediate
+  tags: [euler, paths]
+  question: |
+    一個 connected undirected graph 有 Euler trail 但沒有 Euler circuit 時，奇數 degree 頂點數應為多少？
+  options:
+    - "0"
+    - "1"
+    - "2"
+    - "4"
+  answer: 2
+  explanation: |
+    Euler trail 不必回到起點，會有一個起點與一個終點具有奇數 degree，因此恰有 2 個奇數 degree 頂點。
+
+- id: dm-graph-007
+  difficulty: intermediate
+  tags: [bipartite-graphs, cycles]
+  question: |
+    一個 graph 是 bipartite 的充分且必要條件是什麼？
+  options:
+    - "沒有 odd cycle"
+    - "沒有任何 cycle"
+    - "每個頂點 degree 都是 2"
+    - "邊數等於頂點數"
+  answer: 0
+  explanation: |
+    Graph 可二分著色等價於不存在 odd cycle。Even cycle 可以存在於 bipartite graph 中。
+
+- id: dm-graph-008
+  difficulty: intermediate
+  tags: [trees, leaves]
+  question: |
+    任一至少有 2 個頂點的 finite tree 至少有幾個 leaves？
+  options:
+    - "1"
+    - "2"
+    - "3"
+    - "取決於是否 bipartite"
+  answer: 1
+  explanation: |
+    有限 tree 若至少兩個頂點，最長 path 的兩端不可能有額外分支，否則 path 可延長。因此至少有兩個 degree 1 的 leaves。
+
+- id: dm-graph-009
+  difficulty: intermediate
+  tags: [planar-graphs, euler-formula]
+  question: |
+    Connected planar graph 的 Euler formula 是哪一個？
+  options:
+    - "V - E + F = 2"
+    - "V + E + F = 2"
+    - "E - V + F = 0"
+    - "V - E = F"
+  answer: 0
+  explanation: |
+    對 connected planar embedding，頂點數 V、邊數 E、面數 F 滿足 V - E + F = 2。
+
+- id: dm-graph-010
+  difficulty: intermediate
+  tags: [graph-coloring, chromatic-number]
+  question: |
+    Cycle C_5 的 chromatic number 是多少？
+  options:
+    - "2"
+    - "3"
+    - "4"
+    - "5"
+  answer: 1
+  explanation: |
+    Odd cycle 不能用 2 色完成 proper coloring，但 3 色足夠，因此 C_5 的 chromatic number 是 3。
+
+- id: dm-graph-011
+  difficulty: intermediate
+  tags: [shortest-path, dijkstra]
+  question: |
+    Dijkstra algorithm 的標準正確性要求邊權重滿足什麼條件？
+  options:
+    - "所有邊權重非負"
+    - "所有邊權重都相同"
+    - "所有邊權重都是負數"
+    - "graph 必須沒有 edge"
+  answer: 0
+  explanation: |
+    Dijkstra 每次固定目前最短距離的頂點；此貪心步驟依賴非負邊權重，否則之後可能被負邊改善。
+
+- id: dm-graph-012
+  difficulty: intermediate
+  tags: [minimum-spanning-tree, cuts]
+  question: |
+    Minimum spanning tree 的 cut property 說明什麼？
+  options:
+    - "跨越任一 cut 的最輕邊可安全加入某棵 MST"
+    - "每條最重邊都必須加入 MST"
+    - "MST 一定包含所有 cycle"
+    - "只有 directed graph 才有 MST"
+  answer: 0
+  explanation: |
+    Cut property 是 Kruskal 與 Prim 正確性的核心：對任一 cut，跨越該 cut 的 light edge 可被某棵 MST 使用。
+
+- id: dm-graph-013
+  difficulty: advanced
+  tags: [planar-graphs, complete-graphs]
+  question: |
+    下列哪個 complete graph 是非 planar 的經典例子？
+  options:
+    - "K_2"
+    - "K_3"
+    - "K_4"
+    - "K_5"
+  answer: 3
+  explanation: |
+    K_5 是 Kuratowski theorem 中的兩個基本非平面結構之一；K_4 仍可平面嵌入。
+
+- id: dm-graph-014
+  difficulty: advanced
+  tags: [matching, bipartite-graphs]
+  question: |
+    Hall's theorem 判斷 bipartite graph 中哪一種結構存在？
+  options:
+    - "覆蓋左側所有頂點的 matching"
+    - "Euler circuit"
+    - "Hamiltonian cycle"
+    - "Planar embedding"
+  answer: 0
+  explanation: |
+    Hall's theorem 給出 bipartite graph 存在 matching saturating one side 的充分且必要條件：任一左側子集合的鄰居數至少等於該子集合大小。
+
+- id: dm-graph-015
+  difficulty: advanced
+  tags: [directed-graphs, topological-sort]
+  question: |
+    一個 directed graph 存在 topological ordering 的充分且必要條件是什麼？
+  options:
+    - "它是 DAG"
+    - "每個頂點 out-degree 都為 1"
+    - "它是 complete graph"
+    - "它有 Euler circuit"
+  answer: 0
+  explanation: |
+    Topological ordering 要求所有 directed edges 由前指向後；若有 directed cycle 會造成矛盾。反之 DAG 一定可拓撲排序。
+
+- id: dm-graph-016
+  difficulty: advanced
+  tags: [connectivity, cuts]
+  question: |
+    Vertex cut 的功能是什麼？
+  options:
+    - "移除某些頂點後使 graph 變得 disconnected 或只剩單一頂點"
+    - "加入新邊使 graph connected"
+    - "把 undirected graph 改成 directed graph"
+    - "計算 chromatic polynomial 的係數"
+  answer: 0
+  explanation: |
+    Vertex cut 是一組會破壞連通性的頂點。它用來衡量 graph 的 vertex connectivity。
+
+- id: dm-graph-017
+  difficulty: advanced
+  tags: [hamiltonian, graph-properties]
+  question: |
+    Hamiltonian cycle 與 Euler circuit 的主要差異是什麼？
+  options:
+    - "Hamiltonian cycle 關注每個頂點一次；Euler circuit 關注每條邊一次"
+    - "Hamiltonian cycle 只存在於 trees"
+    - "Euler circuit 必須使用每個頂點恰一次"
+    - "兩者定義完全相同"
+  answer: 0
+  explanation: |
+    Hamiltonian 問題以頂點為核心，要求訪問每個頂點一次並回到起點；Euler 問題以邊為核心，要求使用每條邊一次。
+
+- id: dm-graph-018
+  difficulty: advanced
+  tags: [graph-coloring, planar-graphs]
+  question: |
+    Four color theorem 的內容最接近哪一項？
+  options:
+    - "每個 planar graph 的頂點可用至多 4 色 proper coloring"
+    - "每個 graph 都可用 4 色著色"
+    - "每個 bipartite graph 都需要 4 色"
+    - "每個 planar graph 都恰好需要 4 色"
+  answer: 0
+  explanation: |
+    Four color theorem 給的是 planar graph 的上界：至多 4 色足夠。它不表示所有平面圖都需要 4 色，也不適用所有 graph。
+
+- id: dm-graph-019
+  difficulty: master
+  tags: [max-flow, min-cut]
+  question: |
+    Max-flow min-cut theorem 的核心結論是什麼？
+  options:
+    - "最大 s-t flow 值等於最小 s-t cut capacity"
+    - "最大 flow 值等於所有邊權重總和"
+    - "最小 cut 一定唯一"
+    - "只有無向圖可以定義 flow"
+  answer: 0
+  explanation: |
+    該 theorem 說明任一 flow network 中，從 s 到 t 可送出的最大流量，正好等於分隔 s 與 t 的最小 cut 容量。
+
+- id: dm-graph-020
+  difficulty: master
+  tags: [spectral-graph-theory, laplacian]
+  question: |
+    對 undirected graph 的 Laplacian matrix L，零 eigenvalue 的 multiplicity 等於什麼？
+  options:
+    - "connected components 的數量"
+    - "edges 的數量"
+    - "maximum degree"
+    - "chromatic number"
+  answer: 0
+  explanation: |
+    Graph Laplacian 的 null space 由各 connected component 的 indicator vectors 張成，因此 eigenvalue 0 的 multiplicity 等於 connected components 數量。

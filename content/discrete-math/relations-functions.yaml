@@ -1,0 +1,279 @@
+- id: dm-relfunc-001
+  difficulty: basic
+  tags: [relations, reflexive]
+  question: |
+    集合 A 上的 relation R 何時稱為 reflexive？
+  options:
+    - "對所有 a in A，都有 (a,a) in R"
+    - "若 (a,b) in R，則 (b,a) in R"
+    - "若 (a,b) 與 (b,c) in R，則 (a,c) in R"
+    - "沒有任何 ordered pair 屬於 R"
+  answer: 0
+  explanation: |
+    Reflexive 要求每個元素都與自己有關，也就是所有 diagonal pairs (a,a) 都在 relation 中。
+
+- id: dm-relfunc-002
+  difficulty: basic
+  tags: [functions, injective]
+  question: |
+    Function f: A -> B 稱為 injective 的意思是什麼？
+  options:
+    - "每個 b in B 至少有一個 preimage"
+    - "不同的輸入一定有不同的輸出"
+    - "A 與 B 必須是同一個集合"
+    - "每個輸入都對應到兩個輸出"
+  answer: 1
+  explanation: |
+    Injective 又稱 one-to-one，定義是若 a1 != a2，則 f(a1) != f(a2)。等價地，f(a1)=f(a2) 可推出 a1=a2。
+
+- id: dm-relfunc-003
+  difficulty: basic
+  tags: [functions, surjective]
+  question: |
+    Function f: A -> B 稱為 surjective 的意思是什麼？
+  options:
+    - "每個 b in B 都是某個 a in A 的 f(a)"
+    - "每個 a in A 都有不同輸出"
+    - "A 必須比 B 大兩倍"
+    - "f 必須是常數函數"
+  answer: 0
+  explanation: |
+    Surjective 又稱 onto，表示 codomain B 的每個元素都被函數值覆蓋。
+
+- id: dm-relfunc-004
+  difficulty: basic
+  tags: [relations, symmetric]
+  question: |
+    若 relation R 是 symmetric，則下列哪一項必然成立？
+  options:
+    - "若 (a,b) in R，則 (b,a) in R"
+    - "若 (a,b) in R，則 a=b"
+    - "對所有 a，都有 (a,a) in R"
+    - "R 一定是空集合"
+  answer: 0
+  explanation: |
+    Symmetric relation 的定義是任一 pair 的反向 pair 也必須在 relation 中。
+
+- id: dm-relfunc-005
+  difficulty: intermediate
+  tags: [relations, equivalence-relation]
+  question: |
+    下列哪三個性質合起來定義 equivalence relation？
+  options:
+    - "reflexive、symmetric、transitive"
+    - "injective、surjective、bijective"
+    - "commutative、associative、distributive"
+    - "connected、acyclic、planar"
+  answer: 0
+  explanation: |
+    Equivalence relation 必須同時具備 reflexive、symmetric 與 transitive，才能把集合切成 equivalence classes。
+
+- id: dm-relfunc-006
+  difficulty: intermediate
+  tags: [relations, partial-order]
+  question: |
+    集合 A 上的 partial order 需要哪些性質？
+  options:
+    - "reflexive、antisymmetric、transitive"
+    - "reflexive、symmetric、transitive"
+    - "injective、surjective、total"
+    - "acyclic、connected、regular"
+  answer: 0
+  explanation: |
+    Partial order 的標準定義是 reflexive、antisymmetric、transitive。Symmetric 會導向 equivalence relation，而非偏序。
+
+- id: dm-relfunc-007
+  difficulty: intermediate
+  tags: [functions, composition]
+  question: |
+    若 f: A -> B 與 g: B -> C 皆為 injective，則 g o f 的性質為何？
+  options:
+    - "一定是 injective"
+    - "一定不是 function"
+    - "一定是 constant function"
+    - "一定是 surjective 到 C"
+  answer: 0
+  explanation: |
+    若 (g o f)(x)=(g o f)(y)，由 g injective 得 f(x)=f(y)，再由 f injective 得 x=y，因此 composition 仍 injective。
+
+- id: dm-relfunc-008
+  difficulty: intermediate
+  tags: [functions, inverse]
+  question: |
+    一個 function f: A -> B 具有 two-sided inverse 的充分且必要條件是什麼？
+  options:
+    - "f 是 bijective"
+    - "f 是 constant"
+    - "f 只需 injective"
+    - "f 只需 surjective"
+  answer: 0
+  explanation: |
+    Two-sided inverse 需要每個 B 的元素剛好對應一個 A 的元素，這正是 bijection 的性質。
+
+- id: dm-relfunc-009
+  difficulty: intermediate
+  tags: [relations, transitive]
+  question: |
+    在整數集合上定義 a R b 若且唯若 a <= b。此 relation 是否 transitive？
+  options:
+    - "是，因為 a <= b 且 b <= c 可推出 a <= c"
+    - "否，因為 <= 不是 symmetric"
+    - "否，因為整數無最大元素"
+    - "是，但只在非負整數上成立"
+  answer: 0
+  explanation: |
+    Transitive 只要求 aRb 與 bRc 推出 aRc。小於等於關係滿足這點，與是否 symmetric 無關。
+
+- id: dm-relfunc-010
+  difficulty: intermediate
+  tags: [relations, equivalence-classes]
+  question: |
+    在整數上定義 a ~ b 若 a-b 可被 5 整除。此 equivalence relation 有幾個 equivalence classes？
+  options:
+    - "1"
+    - "5"
+    - "10"
+    - "無限多且每類只有一個元素"
+  answer: 1
+  explanation: |
+    這是 congruence modulo 5，依餘數 0、1、2、3、4 分成 5 個 equivalence classes。
+
+- id: dm-relfunc-011
+  difficulty: intermediate
+  tags: [functions, cardinality]
+  question: |
+    若 |A|=4、|B|=6，從 A 到 B 的 injective functions 有幾個？
+  options:
+    - "6^4"
+    - "P(6,4)"
+    - "4^6"
+    - "C(6,4)"
+  answer: 1
+  explanation: |
+    4 個不同輸入必須映到 6 個不同輸出，依序選擇為 6*5*4*3 = P(6,4)。
+
+- id: dm-relfunc-012
+  difficulty: intermediate
+  tags: [functions, cardinality]
+  question: |
+    若 |A|=3、|B|=5，從 A 到 B 的所有 functions 有幾個？
+  options:
+    - "3^5"
+    - "5^3"
+    - "P(5,3)"
+    - "C(5,3)"
+  answer: 1
+  explanation: |
+    A 的每個元素可獨立選擇 5 個輸出之一，因此 function 總數為 5^3。
+
+- id: dm-relfunc-013
+  difficulty: advanced
+  tags: [relations, transitive-closure]
+  question: |
+    Relation R 的 transitive closure 是什麼？
+  options:
+    - "包含 R 的最小 transitive relation"
+    - "R 的補集合"
+    - "只保留 R 中的 diagonal pairs"
+    - "把所有 symmetric pairs 刪除後的 relation"
+  answer: 0
+  explanation: |
+    Transitive closure 要在不破壞包含 R 的前提下加入必要 pairs，使結果 transitive，且加入的 pair 數量最小。
+
+- id: dm-relfunc-014
+  difficulty: advanced
+  tags: [posets, hasse-diagram]
+  question: |
+    Hasse diagram 通常省略哪些邊？
+  options:
+    - "由 reflexivity 產生的 self-loop，以及可由 transitivity 推出的邊"
+    - "所有 covering relation"
+    - "所有 minimal elements"
+    - "所有 maximal elements"
+  answer: 0
+  explanation: |
+    Hasse diagram 用 covering relations 表示偏序，省略 self-loop 與 transitive implied edges，以保留偏序骨架。
+
+- id: dm-relfunc-015
+  difficulty: advanced
+  tags: [functions, bijection]
+  question: |
+    對有限集合 A、B，若 |A|=|B| 且 f: A -> B 是 injective，則可推出什麼？
+  options:
+    - "f 必為 surjective，因此是 bijective"
+    - "f 必為 constant"
+    - "f 不可能是 surjective"
+    - "f 的 inverse 一定不是 function"
+  answer: 0
+  explanation: |
+    有限且同大小時，injective 會使用 B 中 |A| 個不同元素；因 |A|=|B|，B 全部都被覆蓋，所以 f 也是 surjective。
+
+- id: dm-relfunc-016
+  difficulty: advanced
+  tags: [relations, antisymmetric]
+  question: |
+    在 power set P(S) 上以 subset relation 定義偏序。此 relation 為何 antisymmetric？
+  options:
+    - "若 A subset B 且 B subset A，則 A = B"
+    - "若 A subset B，則 B subset A 一定成立"
+    - "所有子集合都互不相關"
+    - "任兩集合的交集必為空"
+  answer: 0
+  explanation: |
+    Antisymmetric 要求雙向關係同時成立時兩元素相等。對 subset relation，A subset B 且 B subset A 正是集合相等的條件。
+
+- id: dm-relfunc-017
+  difficulty: advanced
+  tags: [equivalence-relations, partitions]
+  question: |
+    Equivalence relations 與 partitions 之間的關係是什麼？
+  options:
+    - "每個 equivalence relation 對應一個 partition，反之亦然"
+    - "只有有限集合上的 equivalence relation 才能形成 partition"
+    - "Partition 只適用於 partial order"
+    - "Equivalence relation 會把集合排成一條 total order"
+  answer: 0
+  explanation: |
+    Equivalence classes 會形成互斥且覆蓋全集的 partition；反過來，任何 partition 都可定義「同一區塊內等價」的 equivalence relation。
+
+- id: dm-relfunc-018
+  difficulty: advanced
+  tags: [functions, composition]
+  question: |
+    若 g o f 是 injective，必定可推出哪一項？
+  options:
+    - "f 是 injective"
+    - "g 是 injective"
+    - "f 是 surjective"
+    - "g 是 constant"
+  answer: 0
+  explanation: |
+    若 f(x)=f(y)，則 g(f(x))=g(f(y))。因 g o f injective，可推出 x=y，所以 f 必為 injective。g 不一定在整個 domain 上 injective。
+
+- id: dm-relfunc-019
+  difficulty: master
+  tags: [posets, lattice]
+  question: |
+    一個 poset 稱為 lattice 的條件是什麼？
+  options:
+    - "任兩元素都有 least upper bound 與 greatest lower bound"
+    - "任兩元素都必須可比較"
+    - "每個元素都有乘法 inverse"
+    - "relation 必須 symmetric"
+  answer: 0
+  explanation: |
+    Lattice 要求任意兩元素存在 join 與 meet，也就是 least upper bound 與 greatest lower bound。不要求 total order。
+
+- id: dm-relfunc-020
+  difficulty: master
+  tags: [relations, closures]
+  question: |
+    對有向圖表示的 relation，Warshall algorithm 主要用來計算什麼？
+  options:
+    - "Transitive closure"
+    - "Minimum spanning tree"
+    - "Euler circuit"
+    - "Graph coloring 的 chromatic number"
+  answer: 0
+  explanation: |
+    Warshall algorithm 透過逐步允許中介頂點，判斷每對頂點之間是否存在 directed path，因此得到 relation 的 transitive closure。

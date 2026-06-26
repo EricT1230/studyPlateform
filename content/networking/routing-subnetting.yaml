@@ -44,9 +44,9 @@
     Router 轉送 IP packet 時，最核心的決策依據是什麼？
   options:
     - "目的 IP 位址與 routing table 的前綴匹配"
-    - "HTTP Cookie 內容"
-    - "目的主機的螢幕解析度"
-    - "TCP payload 中第一個字元"
+    - "來源 IP 位址是否屬於 RFC1918 private range"
+    - "TCP/UDP port 是否符合特定 ACL 或 policy routing 規則"
+    - "目的 MAC 位址是否已在目前 ingress interface 的 ARP cache 中"
   answer: 0
   explanation: |
     IP router 主要查看目的 IP，透過 longest prefix match 在 forwarding table 中選下一跳與出口介面。Transport payload 通常不參與一般 IP 轉送決策。
@@ -135,9 +135,9 @@
     Distance-vector routing protocol 的基本交換內容是什麼？
   options:
     - "每個 router 向鄰居告知自己到各目的網路的距離估計"
-    - "每個 host 公開自己的瀏覽器歷史"
-    - "只交換完整 Ethernet frame payload"
-    - "每個 router 只告知 CPU 溫度"
+    - "每個 router 對全網路 flooding 自己看到的 link-state"
+    - "只交換下一跳 MAC address，不交換路由 metric"
+    - "只在 packet 到達時才向目的端查詢完整路徑"
   answer: 0
   explanation: |
     Distance-vector 協定讓 router 與鄰居交換目的地距離向量，根據鄰居通告加上到鄰居成本更新路由。RIP 是典型例子，但可能有 count-to-infinity 等收斂問題。
@@ -192,7 +192,7 @@
     - "所有 router 的 CPU 指令集"
   answer: 0
   explanation: |
-    BGP route 會攜帶 AS_PATH、NEXT_HOP、LOCAL_PREF 等屬性。AS_PATH 顯示經過的自治系統序列，可偵測 AS loop，也讓網路依商業與政策選路。
+    BGP route 會攜帶 AS_PATH、NEXT_HOP 等屬性。AS_PATH 顯示經過的自治系統序列，可偵測 AS loop，也讓網路依商業與政策選路。LOCAL_PREF 是 AS 內部常用屬性，通常不會公告給 eBGP peers。
 - id: net-route-016
   difficulty: advanced
   tags: [route-convergence, failure]
@@ -213,9 +213,9 @@
     Traceroute 類工具通常如何推測路徑上的每一跳 router？
   options:
     - "送出逐漸增加 TTL 或 hop limit 的封包，利用中途 router 回覆 ICMP Time Exceeded"
-    - "要求目的主機回傳所有中間 router 的密碼"
-    - "讀取本機 ARP cache 即可得知全網路路徑"
-    - "修改 DNS MX record"
+    - "利用每一跳 TTL 歸零時的 ICMP 回覆推測該 hop 的位址"
+    - "只讀取本機 ARP cache，因此只能看到同一個 L2 broadcast domain 內的下一跳"
+    - "向 DNS 查詢 MX record 以取得 IP path 上所有 router"
   answer: 0
   explanation: |
     IP 封包每經一跳 TTL 減 1，降到 0 時 router 丟棄並回 ICMP Time Exceeded。Traceroute 從 TTL=1 開始逐步增加，藉由回覆封包的送出者推測每一跳。

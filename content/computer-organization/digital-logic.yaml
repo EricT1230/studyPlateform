@@ -30,10 +30,10 @@
   question: |
     D flip-flop 在 clock edge 到來時的基本行為是什麼？
   options:
-    - "輸出 Q 取樣並保存 D 輸入的值"
-    - "輸出 Q 永遠保持 0"
-    - "輸出 Q 等於 D 的反相，且不受 clock 影響"
-    - "同時執行加法與乘法"
+    - "輸出 Q 在指定 clock edge 取樣並保存 D 輸入的值"
+    - "Q 只在 D 維持超過 setup/hold 要求時才可能正確更新"
+    - "Q 等於 D 的反相，且完全不受 clock 影響"
+    - "Q 在 clock edge 後立刻不經 propagation delay 地更新"
   answer: 0
   explanation: |
     D flip-flop 是邊緣觸發儲存元件，在指定 clock edge 取樣 D 並更新 Q。兩個 clock edge 之間，Q 通常維持先前值。
@@ -69,13 +69,13 @@
   question: |
     Karnaugh map 中將相鄰的 1 分組，其主要目的為何？
   options:
-    - "找出可消去的變數，得到較簡化的 sum-of-products 或 product-of-sums"
-    - "把時脈頻率提高兩倍"
+    - "找出可消去的變數，得到較簡化的 sum-of-products"
+    - "找出可消去的變數，直接得到 canonical maxterm list"
     - "將所有輸出強制為 0"
     - "把 sequential circuit 轉成 analog circuit"
   answer: 0
   explanation: |
-    K-map 的相鄰格只差一個變數。把 1 以 2 的冪次大小分組，可消去在組內變化的變數，簡化布林式並減少 gate 數或延遲。
+    K-map 的相鄰格只差一個變數。把 1 以 2 的冪次大小分組，可消去在組內變化的變數，得到較簡化的 sum-of-products。若要以 POS 形式簡化，通常是分組 0 而不是分組 1。
 - id: co-dlogic-007
   difficulty: intermediate
   tags: [adder, carry]
@@ -83,9 +83,9 @@
     Ripple-carry adder 的主要延遲瓶頸是什麼？
   options:
     - "每一位的 carry 必須等前一位產生後才能往下一位傳遞"
-    - "所有 sum bits 必須先寫入 DRAM"
-    - "輸入位元數越多，clock edge 會消失"
-    - "每個 full adder 都需要浮點除法"
+    - "sum bits 必須等所有 carry 穩定後才可視為有效"
+    - "carry-in 可以平行到達每一位，因此延遲與位元數無關"
+    - "使用越多 full adders 時，critical path 通常越短"
   answer: 0
   explanation: |
     Ripple-carry adder 的 carry 從最低位逐級傳到最高位，最壞情況延遲與位元數線性成長。Carry-lookahead 等設計用額外邏輯縮短 carry 產生時間。
@@ -123,8 +123,8 @@
   options:
     - "最低可用電源線長度"
     - "可安全使用的最短 clock period，也就是最高 clock frequency"
-    - "輸出 pin 的顏色"
-    - "ROM 的檔名"
+    - "所有暫存器的初始值是否相同"
+    - "組合邏輯是否能在一個 clock period 內穩定"
   answer: 1
   explanation: |
     Critical path 是兩個暫存器之間最慢的組合邏輯路徑。Clock period 必須大於 clock-to-Q、組合邏輯延遲、setup time 與 skew 等總和，否則可能取樣錯誤。

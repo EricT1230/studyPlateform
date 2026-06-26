@@ -1,0 +1,260 @@
+- id: sec-crypto-001
+  difficulty: basic
+  tags: [cryptography, confidentiality, integrity]
+  question: |
+    在安全通訊協定中，加密 (encryption) 與訊息認證碼 (MAC) 的主要差異是什麼？
+  options:
+    - "加密主要保護機密性；MAC 主要驗證訊息完整性與持有共享金鑰的來源"
+    - "MAC 會自動把訊息變成不可讀，加密只檢查長度"
+    - "兩者完全相同，只是名稱不同"
+    - "加密一定提供不可否認性，MAC 一定不需要金鑰"
+  answer: 0
+  explanation: |
+    加密讓未授權者難以讀取明文；MAC 使用共享秘密驗證訊息未被竄改且來自持有金鑰的一方。MAC 不等於公開可驗證的數位簽章，也不提供機密性。
+- id: sec-crypto-002
+  difficulty: basic
+  tags: [cryptography, hashes]
+  question: |
+    Cryptographic hash function 應具備的核心安全性質之一是什麼？
+  options:
+    - "給定摘要時，應難以找到任何會產生該摘要的輸入"
+    - "摘要必須能被解密回原文"
+    - "不同輸入必須永遠產生不同長度的輸出"
+    - "hash 不應受輸入內容影響"
+  answer: 0
+  explanation: |
+    這描述 preimage resistance。密碼學雜湊還需要 collision resistance 與 second-preimage resistance 等性質；它是單向摘要，不是可逆加密。
+- id: sec-crypto-003
+  difficulty: basic
+  tags: [cryptography, digital-signature]
+  question: |
+    數位簽章在協定中通常用來達成什麼目的？
+  options:
+    - "讓接收者用簽章者的 public key 驗證訊息來源與完整性"
+    - "讓任何人用 public key 偽造簽章"
+    - "把訊息壓縮成較小檔案"
+    - "保證網路永遠不會斷線"
+  answer: 0
+  explanation: |
+    簽章者用 private key 產生簽章，驗證者用對應 public key 檢查。有效簽章代表訊息未被改動，且簽章由 private key 持有者產生。
+- id: sec-crypto-004
+  difficulty: basic
+  tags: [cryptography, key-exchange]
+  question: |
+    Diffie-Hellman key exchange 的基本用途是什麼？
+  options:
+    - "讓雙方在不直接傳送 shared secret 的情況下協議出共同秘密"
+    - "讓雙方不需要驗證彼此身分也能防止所有中間人攻擊"
+    - "把密碼安全地存入資料庫"
+    - "將所有封包永久公開"
+  answer: 0
+  explanation: |
+    Diffie-Hellman 可讓雙方透過公開訊息推導共同秘密，但本身不提供身分驗證。若沒有憑證、簽章或其他認證機制，仍可能遭中間人攻擊。
+- id: sec-crypto-005
+  difficulty: basic
+  tags: [tls, certificates]
+  question: |
+    TLS 用伺服器憑證最直接要解決哪個問題？
+  options:
+    - "讓用戶端確認正在連到預期網域的合法伺服器，而不是冒充者"
+    - "讓伺服器永久免除更新"
+    - "讓所有 HTTP 快取都失效"
+    - "讓資料庫查詢變快"
+  answer: 0
+  explanation: |
+    TLS 憑證驗證會檢查憑證鏈、有效期限、網域名稱與信任根，目標是建立伺服器身分可信度。它不保證應用程式沒有漏洞，也不取代授權控管。
+- id: sec-crypto-006
+  difficulty: intermediate
+  tags: [aead, encryption, integrity]
+  question: |
+    AEAD（如 AES-GCM 或 ChaCha20-Poly1305）相較「只加密」多提供什麼？
+  options:
+    - "同時提供機密性與完整性驗證，並可認證未加密但需綁定的 associated data"
+    - "讓 nonce 可以在同一把 key 下無限制重複使用"
+    - "讓接收方不需要驗證 tag"
+    - "保證訊息不會被重送"
+  answer: 0
+  explanation: |
+    AEAD 會產生 authentication tag，可同時保護密文完整性，並把 associated data 納入認證。接收端必須在接受或使用明文前完成 tag 驗證；驗證失敗時不可回傳或處理明文。AEAD 仍需要正確 nonce 管理，且不自動防 replay。
+- id: sec-crypto-007
+  difficulty: intermediate
+  tags: [aead, nonce]
+  question: |
+    對 AES-GCM 這類要求 nonce 唯一的 AEAD 模式，系統重啟後最容易被忽略的 nonce 管理風險是什麼？
+  options:
+    - "若 counter nonce 沒有持久化，重啟後可能重用同一 key 下的 nonce"
+    - "nonce 必須保密，因此重啟時應改用固定全 0 nonce"
+    - "nonce 重複只會影響壓縮率，不影響安全性"
+    - "只要 tag 長度夠長，nonce 是否重複就完全不重要"
+  answer: 0
+  explanation: |
+    AES-GCM 要求同一 key 下 nonce 不重複。若系統使用 counter nonce，但 counter 狀態沒有安全持久化，重啟或 rollback 後可能重用 nonce，導致機密性與完整性保護被破壞。實務上要保存 counter、使用足夠大的隨機 nonce 並控制碰撞機率，或選用更適合的模式與協定設計。
+- id: sec-crypto-008
+  difficulty: intermediate
+  tags: [tls, forward-secrecy, key-exchange]
+  question: |
+    Forward secrecy 在 TLS 等協定中的意義是什麼？
+  options:
+    - "即使伺服器長期 private key 未來外洩，過去錄下的會話內容也不應因此被解密"
+    - "任何未來訊息都可以不用加密"
+    - "伺服器憑證永遠不會過期"
+    - "用戶端不需要驗證伺服器身分"
+  answer: 0
+  explanation: |
+    forward secrecy 通常透過臨時 Diffie-Hellman 金鑰交換達成。每個會話有獨立臨時秘密，長期私鑰外洩不應足以回頭解密已錄製的舊會話。
+- id: sec-crypto-009
+  difficulty: intermediate
+  tags: [protocols, replay-attack, nonce]
+  question: |
+    要讓 nonce 有效防止 replay attack，協定設計上必須注意什麼？
+  options:
+    - "nonce 或序號需被 MAC/簽章保護，接收方也要拒絕已用過或過期的值"
+    - "nonce 只要出現在封包中，不需驗證也不需記錄"
+    - "nonce 必須等於使用者密碼"
+    - "nonce 只能用來壓縮資料"
+  answer: 0
+  explanation: |
+    防 replay 不只是加入欄位；nonce、序號或 timestamp 必須納入完整性保護，否則可被竄改。接收方還要維護已用值、遞增狀態或時間窗，才能拒絕重放。
+- id: sec-crypto-010
+  difficulty: intermediate
+  tags: [passwords, kdf, password-hashing]
+  question: |
+    儲存使用者密碼時，為什麼不應只使用一般快速 hash（如單次 SHA-256）？
+  options:
+    - "快速 hash 讓離線猜測成本太低，應使用 Argon2id、scrypt、bcrypt 或 PBKDF2 等 password hashing/KDF 並搭配唯一 salt"
+    - "SHA-256 會自動把密碼公開到網路"
+    - "hash 後的密碼一定無法比較"
+    - "salt 必須保密，因此不能儲存在資料庫"
+  answer: 0
+  explanation: |
+    密碼資料庫外洩後，攻擊者可離線大量猜測。Password hashing/KDF 透過時間與記憶體成本提高猜測代價；salt 可公開儲存，作用是讓相同密碼不產生相同雜湊。
+- id: sec-crypto-011
+  difficulty: intermediate
+  tags: [key-derivation, hkdf]
+  question: |
+    HKDF 這類 key derivation function 在協定中的常見用途是什麼？
+  options:
+    - "從共享秘密安全地導出多把用途分離的子金鑰"
+    - "把 public key 轉成可解密的 private key"
+    - "讓弱密碼不需要 salt 或成本參數"
+    - "直接取代所有憑證驗證"
+  answer: 0
+  explanation: |
+    KDF 可把 key exchange 得到的 shared secret 轉換為不同用途的金鑰，例如 client write key、server write key、MAC key 等。用途分離能降低金鑰重用造成的風險。
+- id: sec-crypto-012
+  difficulty: intermediate
+  tags: [rsa, padding, signatures]
+  question: |
+    使用 RSA 做加密或簽章時，為什麼現代協定需要安全 padding scheme？
+  options:
+    - "裸 RSA 具有結構性與可塑性，應使用如 OAEP（加密）或 PSS（簽章）等經設計的填充方案"
+    - "padding 的唯一目的是讓密文看起來像文字"
+    - "裸 RSA 已經適合直接加密任意長訊息"
+    - "padding 會讓 RSA 不再需要金鑰"
+  answer: 0
+  explanation: |
+    直接使用裸 RSA 會暴露數學結構，可能導致多種攻擊。現代實務會使用 RSA-OAEP 加密、RSA-PSS 簽章，或更常用混合式加密來處理大量資料。
+- id: sec-crypto-013
+  difficulty: advanced
+  tags: [tls, downgrade-attack, protocol-negotiation]
+  question: |
+    Downgrade attack 在密碼協定中主要利用什麼弱點？
+  options:
+    - "攻擊者誘使雙方改用較弱或舊版的演算法/協定，若協商未被完整性保護就可能成功"
+    - "攻擊者讓雙方使用最新且最強的協定"
+    - "攻擊者只讀公開文件，不接觸網路"
+    - "攻擊者把資料庫索引改成雜湊索引"
+  answer: 0
+  explanation: |
+    協定若支援多版本/多 cipher suite，攻擊者可能干擾協商使雙方降級到弱選項。現代 TLS 會把協商 transcript 納入驗證並移除弱舊版本來降低此風險。
+- id: sec-crypto-014
+  difficulty: advanced
+  tags: [certificate-validation, pki]
+  question: |
+    驗證伺服器 X.509 憑證時，只檢查「憑證鏈連到受信任 root」為什麼不夠？
+  options:
+    - "還必須檢查目標網域是否符合 subjectAltName、憑證期限、用途限制與撤銷等條件"
+    - "因為受信任 root 一律不重要"
+    - "因為憑證鏈有效就代表任何網域都可使用"
+    - "因為 TLS 不需要憑證"
+  answer: 0
+  explanation: |
+    有效鏈只表示憑證由信任體系簽發；仍要確認該憑證是給目前連線的網域/位址使用，且在有效期、用途與政策限制內。否則可能接受不屬於目標站台的憑證。
+- id: sec-crypto-015
+  difficulty: advanced
+  tags: [signatures, ecdsa, nonce]
+  question: |
+    ECDSA 或 DSA 簽章若在不同訊息重複使用同一個 per-message nonce，可能造成什麼後果？
+  options:
+    - "攻擊者可能從簽章關係推回 private key"
+    - "只會讓簽章檔案稍微變大"
+    - "會自動提升簽章安全性"
+    - "只影響訊息壓縮，不影響金鑰"
+  answer: 0
+  explanation: |
+    ECDSA/DSA 對每次簽章的 nonce 要求極高。nonce 重複或偏弱可能洩漏私鑰，因此實務上會使用高品質隨機數或 deterministic nonce 標準方法。
+- id: sec-crypto-016
+  difficulty: advanced
+  tags: [protocol-design, key-separation]
+  question: |
+    協定設計中強調 key separation 的主要原因是什麼？
+  options:
+    - "不同用途使用獨立金鑰，避免同一金鑰跨功能使用時產生交互攻擊或破壞安全假設"
+    - "讓所有用途共用同一把 key，方便記憶"
+    - "讓 public key 與 private key 完全相同"
+    - "使所有訊息都不用驗證"
+  answer: 0
+  explanation: |
+    同一把 key 同時用於加密、MAC、不同方向或不同協定，可能造成意外交互作用。透過 KDF 導出帶 context 的子金鑰，可讓用途與方向清楚分離。
+- id: sec-crypto-017
+  difficulty: advanced
+  tags: [jwt, signatures, algorithm-confusion]
+  question: |
+    驗證 JWT 或類似 token 簽章時，為什麼不應盲目信任 token header 中宣告的 alg？
+  options:
+    - "驗證端應根據伺服器端設定的允許演算法與 key 來驗證，避免 alg confusion 或 none 類錯誤設定"
+    - "因為 header 一定會被 TLS 刪除"
+    - "因為 token header 是加密的，伺服器看不到"
+    - "因為所有 JWT 都不需要簽章"
+  answer: 0
+  explanation: |
+    token header 是攻擊者可控制的輸入。驗證端若直接依 header 決定演算法，可能接受非預期演算法或錯誤 key 類型。安全做法是由伺服器端白名單與 key binding 決定如何驗證。
+- id: sec-crypto-018
+  difficulty: advanced
+  tags: [certificate-pinning, operations, tls]
+  question: |
+    Certificate pinning 的安全與營運取捨最合理的描述是什麼？
+  options:
+    - "可降低部分 CA 或憑證誤發風險，但若 pin 更新/備援設計不佳，可能造成大規模連線失敗"
+    - "一旦啟用 pinning，就完全不需要憑證更新"
+    - "pinning 會自動修補伺服器所有漏洞"
+    - "pinning 的唯一效果是加快 DNS 查詢"
+  answer: 0
+  explanation: |
+    pinning 限制可接受的憑證或公鑰，能縮小信任面；但憑證輪換、金鑰遺失或 pin 設定錯誤會導致合法用戶端拒連，因此需要備援 pin 與更新策略。
+- id: sec-crypto-019
+  difficulty: master
+  tags: [protocol-analysis, authenticated-key-exchange]
+  question: |
+    單純的匿名 Diffie-Hellman 為什麼不足以抵抗 active man-in-the-middle？
+  options:
+    - "攻擊者可分別與雙方建立不同共享秘密並轉發訊息，因為雙方沒有驗證對方身分"
+    - "Diffie-Hellman 不能產生任何共享秘密"
+    - "匿名 Diffie-Hellman 會自動驗證憑證鏈"
+    - "中間人攻擊只能發生在未加密硬碟上"
+  answer: 0
+  explanation: |
+    匿名 DH 提供密鑰協議但不提供實體認證。主動攻擊者可對 Alice 扮演 Bob、對 Bob 扮演 Alice，各自建立秘密；需要簽章、憑證、PSK 或 PAKE 等認證機制綁定身分。
+- id: sec-crypto-020
+  difficulty: master
+  tags: [protocol-design, transcript-binding, tls]
+  question: |
+    現代握手協定常把 handshake transcript 納入金鑰導出或 finished 訊息驗證。這樣做的主要目的為何？
+  options:
+    - "把雙方協商過程完整綁定到後續金鑰與驗證，防止參數被竄改而不被發現"
+    - "讓用戶端不需要檢查任何憑證"
+    - "讓所有早期訊息都以明文永久保存"
+    - "把網路延遲固定為 0"
+  answer: 0
+  explanation: |
+    transcript binding 會把版本、cipher suite、key share、憑證等協商內容納入後續驗證。若攻擊者改動握手參數，finished 驗證會失敗，能降低降級與參數替換攻擊風險。

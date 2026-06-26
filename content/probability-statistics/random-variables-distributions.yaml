@@ -1,0 +1,279 @@
+- id: ps-rv-001
+  difficulty: basic
+  tags: [random-variables, expectation]
+  question: |
+    Discrete random variable X 的 expectation 通常如何計算？
+  options:
+    - "sum_x x P(X=x)"
+    - "sum_x P(X=x)^2"
+    - "max_x P(X=x)"
+    - "P(X=0)"
+  answer: 0
+  explanation: |
+    離散型期望值是所有可能值乘上其 probability mass 後加總，也就是加權平均。
+
+- id: ps-rv-002
+  difficulty: basic
+  tags: [variance, random-variables]
+  question: |
+    Variance Var(X) 的定義是哪一個？
+  options:
+    - "E[(X - E[X])^2]"
+    - "E[X] - E[X^2]"
+    - "E[X]^2"
+    - "P(X=E[X])"
+  answer: 0
+  explanation: |
+    Variance 衡量 random variable 相對平均值的平方偏差，其定義為 E[(X-mu)^2]。
+
+- id: ps-rv-003
+  difficulty: basic
+  tags: [bernoulli, distributions]
+  question: |
+    Bernoulli(p) random variable 的可能取值通常是什麼？
+  options:
+    - "0 與 1"
+    - "所有非負整數"
+    - "所有實數"
+    - "只有 p"
+  answer: 0
+  explanation: |
+    Bernoulli distribution 描述一次成功或失敗試驗，常用 1 表示成功、0 表示失敗。
+
+- id: ps-rv-004
+  difficulty: basic
+  tags: [cdf, probability]
+  question: |
+    CDF F_X(x) 定義為什麼？
+  options:
+    - "P(X <= x)"
+    - "P(X = x) 對所有 x 都成立"
+    - "E[X | X=x]"
+    - "Var(X) 的平方根"
+  answer: 0
+  explanation: |
+    Cumulative distribution function 在 x 處給出 random variable 不超過 x 的機率。
+
+- id: ps-rv-005
+  difficulty: intermediate
+  tags: [binomial-distribution, expectation]
+  question: |
+    若 X ~ Binomial(n,p)，則 E[X] 為何？
+  options:
+    - "np"
+    - "p/n"
+    - "n+p"
+    - "n(1-p)"
+  answer: 0
+  explanation: |
+    Binomial 可視為 n 個 independent Bernoulli(p) 的總和。利用 expectation linearity，E[X]=np。
+
+- id: ps-rv-006
+  difficulty: intermediate
+  tags: [poisson-distribution, variance]
+  question: |
+    若 X ~ Poisson(lambda)，則 Var(X) 為何？
+  options:
+    - "lambda"
+    - "lambda^2"
+    - "1/lambda"
+    - "0"
+  answer: 0
+  explanation: |
+    Poisson distribution 的 mean 與 variance 都等於 lambda，這是其重要性質。
+
+- id: ps-rv-007
+  difficulty: intermediate
+  tags: [normal-distribution, standardization]
+  question: |
+    若 X ~ N(mu, sigma^2)，則 Z=(X-mu)/sigma 的 distribution 是什麼？
+  options:
+    - "N(0,1)"
+    - "N(mu,1)"
+    - "Poisson(mu)"
+    - "Bernoulli(sigma)"
+  answer: 0
+  explanation: |
+    對 normal random variable 做減平均、除標準差的 standardization，會得到 standard normal distribution N(0,1)。
+
+- id: ps-rv-008
+  difficulty: intermediate
+  tags: [geometric-distribution, memoryless]
+  question: |
+    Geometric distribution 的 memoryless property 表示什麼？
+  options:
+    - "已等待多久不改變未來還需等待的分布"
+    - "random variable 的 variance 為 0"
+    - "所有 trial 必須互相 dependent"
+    - "成功機率每次都增加"
+  answer: 0
+  explanation: |
+    Memoryless 表示 P(X>s+t | X>s)=P(X>t)。對重複 independent trials 而言，過去失敗不改變未來等待分布。
+
+- id: ps-rv-009
+  difficulty: intermediate
+  tags: [continuous-random-variables, pdf]
+  question: |
+    Continuous random variable 的 PDF f(x) 必須滿足哪個條件？
+  options:
+    - "f(x) >= 0 且 integral f(x) dx = 1"
+    - "f(x) 對所有 x 都小於 0"
+    - "f(x) 必須只取整數值"
+    - "f(x) 的最大值必須等於 1"
+  answer: 0
+  explanation: |
+    PDF 是 density，不是單點機率；它必須非負且在整個 sample space 上積分為 1。
+
+- id: ps-rv-010
+  difficulty: intermediate
+  tags: [independence, joint-distribution]
+  question: |
+    Discrete random variables X 與 Y independent 的條件是什麼？
+  options:
+    - "P(X=x,Y=y)=P(X=x)P(Y=y) 對所有 x,y 成立"
+    - "E[X]=E[Y]"
+    - "Var(X)=Var(Y)"
+    - "X+Y 一定為常數"
+  answer: 0
+  explanation: |
+    Independence 要求 joint distribution factorize 成 marginal distributions 的乘積；只看 mean 或 variance 相等不足以判斷。
+
+- id: ps-rv-011
+  difficulty: intermediate
+  tags: [covariance, correlation]
+  question: |
+    Correlation coefficient 的取值範圍是什麼？
+  options:
+    - "[-1, 1]"
+    - "[0, infinity)"
+    - "所有整數"
+    - "(1, infinity)"
+  answer: 0
+  explanation: |
+    由 Cauchy-Schwarz inequality，correlation coefficient rho = Cov(X,Y)/(sigma_X sigma_Y) 介於 -1 與 1 之間。
+
+- id: ps-rv-012
+  difficulty: intermediate
+  tags: [law-of-total-probability, conditioning]
+  question: |
+    若事件 B_i 形成 sample space 的 partition，law of total probability 給出 P(A) 等於什麼？
+  options:
+    - "sum_i P(A | B_i)P(B_i)"
+    - "prod_i P(A | B_i)"
+    - "P(A | B_1) - P(B_1)"
+    - "sum_i P(B_i | A)P(A)^2"
+  answer: 0
+  explanation: |
+    A 可被分解為互斥事件 A cap B_i 的聯集，因此 P(A)=sum_i P(A cap B_i)=sum_i P(A|B_i)P(B_i)。
+
+- id: ps-rv-013
+  difficulty: advanced
+  tags: [moment-generating-functions, distributions]
+  question: |
+    Moment generating function M_X(t)=E[e^{tX}] 若在 0 附近存在，可用來取得什麼？
+  options:
+    - "X 的 moments"
+    - "X 的 sample size"
+    - "X 是否一定為整數"
+    - "X 的所有 observations 原始資料"
+  answer: 0
+  explanation: |
+    MGF 在 t=0 的第 k 階導數給出 E[X^k]。在適當條件下，MGF 也能唯一決定分布。
+
+- id: ps-rv-014
+  difficulty: advanced
+  tags: [transformations, continuous-random-variables]
+  question: |
+    若 Y=g(X) 且 g 單調可微，continuous case 中求 f_Y(y) 時通常需乘上什麼因子？
+  options:
+    - "|d/dy g^{-1}(y)|"
+    - "g(y)"
+    - "E[X]"
+    - "Var(Y)"
+  answer: 0
+  explanation: |
+    Change of variables 需補上 Jacobian 絕對值。單變數時 f_Y(y)=f_X(g^{-1}(y)) |(g^{-1})'(y)|。
+
+- id: ps-rv-015
+  difficulty: advanced
+  tags: [central-limit-theorem, sampling]
+  question: |
+    Central Limit Theorem 在 iid 且有限 variance 的情況下，描述 sample mean 的哪個現象？
+  options:
+    - "適當標準化後近似 normal distribution"
+    - "一定等於 population mean"
+    - "variance 會隨 sample size 增加"
+    - "只適用於 Bernoulli random variables"
+  answer: 0
+  explanation: |
+    CLT 說 sqrt(n)(bar X - mu)/sigma 會趨近 N(0,1)。這是近似分布，不代表 sample mean 必等於 mu。
+
+- id: ps-rv-016
+  difficulty: advanced
+  tags: [law-of-large-numbers, convergence]
+  question: |
+    Weak law of large numbers 的核心結論是什麼？
+  options:
+    - "sample mean 依機率收斂到 population mean"
+    - "每個 sample 都等於 population mean"
+    - "sample variance 永遠為 0"
+    - "所有 random variables 都必須 normal"
+  answer: 0
+  explanation: |
+    Weak LLN 說當 n 增加，bar X 偏離 mu 超過任意正 epsilon 的機率趨近 0，也就是 convergence in probability。
+
+- id: ps-rv-017
+  difficulty: advanced
+  tags: [conditional-expectation, total-expectation]
+  question: |
+    Law of total expectation 的公式是哪一個？
+  options:
+    - "E[E[X | Y]] = E[X]"
+    - "E[X | Y] = E[Y | X]"
+    - "E[XY] = E[X] + E[Y]"
+    - "E[X^2] = E[X]^2 永遠成立"
+  answer: 0
+  explanation: |
+    先在給定 Y 的情況下對 X 取條件期望，再對 Y 的分布平均，會回到 X 的無條件期望。
+
+- id: ps-rv-018
+  difficulty: advanced
+  tags: [exponential-distribution, memoryless]
+  question: |
+    Continuous distributions 中，哪個常見 distribution 具有 memoryless property？
+  options:
+    - "Exponential distribution"
+    - "Normal distribution"
+    - "Uniform distribution on [0,1]"
+    - "Student's t distribution"
+  answer: 0
+  explanation: |
+    Exponential distribution 滿足 P(X>s+t | X>s)=P(X>t)，是連續等待時間模型中具有 memoryless property 的典型分布。
+
+- id: ps-rv-019
+  difficulty: master
+  tags: [characteristic-functions, distributions]
+  question: |
+    Characteristic function phi_X(t)=E[e^{itX}] 相較於 MGF 的一個優點是什麼？
+  options:
+    - "對所有 random variables 都存在"
+    - "只能處理 discrete random variables"
+    - "永遠等於 CDF"
+    - "不能用來判別分布"
+  answer: 0
+  explanation: |
+    因 |e^{itX}|=1，expectation 總是存在。Characteristic function 也能唯一決定 distribution。
+
+- id: ps-rv-020
+  difficulty: master
+  tags: [convergence, probability-theory]
+  question: |
+    Convergence almost surely 與 convergence in probability 的一般關係是什麼？
+  options:
+    - "Almost sure convergence 蘊含 convergence in probability"
+    - "Convergence in probability 蘊含 almost sure convergence，無例外"
+    - "兩者完全無關"
+    - "兩者只對 deterministic sequences 有定義"
+  answer: 0
+  explanation: |
+    Almost sure convergence 是較強的收斂概念，表示除機率 0 的例外外逐點收斂；它會推出 convergence in probability，但反向一般不成立。

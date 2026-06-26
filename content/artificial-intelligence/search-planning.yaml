@@ -1,0 +1,260 @@
+- id: ai-search-001
+  difficulty: basic
+  tags: [search, state-space, fundamentals]
+  question: |
+    在狀態空間搜尋中，「狀態」最適合描述成下列哪一項？
+  options:
+    - "問題在某一時刻的完整必要描述，可用來判斷可採取的動作與是否達成目標"
+    - "演算法的執行時間上限"
+    - "訓練資料中的一筆標籤"
+    - "程式語言的語法規則"
+  answer: 0
+  explanation: |
+    狀態必須包含解題所需的資訊，例如棋盤配置或目前所在節點，使演算法能產生後繼、計算成本並判斷 goal test。
+- id: ai-search-002
+  difficulty: basic
+  tags: [search, bfs, completeness]
+  question: |
+    若所有邊成本相同且分支數有限，Breadth-First Search (BFS) 的重要性質是什麼？
+  options:
+    - "一定先找到深度最淺的解，因此在單位成本下可找到最短步數解"
+    - "記憶體用量永遠是常數"
+    - "一定比 A* 使用更少節點"
+    - "不需要記錄 frontier"
+  answer: 0
+  explanation: |
+    BFS 依深度逐層展開，第一個找到的目標會是最淺解；在每步成本相同時，最淺解也就是最低成本解。不過 BFS 通常需要大量記憶體保存 frontier。
+- id: ai-search-003
+  difficulty: basic
+  tags: [search, dfs, memory]
+  question: |
+    Depth-First Search (DFS) 相較 BFS 的典型優點是什麼？
+  options:
+    - "通常只需保存目前路徑與少量未探索分支，記憶體需求較低"
+    - "在所有圖上都保證找到最低成本解"
+    - "不會陷入無限深路徑"
+    - "不需要 goal test"
+  answer: 0
+  explanation: |
+    DFS 沿著一條路徑深入，記憶體通常與深度相關，低於 BFS 的整層 frontier。但若狀態空間有無限深路徑或未做循環檢查，DFS 可能不完整且不保證最佳。
+- id: ai-search-004
+  difficulty: basic
+  tags: [search, uniform-cost-search, optimality]
+  question: |
+    Uniform-Cost Search (UCS) 每次從 frontier 取出哪個節點？
+  options:
+    - "目前路徑成本 g(n) 最小的節點"
+    - "深度最大的節點"
+    - "啟發式 h(n) 最大的節點"
+    - "最近被加入 frontier 的節點"
+  answer: 0
+  explanation: |
+    UCS 以目前已累積路徑成本 g(n) 排序 frontier；若每個步驟成本為非負且有正下界，UCS 可找到最低成本解。
+- id: ai-search-005
+  difficulty: basic
+  tags: [planning, actions, transition-model]
+  question: |
+    在 classical planning 中，action schema 通常包含 preconditions 與 effects。Preconditions 的用途是什麼？
+  options:
+    - "描述動作在什麼狀態下可以合法執行"
+    - "描述演算法應使用哪種程式語言"
+    - "保證 heuristic 永遠為 0"
+    - "列出所有訓練資料"
+  answer: 0
+  explanation: |
+    preconditions 是動作可執行的前提條件；只有目前狀態滿足它們，planning 系統才可套用該 action，然後依 effects 更新狀態。
+- id: ai-search-006
+  difficulty: intermediate
+  tags: [search, astar, evaluation-function]
+  question: |
+    A* search 通常使用 f(n) = g(n) + h(n)。其中 h(n) 代表什麼？
+  options:
+    - "從起點到 n 的實際已知成本"
+    - "從 n 到目標的估計剩餘成本"
+    - "n 的子節點數量"
+    - "演算法已展開的總節點數"
+  answer: 1
+  explanation: |
+    g(n) 是起點到目前節點的已知成本，h(n) 是從目前節點到目標的估計成本。A* 用兩者相加平衡已付成本與剩餘距離。
+- id: ai-search-007
+  difficulty: intermediate
+  tags: [search, heuristic, admissible]
+  question: |
+    下列哪個敘述最符合 admissible heuristic 的定義？
+  options:
+    - "h(n) 永遠不高估從 n 到目標的真正最低成本"
+    - "h(n) 必須永遠等於 0"
+    - "h(n) 可以任意高估，只要執行很快"
+    - "h(n) 只能用在 DFS，不能用在 A*"
+  answer: 0
+  explanation: |
+    admissible 表示啟發式是樂觀估計，不會超過真正剩餘最小成本。這是 tree-search A* 能保證最佳性的重要條件之一。
+- id: ai-search-008
+  difficulty: intermediate
+  tags: [search, heuristic, consistency]
+  question: |
+    Consistent heuristic 需滿足 h(n) <= c(n, a, n') + h(n')。這個條件的直觀意義是什麼？
+  options:
+    - "沿著一條邊前進時，估計值下降不應超過實際付出的邊成本"
+    - "所有邊成本都必須為 0"
+    - "h(n) 必須比真正成本大"
+    - "演算法不能使用 priority queue"
+  answer: 0
+  explanation: |
+    consistent heuristic 類似三角不等式，保證 f 值沿路徑不會下降。對 graph-search A* 來說，這有助於節點第一次取出時即確定最低成本。
+- id: ai-search-009
+  difficulty: intermediate
+  tags: [search, greedy-best-first, tradeoff]
+  question: |
+    Greedy Best-First Search 與 A* 的主要差異是什麼？
+  options:
+    - "Greedy 只看 h(n)，A* 同時看 g(n) 與 h(n)"
+    - "Greedy 一定找到最低成本解，A* 一定不會"
+    - "Greedy 不能使用 heuristic"
+    - "A* 不會記錄 frontier"
+  answer: 0
+  explanation: |
+    Greedy Best-First Search 選 h(n) 最小的節點，可能很快靠近目標但忽略已付成本；A* 使用 g+h，因此在合適條件下可保證最佳。
+- id: ai-search-010
+  difficulty: intermediate
+  tags: [search, iterative-deepening, dfs]
+  question: |
+    Iterative Deepening DFS (IDDFS) 為什麼常被視為結合 BFS 與 DFS 優點？
+  options:
+    - "逐步增加深度限制，保有 DFS 的低記憶體，同時在單位成本下找到最淺解"
+    - "一次保存所有深度的 frontier，因此記憶體比 BFS 更高"
+    - "完全不會重複展開節點"
+    - "只能用於有負邊成本的圖"
+  answer: 0
+  explanation: |
+    IDDFS 用深度限制 DFS，限制從 0、1、2... 增加，因此能像 BFS 找到最淺解，但每次搜尋只需 DFS 等級的記憶體；代價是淺層節點會重複展開。
+- id: ai-search-011
+  difficulty: intermediate
+  tags: [planning, forward-search, backward-search]
+  question: |
+    在 planning 中，forward search 與 backward search 的差異是什麼？
+  options:
+    - "forward 從初始狀態套用可行動作往目標走；backward 從目標條件反推需要哪些前置條件"
+    - "forward 只能解無解問題；backward 只能用在 supervised learning"
+    - "兩者唯一差異是程式語言不同"
+    - "backward search 不需要 action model"
+  answer: 0
+  explanation: |
+    forward search 從 initial state 展開可執行 action；backward search 從 goal regression，反推哪些 action 可達成目標及其前提。兩者都依賴 action model。
+- id: ai-search-012
+  difficulty: intermediate
+  tags: [search, graph-search, repeated-states]
+  question: |
+    在圖搜尋中維護 explored set 的主要目的為何？
+  options:
+    - "避免重複展開已處理狀態，降低循環與重工"
+    - "讓演算法忘記所有已找到的路徑"
+    - "強迫 DFS 變成 supervised learning"
+    - "讓每個 heuristic 都變成 admissible"
+  answer: 0
+  explanation: |
+    狀態空間可能由不同路徑抵達同一狀態，甚至形成循環。explored set 可避免反覆展開相同狀態，但也要搭配成本更新策略以維持最佳性。
+- id: ai-search-013
+  difficulty: advanced
+  tags: [search, heuristic-dominance, astar]
+  question: |
+    若兩個 admissible heuristics h1 與 h2 都不高估，且對所有節點 h2(n) >= h1(n)，通常可說什麼？
+  options:
+    - "在相同 tie-breaking 且 heuristic 符合 A* 最佳性條件時，h2 dominates h1，通常不會展開更多非平手節點"
+    - "h2 一定不是 admissible"
+    - "h1 與 h2 都不能用在 A*"
+    - "h1 必定比 h2 提供更多資訊"
+  answer: 0
+  explanation: |
+    在同樣不高估且符合 A* 最佳性條件的前提下，估計值越接近真實剩餘成本越有資訊量。若 h2 對所有節點都至少和 h1 一樣大，則 h2 dominates h1；在相同 tie-breaking 下，通常不會展開更多非平手節點。平手處理與 graph-search 條件仍可能影響實際展開數。
+- id: ai-search-014
+  difficulty: advanced
+  tags: [planning, relaxed-problem, heuristics]
+  question: |
+    在自動規劃中，用 relaxed problem 建立 heuristic 的核心想法是什麼？
+  options:
+    - "移除或放寬某些限制，讓問題較容易求解，再用其解成本估計原問題"
+    - "把問題變得更難，以確保 heuristic 高估"
+    - "完全忽略初始狀態與目標"
+    - "只保留無法執行的動作"
+  answer: 0
+  explanation: |
+    relaxed problem 透過放寬限制得到較容易的問題；其最佳解成本常可作為原問題的樂觀估計，因為原問題限制更多、通常不會更便宜。
+- id: ai-search-015
+  difficulty: advanced
+  tags: [search, ida-star, memory]
+  question: |
+    IDA* 與標準 A* 的主要取捨是什麼？
+  options:
+    - "IDA* 以 f-cost 門檻做反覆深搜，節省記憶體但可能重複搜尋"
+    - "IDA* 永遠保存完整 open list，因此記憶體更高"
+    - "IDA* 不使用任何 heuristic"
+    - "IDA* 只能處理沒有目標狀態的問題"
+  answer: 0
+  explanation: |
+    IDA* 類似 iterative deepening，但限制條件是 f=g+h 門檻。它避免保存大型 priority queue，適合記憶體受限問題，但會重複展開部分節點。
+- id: ai-search-016
+  difficulty: advanced
+  tags: [adversarial-search, minimax, alpha-beta]
+  question: |
+    Alpha-beta pruning 在 minimax 搜尋中的效果是什麼？
+  options:
+    - "剪掉不可能影響最終決策的分支，維持同樣 minimax 結果但減少展開節點"
+    - "改變效用函數，使較差走法變成較好走法"
+    - "只能用於單一玩家的最短路徑問題"
+    - "保證不需要任何評估函數"
+  answer: 0
+  explanation: |
+    alpha-beta 利用目前已知上下界判斷某些分支不可能改變根節點選擇，因此可安全剪枝；在正確實作下不改變 minimax 決策。
+- id: ai-search-017
+  difficulty: advanced
+  tags: [local-search, hill-climbing, plateaus]
+  question: |
+    Hill climbing 在搜尋空間中遇到 plateau 時，常見問題是什麼？
+  options:
+    - "鄰近狀態評分相同或差異很小，演算法缺乏明確方向，可能停滯或隨機游走"
+    - "所有鄰居都一定是全域最佳解"
+    - "演算法會自動轉成 BFS 並保證最佳"
+    - "評分函數不再需要計算"
+  answer: 0
+  explanation: |
+    plateau 是局部區域內評分相同或近似相同，hill climbing 無法判斷哪個方向更好，可能停在非最佳區域；常見改善包含 random restart 或允許有限隨機步。
+- id: ai-search-018
+  difficulty: advanced
+  tags: [constraint-satisfaction, backtracking, mrv]
+  question: |
+    在 Constraint Satisfaction Problem 中，MRV (minimum remaining values) heuristic 的目的為何？
+  options:
+    - "優先選擇合法值最少的變數，盡早暴露衝突並剪枝"
+    - "永遠選擇 domain 最大的變數"
+    - "讓所有 constraint 暫時失效"
+    - "把所有變數同時指派成相同值"
+  answer: 0
+  explanation: |
+    MRV 先處理最受限制、可選值最少的變數。如果該變數無法被合法指派，搜尋可早點回溯，避免在較自由的變數上浪費展開。
+- id: ai-search-019
+  difficulty: master
+  tags: [search, weighted-astar, optimality]
+  question: |
+    Weighted A* 使用 f(n) = g(n) + w h(n)，其中 w > 1。最合理的描述是什麼？
+  options:
+    - "通常更偏向啟發式方向、可能更快找到解，但可能犧牲最優性"
+    - "只要 w > 1，就比 A* 更保證最佳"
+    - "w 越大，h(n) 越接近 0"
+    - "Weighted A* 不能用在有成本的問題"
+  answer: 0
+  explanation: |
+    w>1 會放大 heuristic，使搜尋更貪婪，常可加快找到可行解；但即使 h admissible，放大後也可能高估，因而不再保證一般 A* 的最優性。
+- id: ai-search-020
+  difficulty: master
+  tags: [planning, partial-order-planning, causal-links]
+  question: |
+    Partial-order planning 保留部分動作順序而非直接產生單一路徑。這樣做的主要好處是什麼？
+  options:
+    - "只約束必要的先後關係，讓彼此獨立的動作可保持彈性並延後線性化"
+    - "禁止所有動作同時存在於計畫中"
+    - "讓 preconditions 不再需要被滿足"
+    - "只能產生長度為 1 的計畫"
+  answer: 0
+  explanation: |
+    partial-order planning 透過 causal links 與 ordering constraints 表示必要依賴；無關動作不強行排序，可減少過早承諾並保留多種可行線性化。

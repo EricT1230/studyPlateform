@@ -28,7 +28,7 @@
   difficulty: basic
   tags: [hexadecimal, bytes]
   question: |
-    十六進位 0x3A7F 需要幾個 bit 才能完整表示？
+    若將十六進位 0x3A7F 以 4 個 hex digits 完整展開成固定寬度二進位，需要幾個 bit？
   options:
     - "8 bits"
     - "12 bits"
@@ -36,7 +36,7 @@
     - "32 bits"
   answer: 2
   explanation: |
-    每個十六進位 digit 對應 4 個 bit。0x3A7F 有 4 個 hex digits，因此需要 4×4 = 16 bits 表示。
+    每個十六進位 digit 對應 4 個 bit。0x3A7F 有 4 個 hex digits，因此固定寬度展開需要 4×4 = 16 bits。若題目問數值本身的最少 bit 數，答案會不同；本題問的是 4 個 hex digits 的展開。
 - id: co-datarepr-004
   difficulty: basic
   tags: [endianness, memory-layout]
@@ -184,7 +184,7 @@
   difficulty: advanced
   tags: [bit-manipulation, masks]
   question: |
-    若要將 32-bit 暫存器 x 的第 5 個 bit 設為 1，且不改變其他 bit，應使用哪個運算？
+    若要將 32-bit 暫存器 x 的 bit index 5（從 0 開始）設為 1，且不改變其他 bit，應使用哪個運算？
   options:
     - "x = x & (1 << 5)"
     - "x = x | (1 << 5)"
@@ -192,7 +192,7 @@
     - "x = x >> 5"
   answer: 1
   explanation: |
-    OR mask 會把 mask 中為 1 的位置設為 1，mask 中為 0 的位置保留原值。AND 會清掉其他 bit，XOR 會翻轉該 bit，右移會改變整體位元排列。
+    OR mask 會把 mask 中為 1 的位置設為 1，mask 中為 0 的位置保留原值。`1 << 5` 對應從 0 開始編號的 bit index 5。AND 會清掉其他 bit，XOR 會翻轉該 bit，右移會改變整體位元排列。
 - id: co-datarepr-016
   difficulty: advanced
   tags: [decimal, bcd]

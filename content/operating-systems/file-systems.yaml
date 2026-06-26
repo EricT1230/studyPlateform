@@ -187,9 +187,9 @@
     傳統 fsck 檢查 file system 時，通常會尋找哪類問題？
   options:
     - "未被任何 inode 參照但標為已配置的 block，或被多個不應共享的 inode 參照的 block"
-    - "CPU 分支預測錯誤率"
-    - "TCP 三向交握次數"
-    - "編譯器語法錯誤"
+    - "inode link count 與目錄項實際參照數是否不一致"
+    - "free-space bitmap 是否和實際 inode/block 使用狀態不一致"
+    - "只檢查檔案內容是否符合 UTF-8 編碼"
   answer: 0
   explanation: |
     fsck 會掃描 metadata，檢查 inode、目錄、free-space map 與 link count 是否一致。它可修復遺失 block、錯誤 link count、目錄結構問題等，但大型檔案系統掃描成本高。

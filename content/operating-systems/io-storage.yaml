@@ -44,9 +44,9 @@
     Device driver 在 OS 中的主要角色是什麼？
   options:
     - "將一般 OS I/O 介面轉換成特定硬體裝置的命令、狀態與中斷處理"
-    - "負責把 C 程式編譯成機器碼"
-    - "決定所有使用者密碼"
-    - "只用來顯示桌面背景"
+    - "在裝置完成請求後處理 interrupt 或 completion queue"
+    - "對上提供統一抽象，對下管理裝置暫存器、DMA 與佇列"
+    - "完全取代 kernel 的 scheduler 與 virtual memory subsystem"
   answer: 0
   explanation: |
     Driver 知道特定裝置的暫存器、命令格式、DMA、queue 與中斷語意，對上提供 OS 統一抽象，對下控制硬體。
@@ -109,9 +109,9 @@
     SSD 中 FTL (Flash Translation Layer) 的主要功能是什麼？
   options:
     - "將邏輯 block 位址映射到實體 flash pages/blocks，並處理 wear leveling 與 garbage collection"
-    - "把 SATA 訊號轉成音訊"
-    - "只負責檔案權限"
-    - "讓 flash 可以原地覆寫任意 byte"
+    - "透過 over-provisioning 降低寫入放大與磨耗不均"
+    - "隱藏 erase-before-write 限制，對主機呈現 block device 抽象"
+    - "讓 flash 可以原地覆寫任意 byte，完全不需要 erase block"
   answer: 0
   explanation: |
     NAND flash 不能像磁碟一樣任意原地覆寫，需先 erase block。FTL 提供 LBA 抽象，管理映射、壞塊、磨耗平均與回收，以隱藏 flash 限制。

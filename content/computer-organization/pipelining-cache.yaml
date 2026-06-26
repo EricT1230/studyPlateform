@@ -147,10 +147,10 @@
   question: |
     Set-associative cache 中的 replacement policy 主要在何時使用？
   options:
-    - "Cache hit 且所有 ways 都空著時"
+    - "Cache hit 時，用來決定是否要更新 replacement metadata"
     - "Cache miss 且目標 set 中沒有空 way，需要選一個 victim line 時"
-    - "每次 ALU 加法時"
-    - "作業系統切換使用者介面語言時"
+    - "Write-back cache eviction 時，用來決定 dirty line 是否要寫回"
+    - "每次 prefetch request 發生時，用來取代主記憶體控制器"
   answer: 1
   explanation: |
     當 set 已滿又有新 block 要放入，硬體必須選擇要替換哪個 way。LRU、pseudo-LRU、random 等 policy 都是為此服務。

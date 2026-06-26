@@ -1,0 +1,279 @@
+- id: dm-logic-001
+  difficulty: basic
+  tags: [logic, implication]
+  question: |
+    命題 P => Q 只有在哪一種情況下為假？
+  options:
+    - "P 為真且 Q 為假"
+    - "P 為假且 Q 為真"
+    - "P 為真且 Q 為真"
+    - "P 為假且 Q 為假"
+  answer: 0
+  explanation: |
+    Material implication 只排除「前件成立但後件不成立」的情況。因此 P 真且 Q 假時 P => Q 為假，其餘情況都為真。
+
+- id: dm-logic-002
+  difficulty: basic
+  tags: [logic, quantifiers]
+  question: |
+    下列哪一個式子是「不是每個學生都通過測驗」的正確邏輯表示？
+  options:
+    - "forall x Pass(x)"
+    - "exists x not Pass(x)"
+    - "not exists x Pass(x)"
+    - "forall x not Pass(x)"
+  answer: 1
+  explanation: |
+    「不是每個」等價於「存在至少一個不是」。因此 not forall x Pass(x) 等價於 exists x not Pass(x)。
+
+- id: dm-logic-003
+  difficulty: basic
+  tags: [logic, de-morgan-law]
+  question: |
+    not (P and Q) 與下列哪一個命題邏輯式等價？
+  options:
+    - "not P and not Q"
+    - "not P or not Q"
+    - "P or Q"
+    - "P and not Q"
+  answer: 1
+  explanation: |
+    依 De Morgan's law，否定一個 conjunction 會變成兩個否定命題的 disjunction，所以 not(P and Q) 等價於 not P or not Q。
+
+- id: dm-logic-004
+  difficulty: basic
+  tags: [proofs, contrapositive]
+  question: |
+    要證明「若 n^2 為奇數，則 n 為奇數」，使用 contrapositive 時應證明哪一句？
+  options:
+    - "若 n 為偶數，則 n^2 為偶數"
+    - "若 n^2 為偶數，則 n 為偶數"
+    - "若 n 為奇數，則 n^2 為奇數"
+    - "若 n^2 不是奇數，則 n 不是整數"
+  answer: 0
+  explanation: |
+    原命題是 P => Q，其 contrapositive 是 not Q => not P。not Q 為「n 不是奇數」，在整數語境下即 n 為偶數；not P 為 n^2 為偶數。
+
+- id: dm-logic-005
+  difficulty: intermediate
+  tags: [logic, equivalence]
+  question: |
+    下列哪一個命題與 P => Q 邏輯等價？
+  options:
+    - "P and Q"
+    - "not P or Q"
+    - "Q => P"
+    - "not Q => P"
+  answer: 1
+  explanation: |
+    Implication 可改寫為「前件不成立或後件成立」，因此 P => Q 等價於 not P or Q。Q => P 是 converse，通常不等價。
+
+- id: dm-logic-006
+  difficulty: intermediate
+  tags: [quantifiers, negation]
+  question: |
+    命題「對所有整數 n，存在整數 m 使得 m > n」的否定是什麼？
+  options:
+    - "存在整數 n，使得對所有整數 m，m <= n"
+    - "對所有整數 n，存在整數 m，使得 m <= n"
+    - "存在整數 n，使得存在整數 m，m <= n"
+    - "對所有整數 n，對所有整數 m，m > n"
+  answer: 0
+  explanation: |
+    否定 quantified statement 時，forall 變 exists，exists 變 forall，且內部不等式 m > n 變成 m <= n。
+
+- id: dm-logic-007
+  difficulty: intermediate
+  tags: [proofs, contradiction]
+  question: |
+    Proof by contradiction 的核心策略是什麼？
+  options:
+    - "直接假設結論成立，然後列舉例子"
+    - "假設欲證命題為假，推導出不可能或已知矛盾"
+    - "只證明命題在小範圍內成立"
+    - "把原命題改成 converse 後證明"
+  answer: 1
+  explanation: |
+    反證法先假設欲證命題不成立，再從這個假設推出矛盾。因此原先的否定假設不可能成立，命題即成立。
+
+- id: dm-logic-008
+  difficulty: intermediate
+  tags: [logic, truth-table]
+  question: |
+    若 P 為假、Q 為真、R 為假，則 (P or Q) and (not R) 的 truth value 是什麼？
+  options:
+    - "真"
+    - "假"
+    - "無法判斷，因為 P 為假"
+    - "只有在 Q 為假時才為真"
+  answer: 0
+  explanation: |
+    P or Q 為真，not R 也為真，因此兩者的 conjunction 為真。
+
+- id: dm-logic-009
+  difficulty: intermediate
+  tags: [proofs, induction]
+  question: |
+    使用 mathematical induction 證明 P(n) 對所有 n >= 1 成立時，哪一項是必要的 induction step？
+  options:
+    - "證明 P(1) 不成立"
+    - "假設 P(k) 成立，證明 P(k+1) 成立"
+    - "只證明 P(k+1) 成立，不需任何假設"
+    - "證明 P(k) 與 P(k+1) 不可能同時成立"
+  answer: 1
+  explanation: |
+    Induction step 要建立從任意 k 到 k+1 的推進關係：在 P(k) 成立的假設下推出 P(k+1) 成立。
+
+- id: dm-logic-010
+  difficulty: intermediate
+  tags: [logic, satisfiability]
+  question: |
+    下列哪一個 formula 是 tautology？
+  options:
+    - "P and not P"
+    - "P or not P"
+    - "P and Q"
+    - "P => not P"
+  answer: 1
+  explanation: |
+    P or not P 無論 P 真或假都為真，這是排中律。P and not P 則永遠為假。
+
+- id: dm-logic-011
+  difficulty: intermediate
+  tags: [predicate-logic, implication]
+  question: |
+    命題 forall x (A(x) => B(x)) 的意思最接近哪一個敘述？
+  options:
+    - "每個 B 都一定是 A"
+    - "只要 x 具有 A 性質，就一定具有 B 性質"
+    - "至少一個 x 同時具有 A 與 B 性質"
+    - "不存在同時具有 A 與 B 性質的 x"
+  answer: 1
+  explanation: |
+    forall x (A(x) => B(x)) 表示對每個 x，只要 A(x) 成立，B(x) 也必須成立。它不要求每個 x 都具有 A。
+
+- id: dm-logic-012
+  difficulty: intermediate
+  tags: [proofs, counterexample]
+  question: |
+    要否定「所有偶數都可被 4 整除」，最有效的證明方式是什麼？
+  options:
+    - "列出很多可被 4 整除的偶數"
+    - "找出一個不能被 4 整除的偶數"
+    - "證明所有奇數都不能被 4 整除"
+    - "改證所有可被 4 整除的數都是偶數"
+  answer: 1
+  explanation: |
+    全稱命題只要一個 counterexample 即可推翻。數字 2 或 6 都是偶數但不可被 4 整除。
+
+- id: dm-logic-013
+  difficulty: advanced
+  tags: [proofs, strong-induction]
+  question: |
+    Strong induction 與 ordinary induction 的主要差異是什麼？
+  options:
+    - "Strong induction 不需要 base case"
+    - "Strong induction 在證 P(k+1) 時可假設 P(1),...,P(k) 全部成立"
+    - "Strong induction 只能用於有限集合"
+    - "Strong induction 只證明偶數索引的命題"
+  answer: 1
+  explanation: |
+    Strong induction 的 induction hypothesis 較強，可以使用所有較小索引的成立性來推出下一個命題，常用於遞迴分解或最小反例問題。
+
+- id: dm-logic-014
+  difficulty: advanced
+  tags: [logic, normal-forms]
+  question: |
+    Formula (P => Q) and (Q => R) and P 可邏輯推出 R。這個推理主要使用哪個原理？
+  options:
+    - "Modus ponens 與 implication chaining"
+    - "De Morgan's law"
+    - "Pigeonhole principle"
+    - "Principle of inclusion-exclusion"
+  answer: 0
+  explanation: |
+    由 P 與 P => Q 可用 modus ponens 得 Q；再由 Q 與 Q => R 得 R。這是多次使用 implication 的推理鏈。
+
+- id: dm-logic-015
+  difficulty: advanced
+  tags: [predicate-logic, scope]
+  question: |
+    下列哪一個敘述最能說明 exists x forall y Loves(x, y) 與 forall y exists x Loves(x, y) 的差異？
+  options:
+    - "兩者完全等價"
+    - "前者要求同一個 x 愛所有 y；後者允許不同 y 對應不同 x"
+    - "前者沒有量詞範圍問題；後者沒有變數"
+    - "後者必然推出前者，但前者不推出後者"
+  answer: 1
+  explanation: |
+    exists x forall y 的 x 必須先被選出並對所有 y 有效；forall y exists x 則可依每個 y 選不同的 x。因此兩者一般不等價。
+
+- id: dm-logic-016
+  difficulty: advanced
+  tags: [proofs, minimal-counterexample]
+  question: |
+    Minimal counterexample method 通常依賴自然數的哪個性質？
+  options:
+    - "每個非空自然數子集合都有最小元素"
+    - "每個自然數都有乘法反元素"
+    - "自然數在加法下形成有限群"
+    - "所有自然數都是質數或合數"
+  answer: 0
+  explanation: |
+    最小反例法假設反例集合非空，然後取其中最小者並導出矛盾。這依賴 well-ordering principle。
+
+- id: dm-logic-017
+  difficulty: advanced
+  tags: [logic, resolution]
+  question: |
+    在 propositional resolution 中，由 clauses (P or Q) 與 (not P or R) 可推出哪一個 resolvent？
+  options:
+    - "Q or R"
+    - "P or R"
+    - "not Q or R"
+    - "P and not P"
+  answer: 0
+  explanation: |
+    Resolution 消去互補 literal P 與 not P，保留其餘 literal，因此得到 Q or R。
+
+- id: dm-logic-018
+  difficulty: advanced
+  tags: [proofs, invariants]
+  question: |
+    在證明演算法或遊戲過程不可能到達某狀態時，invariant 的角色是什麼？
+  options:
+    - "描述每一步都不變的性質，排除違反該性質的目標狀態"
+    - "保證每一步都讓數值變大"
+    - "把所有狀態改寫成隨機變數"
+    - "只提供程式碼效能上界"
+  answer: 0
+  explanation: |
+    Invariant 是初始成立且每次操作後仍成立的性質。若目標狀態違反 invariant，就可證明該狀態不可達。
+
+- id: dm-logic-019
+  difficulty: master
+  tags: [logic, compactness]
+  question: |
+    在一階邏輯中，compactness theorem 的典型含意是什麼？
+  options:
+    - "若一組 sentences 的每個有限子集合都有 model，則整組 sentences 有 model"
+    - "每個可滿足公式都能在有限 domain 中滿足"
+    - "每個 theorem 都有長度不超過 10 行的 proof"
+    - "所有二階邏輯公式都可轉為一階公式"
+  answer: 0
+  explanation: |
+    Compactness theorem 說明 satisfiability 可由所有有限子集合的 satisfiability 推出。它不保證 model 一定有限，也不限制 proof 長度。
+
+- id: dm-logic-020
+  difficulty: master
+  tags: [logic, soundness-completeness]
+  question: |
+    對一個 formal proof system 而言，soundness 與 completeness 的正確配對是什麼？
+  options:
+    - "Soundness: 可證明的都語意有效；completeness: 語意有效的都可證明"
+    - "Soundness: 所有公式都可證明；completeness: 沒有公式可證明"
+    - "Soundness: proof 很短；completeness: proof 很長"
+    - "Soundness: 只處理命題邏輯；completeness: 只處理謂詞邏輯"
+  answer: 0
+  explanation: |
+    Soundness 防止 proof system 證出語意上不成立的公式；completeness 則保證語意有效的公式能被系統證出。

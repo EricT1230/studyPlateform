@@ -1,0 +1,279 @@
+- id: la-rank-001
+  difficulty: basic
+  tags: [linear-systems, consistency]
+  question: |
+    線性方程組 Ax=b 有解時，稱為什麼？
+  options:
+    - "consistent"
+    - "singular"
+    - "orthogonal"
+    - "diagonal"
+  answer: 0
+  explanation: |
+    Linear system 若至少有一組 solution，稱為 consistent；若沒有解，稱為 inconsistent。
+
+- id: la-rank-002
+  difficulty: basic
+  tags: [rank, pivots]
+  question: |
+    Matrix 的 rank 等於 row echelon form 中什麼的數量？
+  options:
+    - "pivot positions"
+    - "所有 zero entries"
+    - "row 數加 column 數"
+    - "負 entries"
+  answer: 0
+  explanation: |
+    Rank 可由 Gaussian elimination 後的 pivot 數量取得，也等於 column space 的維度。
+
+- id: la-rank-003
+  difficulty: basic
+  tags: [linear-systems, augmented-matrix]
+  question: |
+    Augmented matrix [A|b] 中最後一欄代表什麼？
+  options:
+    - "方程組右側常數向量 b"
+    - "A 的第一個 column"
+    - "A 的 determinant"
+    - "未知數個數"
+  answer: 0
+  explanation: |
+    Augmented matrix 把 coefficient matrix A 與右側向量 b 合併，方便用 row operations 解 Ax=b。
+
+- id: la-rank-004
+  difficulty: basic
+  tags: [homogeneous-systems, zero-solution]
+  question: |
+    Homogeneous system Ax=0 至少一定有哪個解？
+  options:
+    - "zero solution"
+    - "所有向量都是解"
+    - "沒有任何解"
+    - "只有正向量解"
+  answer: 0
+  explanation: |
+    x=0 代入 Ax=0 必成立，因此 homogeneous system 一定 consistent，至少有 trivial solution。
+
+- id: la-rank-005
+  difficulty: intermediate
+  tags: [rank, consistency]
+  question: |
+    Rouché-Capelli theorem 對 Ax=b 的一致性條件是什麼？
+  options:
+    - "rank(A) = rank([A|b])"
+    - "rank(A) > rank([A|b])"
+    - "rank(A) = 0 即可"
+    - "A 必須是 diagonal matrix"
+  answer: 0
+  explanation: |
+    Ax=b 有解當且僅當 coefficient matrix 與 augmented matrix 的 rank 相同。若 augmented rank 較大，代表出現矛盾列。
+
+- id: la-rank-006
+  difficulty: intermediate
+  tags: [free-variables, rank]
+  question: |
+    一個 m x n system 的 coefficient matrix rank 為 r，若 system consistent，free variables 的數量是多少？
+  options:
+    - "n - r"
+    - "m - r"
+    - "r - n"
+    - "m + n - r"
+  answer: 0
+  explanation: |
+    每個 pivot column 對應一個 leading variable，共 r 個；未知數總數為 n，因此 free variables 為 n-r。
+
+- id: la-rank-007
+  difficulty: intermediate
+  tags: [matrix-inverse, linear-systems]
+  question: |
+    若 A 是 invertible square matrix，Ax=b 的解為何？
+  options:
+    - "x = A^{-1}b"
+    - "x = bA^{-1}"
+    - "x = Ab"
+    - "x = 0 對所有 b 都成立"
+  answer: 0
+  explanation: |
+    左乘 A^{-1} 得 A^{-1}Ax = A^{-1}b，因此 x=A^{-1}b。
+
+- id: la-rank-008
+  difficulty: intermediate
+  tags: [row-operations, solution-set]
+  question: |
+    Elementary row operations 對 linear system 的 solution set 有何影響？
+  options:
+    - "不改變 solution set"
+    - "一定讓 solution set 變空"
+    - "一定增加一個 unknown"
+    - "只保留 integer solutions"
+  answer: 0
+  explanation: |
+    Elementary row operations 對應於用等價方程替換原方程，因此不改變滿足所有方程的解集合。
+
+- id: la-rank-009
+  difficulty: intermediate
+  tags: [rank, full-column-rank]
+  question: |
+    A 是 m x n matrix 且 rank(A)=n。下列哪一項正確？
+  options:
+    - "A 的 columns linearly independent"
+    - "A 的 columns linearly dependent"
+    - "n 必須大於 m"
+    - "Ax=0 有無限多非零解"
+  answer: 0
+  explanation: |
+    rank(A)=n 表示每個 column 都是 pivot column，因此 columns linearly independent，Ax=0 只有 trivial solution。
+
+- id: la-rank-010
+  difficulty: intermediate
+  tags: [rank, full-row-rank]
+  question: |
+    A 是 m x n matrix 且 rank(A)=m。這表示什麼？
+  options:
+    - "A 的 rows linearly independent"
+    - "A 必定是 square"
+    - "A 的 nullity 必為 m"
+    - "A 沒有 pivot row"
+  answer: 0
+  explanation: |
+    rank 等於 row space 的維度。rank(A)=m 表示 m 個 rows 全部獨立，也稱 full row rank。
+
+- id: la-rank-011
+  difficulty: intermediate
+  tags: [linear-systems, infinite-solutions]
+  question: |
+    Consistent linear system 若有至少一個 free variable，解的數量通常為何？
+  options:
+    - "無限多解"
+    - "恰好一解"
+    - "沒有解"
+    - "恰好兩解"
+  answer: 0
+  explanation: |
+    在 real vector spaces 中，free variable 可連續取值，因此 consistent 且存在 free variable 時會有無限多解。
+
+- id: la-rank-012
+  difficulty: intermediate
+  tags: [column-space, consistency]
+  question: |
+    Ax=b 有解等價於 b 滿足哪一個條件？
+  options:
+    - "b 在 A 的 column space 中"
+    - "b 在 A 的 null space 中"
+    - "b 必須是 zero vector"
+    - "b 的所有 entries 都相等"
+  answer: 0
+  explanation: |
+    Ax 是 A 的 columns 以 x 的 entries 作線性組合。因此 Ax=b 有解正是 b 可由 A 的 columns 張成。
+
+- id: la-rank-013
+  difficulty: advanced
+  tags: [rank-nullity, null-space]
+  question: |
+    A 是 4 x 7 matrix 且 rank(A)=4，則 null space 的 dimension 是多少？
+  options:
+    - "3"
+    - "4"
+    - "7"
+    - "11"
+  answer: 0
+  explanation: |
+    Rank-nullity theorem 對 linear map R^7 -> R^4 給出 nullity = 7 - rank = 7 - 4 = 3。
+
+- id: la-rank-014
+  difficulty: advanced
+  tags: [rank, transpose]
+  question: |
+    對任意 matrix A，rank(A) 與 rank(A^T) 的關係為何？
+  options:
+    - "rank(A) = rank(A^T)"
+    - "rank(A^T) = rank(A) + 1"
+    - "rank(A^T) 永遠為 0"
+    - "只有 square matrix 才有 rank(A^T)"
+  answer: 0
+  explanation: |
+    Row rank 等於 column rank。A^T 的 column space 對應 A 的 row space，因此兩者 rank 相同。
+
+- id: la-rank-015
+  difficulty: advanced
+  tags: [least-squares, normal-equations]
+  question: |
+    Least squares 問題 min ||Ax-b||_2 的 normal equations 是哪一個？
+  options:
+    - "A^T A x = A^T b"
+    - "A x = 0"
+    - "A^T x = b"
+    - "A A^T b = x"
+  answer: 0
+  explanation: |
+    Least squares 解要求 residual b-Ax 與 column space of A 正交，因此 A^T(b-Ax)=0，得到 A^T A x = A^T b。
+
+- id: la-rank-016
+  difficulty: advanced
+  tags: [rank-factorization, matrix-decomposition]
+  question: |
+    Rank factorization A=CR 中，若 rank(A)=r，通常 C 與 R 的尺寸可如何選？
+  options:
+    - "C 為 m x r，R 為 r x n"
+    - "C 為 r x r，R 為 r x r，且忽略 A 尺寸"
+    - "C 為 n x m，R 為 m x n"
+    - "C 與 R 都必須是 scalar"
+  answer: 0
+  explanation: |
+    對 m x n matrix A 且 rank r，可取 C 的 columns 為 A 的 r 個獨立 columns，R 表示其餘 columns 的座標，因此 A=CR。
+
+- id: la-rank-017
+  difficulty: advanced
+  tags: [four-fundamental-subspaces, orthogonality]
+  question: |
+    對 m x n matrix A，null space of A 與哪個 subspace 正交互補？
+  options:
+    - "row space of A"
+    - "column space of A"
+    - "null space of A^T"
+    - "整個 R^m 的任意子空間"
+  answer: 0
+  explanation: |
+    Ax=0 表示 x 與 A 的每一列 dot product 為 0，因此 null space of A 是 row space 的 orthogonal complement。
+
+- id: la-rank-018
+  difficulty: advanced
+  tags: [condition-number, numerical-linear-algebra]
+  question: |
+    Linear system 的 condition number 大，通常表示什麼風險？
+  options:
+    - "輸入或 roundoff 的小誤差可能造成解的大誤差"
+    - "系統一定沒有解"
+    - "矩陣一定是 zero matrix"
+    - "所有 eigenvalues 必為 1"
+  answer: 0
+  explanation: |
+    Condition number 衡量問題對 perturbation 的敏感度。數值越大，係數或右側向量的小誤差越可能被放大到解中。
+
+- id: la-rank-019
+  difficulty: master
+  tags: [rank, singular-values]
+  question: |
+    Matrix A 的 rank 可由 singular values 如何判定？
+  options:
+    - "非零 singular values 的個數"
+    - "所有 singular values 的總和"
+    - "最大 singular value 的平方"
+    - "最小 singular value 的倒數，無論是否為 0"
+  answer: 0
+  explanation: |
+    SVD 將 A 分解為 U Sigma V^T；Sigma 中非零 singular values 的數量就是 A 的 rank。
+
+- id: la-rank-020
+  difficulty: master
+  tags: [moore-penrose, pseudoinverse]
+  question: |
+    Moore-Penrose pseudoinverse 在 least squares 中常用來表示哪個解？
+  options:
+    - "最小 norm 的 least-squares 解 x = A^+ b"
+    - "任何會讓 Ax=b 無解的向量"
+    - "只適用於 1x1 matrix 的 determinant"
+    - "把所有 singular values 都改成 0 的解"
+  answer: 0
+  explanation: |
+    Pseudoinverse A^+ 可處理 rectangular 或 rank-deficient matrices，給出 least-squares 解中 Euclidean norm 最小者。

@@ -1,0 +1,260 @@
+- id: db-opt-001
+  difficulty: basic
+  tags: [query-optimization, execution-plan]
+  question: |
+    資料庫查詢最佳化器 (query optimizer) 的主要工作是什麼？
+  options:
+    - "在等價查詢計畫中選擇預估成本較低的執行方式"
+    - "把所有資料永久刪除以節省空間"
+    - "將 SQL 改寫成前端 JavaScript"
+    - "保證每個查詢都只花固定 1 毫秒"
+  answer: 0
+  explanation: |
+    最佳化器會根據統計資訊、索引、連結順序與運算子成本，從多個語意等價的 plan 中挑選預估較便宜者；它不能保證固定時間，也不改變查詢語意。
+- id: db-opt-002
+  difficulty: basic
+  tags: [query-optimization, explain]
+  question: |
+    使用 EXPLAIN 或 EXPLAIN ANALYZE 的主要目的為何？
+  options:
+    - "觀察資料庫選擇的查詢計畫與成本/實際執行資訊"
+    - "自動修復所有資料錯誤"
+    - "將資料表轉成圖片"
+    - "取消交易隔離性"
+  answer: 0
+  explanation: |
+    EXPLAIN 顯示估計計畫，EXPLAIN ANALYZE 通常會實際執行並回報實際列數與時間。它們能幫助判斷瓶頸、估計是否偏差與索引是否被使用。
+- id: db-opt-003
+  difficulty: basic
+  tags: [query-optimization, full-table-scan]
+  question: |
+    全表掃描 (full table scan) 一定代表查詢計畫很差嗎？
+  options:
+    - "不一定；若表很小或查詢需讀取大部分列，全表掃描可能合理"
+    - "一定很差，任何情況都應禁止"
+    - "一定代表資料已損毀"
+    - "只會發生在沒有 SQL 的系統"
+  answer: 0
+  explanation: |
+    如果資料表很小，或條件命中大部分列，循序掃描整表可能比走索引後大量回表更便宜。因此要看實際成本與列數，而不是只看到 full scan 就判定錯誤。
+- id: db-opt-004
+  difficulty: basic
+  tags: [query-optimization, selectivity]
+  question: |
+    謂詞 (predicate) 的 selectivity 通常用來估計什麼？
+  options:
+    - "條件會篩選出多少比例或多少列資料"
+    - "SQL 關鍵字的字數"
+    - "資料庫密碼長度"
+    - "網路封包是否加密"
+  answer: 0
+  explanation: |
+    selectivity 描述條件的篩選力，例如只命中 0.1% 或 80% 的列。最佳化器會用它估計中間結果大小，進而影響索引選擇與 join order。
+- id: db-opt-005
+  difficulty: basic
+  tags: [query-optimization, sargability]
+  question: |
+    下列哪個 WHERE 條件通常較容易利用 created_at 上的 B-tree 索引？
+  options:
+    - "created_at >= '2026-01-01' AND created_at < '2026-02-01'"
+    - "YEAR(created_at) = 2026"
+    - "created_at + INTERVAL '1 day' > NOW()"
+    - "LOWER(CAST(created_at AS TEXT)) LIKE '2026%'"
+  answer: 0
+  explanation: |
+    第一個條件直接對索引欄位做範圍比較，通常是 sargable。對欄位套函數或轉型會讓索引鍵順序難以直接使用，除非有相對應的函數索引。
+- id: db-opt-006
+  difficulty: intermediate
+  tags: [query-optimization, statistics, cardinality]
+  question: |
+    統計資訊過期時，查詢最佳化最常見的風險是什麼？
+  options:
+    - "最佳化器錯估列數，進而選錯 join order 或索引策略"
+    - "SQL 語法會自動變成無效"
+    - "資料表名稱會被重新命名"
+    - "所有查詢都會改用相同 primary key"
+  answer: 0
+  explanation: |
+    最佳化器高度依賴 cardinality 與分布統計。如果統計過期，可能把大結果估成小結果，導致 nested loop、索引選擇或 join 順序不適合實際資料。
+- id: db-opt-007
+  difficulty: intermediate
+  tags: [query-optimization, join-order]
+  question: |
+    為什麼 join order 會大幅影響查詢效能？
+  options:
+    - "不同連結順序會產生大小差很多的中間結果，進而影響後續運算成本"
+    - "SQL 標準要求 join order 必須按字母排序"
+    - "join order 只影響輸出欄位名稱，不影響成本"
+    - "資料庫不能改變使用者寫的 join order"
+  answer: 0
+  explanation: |
+    若先連結能大幅篩選資料的表，後續處理的中間結果會小很多；相反順序可能產生巨大中間表。最佳化器會嘗試重排等價 join 以降低成本。
+- id: db-opt-008
+  difficulty: intermediate
+  tags: [query-optimization, nested-loop-join]
+  question: |
+    Nested loop join 最適合下列哪種情境？
+  options:
+    - "外層結果很小，且內層 join key 有有效索引可快速查找"
+    - "兩邊資料都極大且沒有任何索引或篩選"
+    - "join 條件完全不存在"
+    - "需要先排序兩個巨大輸入且記憶體充足"
+  answer: 0
+  explanation: |
+    nested loop 對外層每列去內層找匹配。若外層少且內層有索引，每次查找便宜；若兩邊都大且無索引，成本會非常高。
+- id: db-opt-009
+  difficulty: intermediate
+  tags: [query-optimization, hash-join]
+  question: |
+    Hash join 的典型優勢是什麼？
+  options:
+    - "適合大型等值連結，先對一側建立 hash table 再掃描另一側匹配"
+    - "專門處理小於、大於這類範圍連結"
+    - "完全不需要記憶體"
+    - "只能用於已排序輸入"
+  answer: 0
+  explanation: |
+    hash join 常用於 equi-join。它以較小輸入建立 hash table，再用另一側查找匹配；若 hash table 放不下記憶體，可能 spill 到磁碟而變慢。
+- id: db-opt-010
+  difficulty: intermediate
+  tags: [query-optimization, merge-join]
+  question: |
+    Merge join 特別適合哪種輸入條件？
+  options:
+    - "兩個輸入都已依 join key 排序，或排序成本可被後續需求抵銷"
+    - "join key 完全隨機且無法比較大小"
+    - "其中一個輸入必須為空表"
+    - "只能在沒有索引的 NoSQL 系統中使用"
+  answer: 0
+  explanation: |
+    merge join 需要依 join key 有序地同步掃描兩側。若索引已提供排序，或查詢本來就需要排序，merge join 可避免額外高成本。
+- id: db-opt-011
+  difficulty: intermediate
+  tags: [query-optimization, predicate-pushdown]
+  question: |
+    Predicate pushdown 的核心效益是什麼？
+  options:
+    - "盡早把過濾條件下推到資料來源或較早的運算，減少後續處理資料量"
+    - "把所有 WHERE 條件延到最後才執行"
+    - "讓資料庫忽略索引"
+    - "將交易自動改成 read uncommitted"
+  answer: 0
+  explanation: |
+    越早過濾不需要的列，中間結果越小，join、排序與聚合成本也可能下降。predicate pushdown 在查詢外部表、view 或子查詢時尤其重要。
+- id: db-opt-012
+  difficulty: intermediate
+  tags: [query-optimization, projection, covering-index]
+  question: |
+    為什麼避免不必要的 SELECT * 有時能改善效能？
+  options:
+    - "讀取欄位較少可降低 I/O 與網路傳輸，且更可能使用 covering index"
+    - "SELECT * 會自動刪除資料"
+    - "SELECT * 一定會繞過所有權限檢查"
+    - "SQL 不允許 SELECT *"
+  answer: 0
+  explanation: |
+    只取需要欄位能減少資料搬移；若所需欄位都在索引中，資料庫甚至可能做 index-only scan，避免回表。SELECT * 通常破壞這個機會。
+- id: db-opt-013
+  difficulty: advanced
+  tags: [query-optimization, correlated-subquery]
+  question: |
+    Correlated subquery 可能造成效能問題的原因是什麼？
+  options:
+    - "子查詢依賴外層每一列，若無法 decorrelate，可能被重複執行很多次"
+    - "子查詢一定比 join 快"
+    - "它會自動建立所有需要的索引"
+    - "它只能回傳固定一列，不會影響成本"
+  answer: 0
+  explanation: |
+    correlated subquery 引用外層欄位，天真的執行方式會對外層每列跑一次子查詢。最佳化器有時可改寫成 join 或 semi-join；若不能，成本可能很高。
+- id: db-opt-014
+  difficulty: advanced
+  tags: [query-optimization, histograms, skew]
+  question: |
+    欄位資料分布高度傾斜 (skewed) 時，histogram 統計為什麼重要？
+  options:
+    - "它能描述熱門值與稀有值分布，避免只用平均值造成嚴重列數誤估"
+    - "它會把所有資料平均分散到不同磁碟"
+    - "它能替代所有索引"
+    - "它會讓 SQL 查詢不需要 WHERE 條件"
+  answer: 0
+  explanation: |
+    若某些值非常熱門，單純 distinct count 或平均選擇性會錯估特定值的命中列數。histogram 可讓最佳化器對 skew 有更準確估計。
+- id: db-opt-015
+  difficulty: advanced
+  tags: [query-optimization, parameter-sniffing]
+  question: |
+    Parameter sniffing 造成查詢效能不穩的典型原因是什麼？
+  options:
+    - "資料庫用某次參數值產生並快取計畫，但該計畫不適合其他分布差異很大的參數值"
+    - "參數化查詢一定會造成 SQL injection"
+    - "資料庫會把所有參數改成 NULL"
+    - "查詢計畫永遠不能重用"
+  answer: 0
+  explanation: |
+    若第一組參數命中極少列，最佳計畫可能偏向索引查找；另一組參數命中大量列時，同一計畫可能很差。這會造成同一 SQL 在不同參數下效能波動。
+- id: db-opt-016
+  difficulty: advanced
+  tags: [query-optimization, materialized-view]
+  question: |
+    Materialized view 適合用來改善哪類查詢？
+  options:
+    - "重複執行、計算昂貴且可接受資料有一定刷新延遲的彙總或連結查詢"
+    - "每次都必須讀到絕對最新單列資料的簡單主鍵查詢"
+    - "不允許任何額外儲存空間的查詢"
+    - "完全不會重複出現的臨時查詢"
+  answer: 0
+  explanation: |
+    materialized view 事先保存查詢結果，可節省重複計算成本，但需額外空間與刷新機制，且資料新鮮度取決於 refresh 策略。
+- id: db-opt-017
+  difficulty: advanced
+  tags: [query-optimization, sort, top-n]
+  question: |
+    對 ORDER BY score DESC LIMIT 10 這類查詢，合適索引可能帶來什麼好處？
+  options:
+    - "依索引順序直接取前幾筆，避免排序大量資料"
+    - "讓 LIMIT 10 回傳隨機十筆資料"
+    - "強迫資料庫先排序整個資料庫所有表"
+    - "使查詢不再需要 WHERE 或 ORDER BY 語意"
+  answer: 0
+  explanation: |
+    若索引順序符合 ORDER BY，資料庫可沿索引讀取前 10 筆，而不必先取得所有候選列再做大排序。搭配 WHERE 條件時，複合索引順序仍需依查詢模式設計。
+- id: db-opt-018
+  difficulty: advanced
+  tags: [query-optimization, plan-regression]
+  question: |
+    系統升級或資料量成長後，原本快速的查詢突然變慢。最務實的第一步通常是什麼？
+  options:
+    - "比較變慢前後的執行計畫、實際列數與主要等待/I/O 指標"
+    - "立刻刪除所有索引"
+    - "把資料庫改成沒有交易的檔案"
+    - "假設 SQL 語法一定錯誤且不看證據"
+  answer: 0
+  explanation: |
+    plan regression 需要先看證據：計畫是否改變、估計與實際列數是否偏離、是否有新的排序/hash spill/I/O 等。直接刪索引或重寫系統風險高且缺乏依據。
+- id: db-opt-019
+  difficulty: master
+  tags: [query-optimization, cost-model, random-io]
+  question: |
+    為什麼最佳化器的成本模型通常會區分 sequential I/O 與 random I/O？
+  options:
+    - "兩者存取模式成本不同；大量隨機回表可能比順序掃描更慢"
+    - "SQL 語法要求 random I/O 必須先執行"
+    - "sequential I/O 只能讀取索引，不能讀取資料表"
+    - "random I/O 代表資料內容是隨機產生的"
+  answer: 0
+  explanation: |
+    順序讀取可連續掃描頁面，成本通常較低；隨機 I/O 需要跳到不同頁面。即使索引能找到列，若命中很多列且需大量回表，總成本可能高於全表掃描。
+- id: db-opt-020
+  difficulty: master
+  tags: [query-optimization, adaptive-query-processing]
+  question: |
+    Adaptive query processing 想解決的核心問題是什麼？
+  options:
+    - "執行中發現實際列數或成本與估計差很多時，能調整策略以降低錯誤估計的傷害"
+    - "讓查詢在沒有資料庫的情況下執行"
+    - "禁止最佳化器使用統計資訊"
+    - "把所有 join 固定為 nested loop"
+  answer: 0
+  explanation: |
+    傳統計畫在執行前決定，若估計錯誤可能一路使用不適合的策略。adaptive query processing 嘗試在執行中利用實際觀察調整 join、平行度或記憶體配置等。

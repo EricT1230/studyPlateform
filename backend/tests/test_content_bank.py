@@ -34,3 +34,9 @@ def test_core_graduate_exam_subjects_have_baseline_coverage():
     }
 
     assert missing == {}
+
+
+def test_question_bank_has_at_least_one_thousand_questions():
+    questions = load_questions(CONTENT_DIR)
+
+    assert len(questions) >= 1000

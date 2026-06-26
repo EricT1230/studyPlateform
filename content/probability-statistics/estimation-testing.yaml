@@ -1,0 +1,279 @@
+- id: ps-est-001
+  difficulty: basic
+  tags: [estimation, estimators]
+  question: |
+    Estimator 與 estimate 的差異是什麼？
+  options:
+    - "Estimator 是隨機變數或規則；estimate 是觀察資料後得到的數值"
+    - "Estimator 一定是常數；estimate 一定是函數"
+    - "兩者在統計上永遠相反"
+    - "Estimate 只能用於分類問題"
+  answer: 0
+  explanation: |
+    Estimator 在資料抽樣前是資料的函數，因此是 random variable；帶入實際樣本後得到的具體值稱為 estimate。
+
+- id: ps-est-002
+  difficulty: basic
+  tags: [bias, estimators]
+  question: |
+    Estimator theta_hat 稱為 unbiased 的意思是什麼？
+  options:
+    - "E[theta_hat] = theta"
+    - "theta_hat 永遠等於 theta"
+    - "Var(theta_hat)=0"
+    - "theta_hat 不能由資料計算"
+  answer: 0
+  explanation: |
+    Unbiasedness 是期望值等於真參數，表示長期平均不偏離目標；它不表示每次估計都完全正確。
+
+- id: ps-est-003
+  difficulty: basic
+  tags: [hypothesis-testing, p-value]
+  question: |
+    p-value 的正確解釋是哪一個？
+  options:
+    - "在 null hypothesis 為真時，觀察到至少如此極端統計量的機率"
+    - "null hypothesis 為真的機率"
+    - "alternative hypothesis 為假的機率"
+    - "樣本平均數本身"
+  answer: 0
+  explanation: |
+    p-value 是條件在 H0 為真下的尾端機率，不是 H0 本身為真的 posterior probability。
+
+- id: ps-est-004
+  difficulty: basic
+  tags: [confidence-intervals, inference]
+  question: |
+    95% confidence interval 的 frequentist 解釋較接近哪一項？
+  options:
+    - "重複抽樣建立的區間程序中，約 95% 會覆蓋真參數"
+    - "本次區間有 95% 機率包含固定真參數"
+    - "樣本中 95% 的 observations 位於區間內"
+    - "估計值一定只有 5% bias"
+  answer: 0
+  explanation: |
+    Frequentist 觀點下真參數固定、區間隨樣本變動；95% 指的是長期覆蓋率。
+
+- id: ps-est-005
+  difficulty: intermediate
+  tags: [variance, sample-variance]
+  question: |
+    樣本變異數常用分母 n-1 而非 n 的主要原因是什麼？
+  options:
+    - "使其成為 population variance 的 unbiased estimator"
+    - "讓計算更快"
+    - "避免使用 sample mean"
+    - "讓變異數必為 0"
+  answer: 0
+  explanation: |
+    使用 sample mean 會消耗一個 degree of freedom。分母 n-1 可修正偏差，使樣本變異數對 sigma^2 不偏。
+
+- id: ps-est-006
+  difficulty: intermediate
+  tags: [maximum-likelihood, estimation]
+  question: |
+    Maximum likelihood estimation 的基本想法是什麼？
+  options:
+    - "選擇使觀察資料 likelihood 最大的參數"
+    - "選擇讓 prior 最大的參數，完全不看資料"
+    - "選擇最小的 possible parameter"
+    - "只計算 sample median"
+  answer: 0
+  explanation: |
+    MLE 把已觀察資料視為固定，尋找參數值使該資料出現的 likelihood 最大。
+
+- id: ps-est-007
+  difficulty: intermediate
+  tags: [hypothesis-testing, type-i-error]
+  question: |
+    Type I error 是什麼？
+  options:
+    - "H0 為真卻拒絕 H0"
+    - "H0 為假卻沒有拒絕 H0"
+    - "樣本數太大"
+    - "估計量有較小 variance"
+  answer: 0
+  explanation: |
+    Type I error 是 false positive：null hypothesis 其實成立，但測試結果拒絕它。
+
+- id: ps-est-008
+  difficulty: intermediate
+  tags: [hypothesis-testing, power]
+  question: |
+    Test power 指的是什麼？
+  options:
+    - "在 alternative 為真時拒絕 H0 的機率"
+    - "在 H0 為真時不拒絕 H0 的機率"
+    - "p-value 的倒數"
+    - "confidence interval 的寬度"
+  answer: 0
+  explanation: |
+    Power 是 1 - Type II error probability，衡量檢定在 alternative 為真時偵測效果的能力。
+
+- id: ps-est-009
+  difficulty: intermediate
+  tags: [standard-error, sampling]
+  question: |
+    Standard error 通常衡量什麼？
+  options:
+    - "estimator 的抽樣分布標準差"
+    - "原始資料每筆 observation 的最大值"
+    - "p-value 的平均數"
+    - "資料是否已排序"
+  answer: 0
+  explanation: |
+    Standard error 是估計量在重複抽樣下的標準差，用來描述估計不確定性。
+
+- id: ps-est-010
+  difficulty: intermediate
+  tags: [confidence-intervals, sample-size]
+  question: |
+    在其他條件相同下，樣本數 n 增加通常會使 confidence interval 寬度如何變化？
+  options:
+    - "變窄"
+    - "變寬"
+    - "必定變成 0"
+    - "完全不變"
+  answer: 0
+  explanation: |
+    許多估計量的 standard error 隨 n 增加約以 1/sqrt(n) 下降，因此信賴區間通常變窄。
+
+- id: ps-est-011
+  difficulty: intermediate
+  tags: [z-test, normal-approximation]
+  question: |
+    已知 population variance 且樣本平均近似 normal 時，檢定 population mean 常用哪種 statistic？
+  options:
+    - "z statistic"
+    - "chi-square statistic for variance only"
+    - "rank correlation"
+    - "F statistic for two variances only"
+  answer: 0
+  explanation: |
+    當 sigma 已知，mean 的標準化可用 z=(bar X - mu0)/(sigma/sqrt(n))，並參照 standard normal。
+
+- id: ps-est-012
+  difficulty: intermediate
+  tags: [t-test, inference]
+  question: |
+    Population variance 未知且資料近似 normal 時，單樣本 mean 檢定常用哪個 distribution？
+  options:
+    - "Student's t distribution"
+    - "Poisson distribution"
+    - "Uniform distribution"
+    - "Exponential distribution"
+  answer: 0
+  explanation: |
+    用 sample standard deviation 取代未知 sigma 會引入額外不確定性，標準化 statistic 服從 t distribution（在 normal assumption 下）。
+
+- id: ps-est-013
+  difficulty: advanced
+  tags: [consistency, estimators]
+  question: |
+    Estimator theta_hat_n 稱為 consistent 的意思是什麼？
+  options:
+    - "theta_hat_n 依機率收斂到 theta"
+    - "theta_hat_n 對每個 n 都等於 theta"
+    - "theta_hat_n 的 bias 必定為 1"
+    - "theta_hat_n 不依賴樣本"
+  answer: 0
+  explanation: |
+    Consistency 描述樣本數增加時估計量收斂到真參數，常用 convergence in probability 表達。
+
+- id: ps-est-014
+  difficulty: advanced
+  tags: [mse, bias-variance]
+  question: |
+    Mean squared error MSE(theta_hat) 可分解為哪兩部分？
+  options:
+    - "Variance(theta_hat) + Bias(theta_hat)^2"
+    - "Bias(theta_hat) - Variance(theta_hat)"
+    - "p-value + confidence level"
+    - "sample size + parameter dimension"
+  answer: 0
+  explanation: |
+    MSE=E[(theta_hat-theta)^2]=Var(theta_hat)+(E[theta_hat]-theta)^2，呈現 bias-variance tradeoff。
+
+- id: ps-est-015
+  difficulty: advanced
+  tags: [likelihood-ratio-test, hypothesis-testing]
+  question: |
+    Likelihood ratio test 的基本比較對象是什麼？
+  options:
+    - "null parameter space 下最大 likelihood 與 full parameter space 下最大 likelihood 的比值"
+    - "兩個 sample means 的比值，無論模型為何"
+    - "p-value 與 sample size 的乘積"
+    - "prior probability 與 posterior probability 的差"
+  answer: 0
+  explanation: |
+    LRT 衡量 H0 限制下能解釋資料的最佳程度，相對於不受 H0 限制時的最佳程度。比值越小，越不支持 H0。
+
+- id: ps-est-016
+  difficulty: advanced
+  tags: [confidence-intervals, hypothesis-testing]
+  question: |
+    對雙尾檢定而言，顯著水準 alpha 的 hypothesis test 與哪個 confidence interval 有常見對偶關係？
+  options:
+    - "100(1-alpha)% confidence interval"
+    - "100alpha% confidence interval"
+    - "永遠是 50% confidence interval"
+    - "沒有任何情況可建立關係"
+  answer: 0
+  explanation: |
+    在標準雙尾設定下，若 null value 不在 100(1-alpha)% confidence interval 中，通常會在 alpha 顯著水準拒絕 H0。
+
+- id: ps-est-017
+  difficulty: advanced
+  tags: [chi-square, variance-test]
+  question: |
+    Normal population 的 variance 檢定常用哪個 statistic？
+  options:
+    - "(n-1)S^2 / sigma_0^2，參照 chi-square distribution"
+    - "(bar X - mu)^2，參照 Bernoulli distribution"
+    - "sample median，參照 Poisson distribution"
+    - "max observation，參照 t distribution"
+  answer: 0
+  explanation: |
+    若資料來自 normal population，則在 H0: sigma^2=sigma_0^2 下，(n-1)S^2/sigma_0^2 服從 chi-square distribution with n-1 degrees of freedom。
+
+- id: ps-est-018
+  difficulty: advanced
+  tags: [multiple-testing, error-rate]
+  question: |
+    同時做很多 hypothesis tests 時，為何需要 multiple-testing correction？
+  options:
+    - "控制整體 false positive 風險"
+    - "讓每個 p-value 都變成 0"
+    - "保證所有 null hypotheses 都為假"
+    - "避免計算任何 test statistic"
+  answer: 0
+  explanation: |
+    多重檢定會增加至少一次 Type I error 的機率。Correction 例如 Bonferroni 或 FDR 方法，用於控制整體錯誤率。
+
+- id: ps-est-019
+  difficulty: master
+  tags: [cramer-rao, efficiency]
+  question: |
+    Cramér-Rao lower bound 主要提供什麼資訊？
+  options:
+    - "unbiased estimator variance 的下界"
+    - "p-value 的上界"
+    - "sample mean 的最大可能值"
+    - "所有 estimator 的 bias 必為 0"
+  answer: 0
+  explanation: |
+    在 regularity conditions 下，任何 unbiased estimator 的 variance 不小於 Fisher information 的倒數。達到此下界的估計量稱為 efficient。
+
+- id: ps-est-020
+  difficulty: master
+  tags: [bayesian-estimation, posterior]
+  question: |
+    Bayesian estimation 中 posterior distribution 與 prior、likelihood 的關係是什麼？
+  options:
+    - "posterior proportional to likelihood times prior"
+    - "posterior 等於 likelihood 減 prior"
+    - "posterior 與資料無關"
+    - "posterior 必定是 uniform distribution"
+  answer: 0
+  explanation: |
+    Bayes theorem 給出 p(theta|data) proportional to p(data|theta)p(theta)。Normalization constant 使 posterior 積分為 1。

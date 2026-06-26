@@ -1,0 +1,340 @@
+- id: en-read-001
+  difficulty: basic
+  tags: [reading, main-idea, software-engineering]
+  question: |
+    Read the short passage.
+
+    A team replaced a nightly batch job with a streaming pipeline. The new system did not make the data more accurate by itself, but it made errors visible within minutes instead of the next morning.
+
+    What is the main point of the passage?
+  options:
+    - "The main benefit was earlier detection of problems."
+    - "Streaming automatically removes all data errors."
+    - "Nightly batch jobs are always more accurate."
+    - "The team stopped validating data."
+  answer: 0
+  explanation: |
+    文章說 streaming 並不會自動讓資料更正確，但能讓錯誤在幾分鐘內被看見；重點是錯誤偵測更早，而不是準確率自動提升。
+- id: en-read-002
+  difficulty: basic
+  tags: [reading, vocabulary-in-context]
+  question: |
+    Read the sentence.
+
+    The prototype was useful, but its benchmark results were preliminary and should not be treated as conclusive.
+
+    In this context, "preliminary" most nearly means:
+  options:
+    - "final and legally binding"
+    - "early and not yet definitive"
+    - "unrelated to the experiment"
+    - "impossible to repeat"
+  answer: 1
+  explanation: |
+    preliminary 表示初步的、尚未定案的。句子後半也說不應視為 conclusive，因此正確意思是 early and not yet definitive。
+- id: en-read-003
+  difficulty: basic
+  tags: [reading, inference, requirements]
+  question: |
+    Read the passage.
+
+    The product manager asked the team to keep the old export format for one more release, because several customers still used scripts that depended on it.
+
+    What can be reasonably inferred?
+  options:
+    - "No customers use automated scripts."
+    - "Backward compatibility mattered for the next release."
+    - "The old format was already deleted."
+    - "The team was asked to rewrite all customer scripts."
+  answer: 1
+  explanation: |
+    產品經理要求再保留舊匯出格式，理由是客戶腳本仍依賴它，所以可推論下一版需要顧及向後相容性。
+- id: en-read-004
+  difficulty: basic
+  tags: [reading, tone]
+  question: |
+    Read the passage.
+
+    The author notes that caching can reduce latency, but adds that stale data, invalidation rules, and operational visibility must be considered before deploying it widely.
+
+    The author's tone is best described as:
+  options:
+    - "cautiously balanced"
+    - "openly mocking"
+    - "unconditionally enthusiastic"
+    - "unrelated to the topic"
+  answer: 0
+  explanation: |
+    作者承認 caching 的好處，也提醒部署前要考慮失效、過期資料與可觀測性，語氣是審慎平衡，而不是全面反對或盲目支持。
+- id: en-read-005
+  difficulty: basic
+  tags: [reading, pronoun-reference]
+  question: |
+    Read the sentence.
+
+    When the service called the billing API, it returned a timeout after three seconds.
+
+    If the intended meaning is that the billing API returned the timeout, which revision best removes the ambiguity?
+  options:
+    - "When the service called the billing API, the billing API returned a timeout after three seconds."
+    - "When it called it, it returned a timeout after three seconds."
+    - "The service and the billing API returned it after three seconds."
+    - "A timeout was returned by something after three seconds."
+  answer: 0
+  explanation: |
+    原句中的 it 可能指 service 或 billing API。題目指定 intended meaning 是 billing API returned the timeout，因此第一個選項明確指出 timeout 是 billing API 回傳，消除代名詞歧義。
+- id: en-read-006
+  difficulty: intermediate
+  tags: [reading, inference, distributed-systems]
+  question: |
+    Read the passage.
+
+    The incident report did not blame a single developer. Instead, it described how a missing alert, an undocumented dependency, and a rushed rollout together allowed a small configuration error to become a user-visible outage.
+
+    Which statement best captures the report's view of the incident?
+  options:
+    - "The outage was caused only by one careless person."
+    - "The configuration error was irrelevant."
+    - "Several system and process weaknesses amplified the mistake."
+    - "User-visible outages cannot be analyzed."
+  answer: 2
+  explanation: |
+    報告強調缺少告警、未文件化依賴與倉促 rollout 共同放大設定錯誤，屬於系統與流程因素造成事故擴大。
+- id: en-read-007
+  difficulty: intermediate
+  tags: [reading, argument-structure]
+  question: |
+    Read the passage.
+
+    Some engineers prefer a single shared library for all teams because it reduces duplication. However, when release schedules diverge, a shared library can also force unrelated teams to coordinate changes that should have remained independent.
+
+    What role does the second sentence play?
+  options:
+    - "It gives a counterpoint to the first sentence."
+    - "It repeats the first sentence without adding anything."
+    - "It proves that shared libraries never work."
+    - "It changes the topic to hiring."
+  answer: 0
+  explanation: |
+    第一句提出 shared library 的優點，第二句用 release schedule 分歧時的協調成本補充反面考量，是 counterpoint。
+- id: en-read-008
+  difficulty: intermediate
+  tags: [reading, detail, testing]
+  question: |
+    Read the passage.
+
+    The test suite caught the regression only after the database migration was applied, because the failing scenario depended on a newly added unique constraint.
+
+    Why did the test fail only after the migration?
+  options:
+    - "The scenario depended on the new database constraint."
+    - "The tests were not executed."
+    - "The application had no database."
+    - "The unique constraint was removed before testing."
+  answer: 0
+  explanation: |
+    文章明確說 failing scenario depended on a newly added unique constraint，因此 migration 套用後才出現該限制並觸發失敗。
+- id: en-read-009
+  difficulty: intermediate
+  tags: [reading, paraphrase]
+  question: |
+    Read the sentence.
+
+    The maintainer accepted the patch on the condition that the public API remain stable.
+
+    Which option best paraphrases the sentence?
+  options:
+    - "The patch was accepted only if it did not break the public API."
+    - "The maintainer rejected the patch because the API was stable."
+    - "The public API had to be deleted before the patch could be accepted."
+    - "The patch was unrelated to API behavior."
+  answer: 0
+  explanation: |
+    on the condition that 表示「條件是」。句意是 maintainer 可以接受 patch，但前提是 public API 不被破壞。
+- id: en-read-010
+  difficulty: intermediate
+  tags: [reading, cause-effect, performance]
+  question: |
+    Read the passage.
+
+    After the team added an index, the query became faster, but write latency increased because every insert now had to update the additional data structure.
+
+    Which cause-and-effect relationship is described?
+  options:
+    - "The index improved reads while adding write overhead."
+    - "The index made both reads and writes impossible."
+    - "The index removed the need for inserts."
+    - "The query became faster because writes were disabled."
+  answer: 0
+  explanation: |
+    文章描述索引讓查詢加快，但每次 insert 要更新額外資料結構，導致寫入 latency 上升；這正是讀取效能與寫入成本的取捨。
+- id: en-read-011
+  difficulty: intermediate
+  tags: [reading, inference, security]
+  question: |
+    Read the passage.
+
+    The audit recommended rotating the exposed token immediately, then reviewing logs to determine whether it had been used. The report did not claim that misuse had already occurred.
+
+    What is the safest interpretation?
+  options:
+    - "The exposed token should be treated as risky even without confirmed misuse."
+    - "The token was definitely used by an attacker."
+    - "Log review is unnecessary after a token leak."
+    - "A token cannot be abused if no one admits using it."
+  answer: 0
+  explanation: |
+    報告要求立即輪換並查 log，但沒有宣稱已被濫用；合理解讀是暴露本身構成風險，需要處置與調查。
+- id: en-read-012
+  difficulty: intermediate
+  tags: [reading, sentence-function]
+  question: |
+    Read the passage.
+
+    The model performed well on the public leaderboard. Nevertheless, the team delayed deployment until it could test the model on traffic from its own product.
+
+    The word "Nevertheless" signals:
+  options:
+    - "a contrast with the previous sentence"
+    - "a definition of the leaderboard"
+    - "a list of identical examples"
+    - "the end of the project"
+  answer: 0
+  explanation: |
+    Nevertheless 表示「儘管如此」，後句與前句形成轉折：公開排行榜表現好，但團隊仍延後部署做自家流量測試。
+- id: en-read-013
+  difficulty: advanced
+  tags: [reading, assumption, machine-learning]
+  question: |
+    Read the argument.
+
+    The model's accuracy increased after the team added more features. Therefore, every future feature should be added unless it is technically impossible.
+
+    Which hidden assumption is most questionable?
+  options:
+    - "Additional features will continue to improve the model without meaningful costs or risks."
+    - "The team measured accuracy after changing the model."
+    - "Some features can be technically impossible."
+    - "The model has an accuracy metric."
+  answer: 0
+  explanation: |
+    結論把一次加 feature 的成功推廣成未來所有 feature 都應加入，隱含假設是更多 feature 會持續帶來好處且無顯著成本；這最值得質疑。
+- id: en-read-014
+  difficulty: advanced
+  tags: [reading, inference, systems-design]
+  question: |
+    Read the passage.
+
+    The architect rejected the proposal to make the cache the system of record. She argued that the cache could be rebuilt from the database, but the database could not be rebuilt from the cache.
+
+    What principle is the architect emphasizing?
+  options:
+    - "Derived data should not replace the authoritative source."
+    - "Caches must always be slower than databases."
+    - "Databases should never be backed up."
+    - "A system of record is unnecessary."
+  answer: 0
+  explanation: |
+    cache 是可由 database 重建的衍生資料，不應取代權威資料來源。架構師重視的是 source of truth 與 derived data 的界線。
+- id: en-read-015
+  difficulty: advanced
+  tags: [reading, logical-weakness]
+  question: |
+    Read the claim.
+
+    Our service had no incidents last month after we disabled rate limiting. This proves rate limiting was unnecessary.
+
+    What is the strongest criticism of the claim?
+  options:
+    - "One incident-free month does not prove the control is unnecessary under different traffic or attack conditions."
+    - "Rate limiting can only be used for database backups."
+    - "A service with no incidents must have no users."
+    - "Disabling a control always improves security."
+  answer: 0
+  explanation: |
+    一個月沒有事故不足以證明 rate limiting 在其他流量或攻擊條件下無用；這是以有限觀察推出過強結論。
+- id: en-read-016
+  difficulty: advanced
+  tags: [reading, evidence, research]
+  question: |
+    Read the passage.
+
+    The paper reports that the new scheduler reduced average latency in a simulator. It does not report tail latency, real workload traces, or overhead from collecting the scheduler's input signals.
+
+    Which evaluation concern is most directly supported?
+  options:
+    - "The result may not fully characterize production behavior."
+    - "The scheduler definitely cannot run in production."
+    - "Average latency is never useful."
+    - "The simulator proves tail latency is zero."
+  answer: 0
+  explanation: |
+    文章指出只報告 simulator 的平均 latency，缺少 tail latency、真實 workload 與輸入訊號 overhead，因此最直接的疑慮是結果不足以完整代表 production 行為。
+- id: en-read-017
+  difficulty: advanced
+  tags: [reading, nuance, product]
+  question: |
+    Read the passage.
+
+    The team did not remove the advanced settings. Instead, it hid them behind an "expert mode" toggle so new users would see fewer choices while experienced users could still access the controls.
+
+    Which statement best reflects the design decision?
+  options:
+    - "The team reduced initial complexity without eliminating advanced control."
+    - "The team removed all customization."
+    - "The team made every option visible to every user."
+    - "The team concluded that experienced users do not matter."
+  answer: 0
+  explanation: |
+    設計保留 advanced settings，但用 expert mode 降低新手初始負擔；這是在簡化初始介面與保留進階控制之間取平衡。
+- id: en-read-018
+  difficulty: advanced
+  tags: [reading, comparison, architecture]
+  question: |
+    Read the passage.
+
+    A monolith can be simpler to debug because calls stay in one process. A microservice architecture can make independent deployment easier, but it also introduces network failures, version coordination, and observability challenges.
+
+    Which comparison is most accurate?
+  options:
+    - "The passage presents tradeoffs rather than declaring one architecture universally superior."
+    - "The passage says microservices have no operational cost."
+    - "The passage says monoliths cannot be debugged."
+    - "The passage claims all systems must start as microservices."
+  answer: 0
+  explanation: |
+    文章同時列出 monolith 與 microservice 的優缺點，核心是 tradeoff，不是宣告某一種架構永遠最好。
+- id: en-read-019
+  difficulty: master
+  tags: [reading, implicit-claim, experiments]
+  question: |
+    Read the passage.
+
+    The A/B test showed a higher click-through rate for the new ranking algorithm, but the authors cautioned that the experiment ran during a holiday sale and measured only short-term clicks, not retention or customer satisfaction.
+
+    Which conclusion is best supported?
+  options:
+    - "The algorithm may improve one measured metric, but broader product impact remains uncertain."
+    - "The algorithm must be worse because holidays invalidate all data."
+    - "Click-through rate and retention are identical metrics."
+    - "The experiment proves long-term customer satisfaction improved."
+  answer: 0
+  explanation: |
+    A/B test 支持短期 click-through rate 較高，但 holiday sale 與未測 retention/satisfaction 限制了外推。最穩健結論是單一指標改善，整體產品影響仍不確定。
+- id: en-read-020
+  difficulty: master
+  tags: [reading, synthesis, security-engineering]
+  question: |
+    Read the passage.
+
+    The security team required two changes before approving the launch: all administrative actions had to be recorded in tamper-evident logs, and emergency access had to expire automatically unless a separate reviewer extended it.
+
+    Which broader goal do these requirements most clearly support?
+  options:
+    - "Accountability and limited privilege during high-risk operations."
+    - "Making administrative actions anonymous."
+    - "Removing all human review from emergency access."
+    - "Ensuring emergency access lasts forever."
+  answer: 0
+  explanation: |
+    防竄改 log 提供責任歸屬與稽核，緊急權限自動到期則限制高風險權限的持續時間；兩者共同支持 accountability 與 limited privilege。
