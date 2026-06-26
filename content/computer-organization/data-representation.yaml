@@ -1,0 +1,260 @@
+- id: co-datarepr-001
+  difficulty: basic
+  tags: [binary, positional-notation]
+  question: |
+    二進位數 101101₂ 若視為 unsigned integer，十進位值是多少？
+  options:
+    - "41"
+    - "45"
+    - "53"
+    - "90"
+  answer: 1
+  explanation: |
+    101101₂ = 1×32 + 0×16 + 1×8 + 1×4 + 0×2 + 1×1 = 45。Unsigned 表示法不保留符號位元，因此所有位元都貢獻數值權重。
+- id: co-datarepr-002
+  difficulty: basic
+  tags: [two-complement, signed-integer]
+  question: |
+    8-bit two's complement 的可表示範圍為何？
+  options:
+    - "-127 到 +127"
+    - "-128 到 +127"
+    - "-128 到 +128"
+    - "0 到 255"
+  answer: 1
+  explanation: |
+    n-bit two's complement 範圍是 -2^(n-1) 到 2^(n-1)-1。8-bit 時為 -128 到 +127；負數比正數多一個，因為 10000000₂ 表示 -128。
+- id: co-datarepr-003
+  difficulty: basic
+  tags: [hexadecimal, bytes]
+  question: |
+    十六進位 0x3A7F 需要幾個 bit 才能完整表示？
+  options:
+    - "8 bits"
+    - "12 bits"
+    - "16 bits"
+    - "32 bits"
+  answer: 2
+  explanation: |
+    每個十六進位 digit 對應 4 個 bit。0x3A7F 有 4 個 hex digits，因此需要 4×4 = 16 bits 表示。
+- id: co-datarepr-004
+  difficulty: basic
+  tags: [endianness, memory-layout]
+  question: |
+    在 big-endian 系統中，32-bit 整數 0x01020304 從位址 A 開始存放。位址 A 的 byte 內容為何？
+  options:
+    - "0x01"
+    - "0x02"
+    - "0x03"
+    - "0x04"
+  answer: 0
+  explanation: |
+    Big-endian 會把最高有效位元組放在最低位址。0x01020304 的最高有效 byte 是 0x01，因此位址 A 存 0x01。
+- id: co-datarepr-005
+  difficulty: basic
+  tags: [ascii, character-encoding]
+  question: |
+    關於 ASCII 與 Unicode，下列何者正確？
+  options:
+    - "ASCII 可直接表示所有 Unicode code points"
+    - "Unicode 定義字元集合與 code point；UTF-8 是其中一種編碼方式"
+    - "UTF-8 固定每個字元都用 16 bits"
+    - "Unicode 只適用於英文"
+  answer: 1
+  explanation: |
+    Unicode 定義跨語言的 code points，UTF-8、UTF-16 等是把 code point 編成 byte 序列的方法。ASCII 只涵蓋較小的 7-bit 字元集合。
+- id: co-datarepr-006
+  difficulty: intermediate
+  tags: [sign-extension, two-complement]
+  question: |
+    將 8-bit two's complement 值 11110000₂ sign-extend 成 16-bit，結果應為何？
+  options:
+    - "0000000011110000₂"
+    - "1111111111110000₂"
+    - "0000111100000000₂"
+    - "1111000000000000₂"
+  answer: 1
+  explanation: |
+    Sign extension 要複製原本的最高位元。11110000₂ 的 sign bit 為 1，因此擴成 16-bit 時高 8 位補 1，得到 1111111111110000₂，數值仍為 -16。
+- id: co-datarepr-007
+  difficulty: intermediate
+  tags: [overflow, two-complement]
+  question: |
+    8-bit two's complement 中，01000000₂ + 01000000₂ 的結果是 10000000₂。下列判斷何者正確？
+  options:
+    - "這是 unsigned overflow，但不是 signed overflow"
+    - "這是 signed overflow，因為兩個正數相加得到負號結果"
+    - "沒有 overflow，結果正確表示 +128"
+    - "這只表示 carry flag 被清除"
+  answer: 1
+  explanation: |
+    01000000₂ 是 +64，兩個正數相加理應為 +128，但 8-bit signed 範圍上限是 +127。結果 10000000₂ 解讀為 -128，符號錯誤代表 signed overflow。
+- id: co-datarepr-008
+  difficulty: intermediate
+  tags: [floating-point, ieee-754]
+  question: |
+    IEEE 754 single precision 中，sign、exponent、fraction 欄位位元數分別是多少？
+  options:
+    - "1、8、23"
+    - "1、11、52"
+    - "8、1、23"
+    - "2、8、22"
+  answer: 0
+  explanation: |
+    Single precision 共 32 bits，由 1-bit sign、8-bit biased exponent、23-bit fraction 組成。Double precision 才是 1、11、52。
+- id: co-datarepr-009
+  difficulty: intermediate
+  tags: [floating-point, rounding]
+  question: |
+    為什麼許多十進位小數如 0.1 無法用二進位 floating-point 精確表示？
+  options:
+    - "浮點數不能表示小於 1 的數"
+    - "0.1 的二進位展開是無限循環，有限 fraction 欄位只能近似"
+    - "IEEE 754 禁止表示正小數"
+    - "CPU 會刻意把所有小數改成整數"
+  answer: 1
+  explanation: |
+    就像 1/3 在十進位中無限循環，0.1 在二進位中也無法用有限位數結束。IEEE 754 的 fraction 欄位有限，因此只能存最接近的可表示值。
+- id: co-datarepr-010
+  difficulty: intermediate
+  tags: [alignment, struct-layout]
+  question: |
+    在常見 ABI 中，struct 可能因 alignment 插入 padding。主要原因是什麼？
+  options:
+    - "讓所有欄位加密"
+    - "讓欄位位址符合硬體對齊需求，避免未對齊存取的成本或例外"
+    - "讓 struct 一定比原始欄位總和更小"
+    - "讓欄位順序在執行期隨機化"
+  answer: 1
+  explanation: |
+    許多硬體對 2、4、8-byte 型別有對齊需求或效能偏好。Compiler 會在欄位間或尾端加入 padding，使欄位與陣列元素符合 ABI 對齊規則。
+- id: co-datarepr-011
+  difficulty: intermediate
+  tags: [fixed-point, scaling]
+  question: |
+    使用 Q8.8 fixed-point 表示法時，整數儲存值 0x0180 代表的實數值是多少？
+  options:
+    - "1.5"
+    - "3.0"
+    - "128.0"
+    - "384.0"
+  answer: 0
+  explanation: |
+    Q8.8 代表低 8 bits 是小數縮放，實數值 = 儲存整數 / 2^8。0x0180 = 384，384/256 = 1.5。
+- id: co-datarepr-012
+  difficulty: intermediate
+  tags: [utf-8, compatibility]
+  question: |
+    UTF-8 與 ASCII 相容的意思是什麼？
+  options:
+    - "任何 Unicode 字元都只佔 1 byte"
+    - "ASCII 範圍 U+0000 到 U+007F 在 UTF-8 中使用相同的單 byte 值"
+    - "UTF-8 只能儲存英文"
+    - "ASCII 檔案必須先轉成 UTF-16 才能當 UTF-8 讀"
+  answer: 1
+  explanation: |
+    UTF-8 對 ASCII code points 使用完全相同的 0x00 到 0x7F 單 byte 編碼，因此純 ASCII 檔案本身也是合法 UTF-8 檔案。
+- id: co-datarepr-013
+  difficulty: advanced
+  tags: [floating-point, special-values]
+  question: |
+    IEEE 754 中 exponent 欄位全為 1 且 fraction 非 0 時，通常表示什麼？
+  options:
+    - "+0 或 -0"
+    - "subnormal number"
+    - "NaN"
+    - "normalized finite number"
+  answer: 2
+  explanation: |
+    Exponent 全 1 是特殊區間；fraction 為 0 表示 infinity，fraction 非 0 表示 NaN。NaN 用於無效運算或不可定義結果，例如 0/0。
+- id: co-datarepr-014
+  difficulty: advanced
+  tags: [floating-point, subnormal]
+  question: |
+    IEEE 754 subnormal numbers 的主要用途是什麼？
+  options:
+    - "擴大最大可表示整數"
+    - "在接近 0 的區域提供 gradual underflow，減少突然變成 0 的斷崖"
+    - "讓所有運算變成精確十進位"
+    - "取代 sign bit"
+  answer: 1
+  explanation: |
+    Subnormal 使用 exponent 全 0 且沒有隱含 leading 1，可表示比最小 normalized number 更接近 0 的值。這提供 gradual underflow，讓小值逐步流失精度而非直接歸零。
+- id: co-datarepr-015
+  difficulty: advanced
+  tags: [bit-manipulation, masks]
+  question: |
+    若要將 32-bit 暫存器 x 的第 5 個 bit 設為 1，且不改變其他 bit，應使用哪個運算？
+  options:
+    - "x = x & (1 << 5)"
+    - "x = x | (1 << 5)"
+    - "x = x ^ (1 << 5)"
+    - "x = x >> 5"
+  answer: 1
+  explanation: |
+    OR mask 會把 mask 中為 1 的位置設為 1，mask 中為 0 的位置保留原值。AND 會清掉其他 bit，XOR 會翻轉該 bit，右移會改變整體位元排列。
+- id: co-datarepr-016
+  difficulty: advanced
+  tags: [decimal, bcd]
+  question: |
+    Packed BCD 用 4 bits 表示一個十進位 digit。十進位 59 的 packed BCD byte 通常為何？
+  options:
+    - "0x3B"
+    - "0x59"
+    - "0x95"
+    - "0x111011"
+  answer: 1
+  explanation: |
+    BCD 不是把整個數字轉二進位，而是每個十進位 digit 各用 4 bits。5 編成 0101，9 編成 1001，因此 packed byte 為 01011001₂ = 0x59。
+- id: co-datarepr-017
+  difficulty: advanced
+  tags: [saturation, arithmetic]
+  question: |
+    Saturating arithmetic 與一般 two's complement wraparound 的差異是什麼？
+  options:
+    - "溢位時 saturating arithmetic 夾到最大或最小值，wraparound 則依固定 bit 寬繞回"
+    - "Saturating arithmetic 不需要位元寬度"
+    - "Wraparound 會自動丟出例外並停止程式"
+    - "兩者對所有輸入都產生相同結果"
+  answer: 0
+  explanation: |
+    例如 8-bit signed 下 127+1，wraparound 會得到 -128；saturating arithmetic 則會夾到 +127。訊號處理常用 saturating 以避免大幅反向跳變。
+- id: co-datarepr-018
+  difficulty: master
+  tags: [floating-point, associativity]
+  question: |
+    為何 floating-point 加法通常不滿足結合律，即 (a+b)+c 可能不等於 a+(b+c)？
+  options:
+    - "浮點加法每一步都可能 rounding，不同分組造成不同的捨入誤差"
+    - "IEEE 754 規定加法必須隨機化"
+    - "浮點數沒有正負號"
+    - "只有整數加法才會進位"
+  answer: 0
+  explanation: |
+    浮點數的有效位數有限。每次加法會對中間結果做 rounding，若先把大小差異很大的數相加，小量可能被捨去；不同分組會改變中間捨入，因此結果可能不同。
+- id: co-datarepr-019
+  difficulty: master
+  tags: [pointer-tagging, alignment]
+  question: |
+    一些 runtime 利用物件位址低位元做 pointer tagging。這通常依賴哪個事實？
+  options:
+    - "所有物件位址都必定是奇數"
+    - "對齊配置使合法指標的若干低位元固定為 0，可借來存放型別或狀態資訊"
+    - "CPU 不會檢查指標值"
+    - "Virtual memory 會自動壓縮指標"
+  answer: 1
+  explanation: |
+    若物件至少 8-byte 對齊，合法位址低 3 bits 通常為 0。Runtime 可暫時把這些位元作為 tag，但在真正解參考前必須清除或轉換回合法指標。
+- id: co-datarepr-020
+  difficulty: master
+  tags: [floating-point, cancellation]
+  question: |
+    在浮點計算中，catastrophic cancellation 通常指什麼？
+  options:
+    - "兩個相近的大數相減後，有效位數大量流失，剩餘結果相對誤差變大"
+    - "除以 2 一定產生 NaN"
+    - "整數轉浮點時必定溢位"
+    - "Cache miss 導致計算結果被清成 0"
+  answer: 0
+  explanation: |
+    當兩個近似值非常接近時，相減會抵消高位有效數字，留下原本包含 rounding error 的低位。結果的相對誤差可能被放大，數值演算法常需改寫公式避免此問題。

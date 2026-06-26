@@ -1,0 +1,260 @@
+- id: net-route-001
+  difficulty: basic
+  tags: [ipv4, subnet-mask]
+  question: |
+    IPv4 前綴 /24 對應的 subnet mask 是什麼？
+  options:
+    - "255.0.0.0"
+    - "255.255.0.0"
+    - "255.255.255.0"
+    - "255.255.255.252"
+  answer: 2
+  explanation: |
+    /24 表示前 24 bits 為網路位元，也就是前三個 octets 全為 1：11111111.11111111.11111111.00000000，十進位為 255.255.255.0。
+- id: net-route-002
+  difficulty: basic
+  tags: [cidr, host-count]
+  question: |
+    一個 IPv4 /26 子網路共有幾個位址？若扣除 network 與 broadcast，傳統可用 host 位址有幾個？
+  options:
+    - "32 個位址，30 個可用 host"
+    - "64 個位址，62 個可用 host"
+    - "128 個位址，126 個可用 host"
+    - "256 個位址，254 個可用 host"
+  answer: 1
+  explanation: |
+    /26 剩下 32-26 = 6 個 host bits，共 2^6 = 64 個位址。傳統 IPv4 子網路扣除全 0 network address 與全 1 broadcast address，可用 62 個 host 位址。
+- id: net-route-003
+  difficulty: basic
+  tags: [default-route, routing-table]
+  question: |
+    Routing table 中的 default route 通常寫成哪個 IPv4 前綴？
+  options:
+    - "0.0.0.0/0"
+    - "127.0.0.1/8"
+    - "255.255.255.255/32"
+    - "224.0.0.0/4"
+  answer: 0
+  explanation: |
+    0.0.0.0/0 的前綴長度為 0，能匹配所有目的 IPv4 位址。當沒有更長、更具體的 route 匹配時，路由器會使用 default route。
+- id: net-route-004
+  difficulty: basic
+  tags: [router, forwarding]
+  question: |
+    Router 轉送 IP packet 時，最核心的決策依據是什麼？
+  options:
+    - "目的 IP 位址與 routing table 的前綴匹配"
+    - "HTTP Cookie 內容"
+    - "目的主機的螢幕解析度"
+    - "TCP payload 中第一個字元"
+  answer: 0
+  explanation: |
+    IP router 主要查看目的 IP，透過 longest prefix match 在 forwarding table 中選下一跳與出口介面。Transport payload 通常不參與一般 IP 轉送決策。
+- id: net-route-005
+  difficulty: basic
+  tags: [private-address, ipv4]
+  question: |
+    下列哪個 IPv4 位址屬於 RFC 1918 private address range？
+  options:
+    - "8.8.8.8"
+    - "172.20.5.1"
+    - "169.254.10.3"
+    - "224.0.0.1"
+  answer: 1
+  explanation: |
+    RFC 1918 private ranges 包含 10.0.0.0/8、172.16.0.0/12、192.168.0.0/16。172.20.5.1 落在 172.16 到 172.31 範圍內。
+- id: net-route-006
+  difficulty: intermediate
+  tags: [longest-prefix-match, forwarding]
+  question: |
+    Routing table 有 10.0.0.0/8、10.1.0.0/16、10.1.2.0/24 三條 route。目的位址 10.1.2.99 會選哪條？
+  options:
+    - "10.0.0.0/8"
+    - "10.1.0.0/16"
+    - "10.1.2.0/24"
+    - "三條隨機選一條"
+  answer: 2
+  explanation: |
+    三條 route 都匹配 10.1.2.99，但 longest prefix match 會選前綴最長、最具體的 route。/24 比 /16 與 /8 更長，因此被選中。
+- id: net-route-007
+  difficulty: intermediate
+  tags: [subnetting, network-address]
+  question: |
+    IP 位址 192.168.10.77/28 所在子網路的 network address 是什麼？
+  options:
+    - "192.168.10.0"
+    - "192.168.10.64"
+    - "192.168.10.76"
+    - "192.168.10.80"
+  answer: 1
+  explanation: |
+    /28 每個子網路大小為 16 個位址，最後一個 octet 的範圍為 0、16、32、48、64、80...。77 落在 64 到 79，因此 network address 是 192.168.10.64。
+- id: net-route-008
+  difficulty: intermediate
+  tags: [subnetting, broadcast]
+  question: |
+    子網路 10.2.3.128/27 的 broadcast address 是什麼？
+  options:
+    - "10.2.3.159"
+    - "10.2.3.160"
+    - "10.2.3.255"
+    - "10.2.3.127"
+  answer: 0
+  explanation: |
+    /27 剩 5 個 host bits，每個子網路 32 個位址。從 128 開始的範圍是 128 到 159，其中最後一個 159 是 broadcast address。
+- id: net-route-009
+  difficulty: intermediate
+  tags: [arp, local-delivery]
+  question: |
+    IPv4 主機要把 packet 送給同一 LAN 上的目的 IP，通常需要 ARP 取得什麼資訊？
+  options:
+    - "目的 IP 對應的 MAC address"
+    - "目的主機的 DNS domain"
+    - "目的 TCP congestion window"
+    - "目的應用程式版本"
+  answer: 0
+  explanation: |
+    同一 LAN 內實際 frame 需要目的 MAC address。ARP 以廣播查詢誰擁有某個 IPv4 位址，對方回覆其 MAC，送端再封裝 Ethernet frame。
+- id: net-route-010
+  difficulty: intermediate
+  tags: [nat, addressing]
+  question: |
+    家用 NAT 路由器讓多台內部主機共用一個 public IPv4，通常依靠什麼資訊區分連線？
+  options:
+    - "內部位址與 transport port 的轉換表"
+    - "螢幕大小"
+    - "使用者登入名稱"
+    - "IP packet 的 TTL 初始值"
+  answer: 0
+  explanation: |
+    Port Address Translation 會把內部端點 IP:port 改寫成 public IP:port，並在表中記錄映射。回應封包回來時，再依目的 port 找回內部主機與 port。
+- id: net-route-011
+  difficulty: intermediate
+  tags: [distance-vector, rip]
+  question: |
+    Distance-vector routing protocol 的基本交換內容是什麼？
+  options:
+    - "每個 router 向鄰居告知自己到各目的網路的距離估計"
+    - "每個 host 公開自己的瀏覽器歷史"
+    - "只交換完整 Ethernet frame payload"
+    - "每個 router 只告知 CPU 溫度"
+  answer: 0
+  explanation: |
+    Distance-vector 協定讓 router 與鄰居交換目的地距離向量，根據鄰居通告加上到鄰居成本更新路由。RIP 是典型例子，但可能有 count-to-infinity 等收斂問題。
+- id: net-route-012
+  difficulty: intermediate
+  tags: [link-state, ospf]
+  question: |
+    Link-state routing protocol 相較於 distance-vector 的典型作法是什麼？
+  options:
+    - "每個 router 洪泛鏈路狀態資訊，讓所有 router 建立拓撲圖並各自計算最短路徑"
+    - "只依賴 default route，不維護拓撲"
+    - "完全不需要鄰居關係"
+    - "把 IP address 改成 MAC address"
+  answer: 0
+  explanation: |
+    OSPF 等 link-state 協定會散播 link-state advertisements，使同一區域內 router 擁有一致拓撲資料庫，再用 Dijkstra 演算法計算 shortest path tree。
+- id: net-route-013
+  difficulty: advanced
+  tags: [cidr, summarization]
+  question: |
+    192.168.0.0/24、192.168.1.0/24、192.168.2.0/24、192.168.3.0/24 可彙總成哪個最小單一 CIDR 前綴？
+  options:
+    - "192.168.0.0/22"
+    - "192.168.0.0/23"
+    - "192.168.2.0/23"
+    - "192.168.0.0/21"
+  answer: 0
+  explanation: |
+    四個連續 /24 共 1024 個位址，相當於 host bits 多 2 位，因此前綴為 /22。範圍 192.168.0.0 到 192.168.3.255 對齊於 /22 邊界。
+- id: net-route-014
+  difficulty: advanced
+  tags: [vlsm, subnetting]
+  question: |
+    若一個 IPv4 子網路至少需要容納 50 台 host，使用傳統 network/broadcast 保留規則時，最小前綴長度應選哪個？
+  options:
+    - "/25"
+    - "/26"
+    - "/27"
+    - "/28"
+  answer: 1
+  explanation: |
+    需要可用 host ≥ 50。/27 有 32 位址、30 可用，不足；/26 有 64 位址、62 可用，剛好足夠且比 /25 更小。
+- id: net-route-015
+  difficulty: advanced
+  tags: [bgp, policy-routing]
+  question: |
+    BGP 被稱為 path-vector protocol，主要是因為路由公告包含什麼？
+  options:
+    - "到目的前綴的 AS path 等路徑屬性，可用於避免 loop 與套用政策"
+    - "每台主機的 ARP cache"
+    - "每個 packet 的完整 payload"
+    - "所有 router 的 CPU 指令集"
+  answer: 0
+  explanation: |
+    BGP route 會攜帶 AS_PATH、NEXT_HOP、LOCAL_PREF 等屬性。AS_PATH 顯示經過的自治系統序列，可偵測 AS loop，也讓網路依商業與政策選路。
+- id: net-route-016
+  difficulty: advanced
+  tags: [route-convergence, failure]
+  question: |
+    Routing convergence time 指的是什麼？
+  options:
+    - "拓撲或鏈路狀態變化後，網路中 router 重新達成一致且可正確轉送所需的時間"
+    - "單一封包穿過一條光纖的傳播時間"
+    - "DNS cache 的 TTL 固定值"
+    - "TCP 三向交握中的 SYN 大小"
+  answer: 0
+  explanation: |
+    當鏈路故障或成本變化，routing protocol 需要偵測、散播資訊並重新計算路徑。在收斂完成前，可能發生暫時 loop、blackhole 或 suboptimal routing。
+- id: net-route-017
+  difficulty: advanced
+  tags: [icmp, traceroute]
+  question: |
+    Traceroute 類工具通常如何推測路徑上的每一跳 router？
+  options:
+    - "送出逐漸增加 TTL 或 hop limit 的封包，利用中途 router 回覆 ICMP Time Exceeded"
+    - "要求目的主機回傳所有中間 router 的密碼"
+    - "讀取本機 ARP cache 即可得知全網路路徑"
+    - "修改 DNS MX record"
+  answer: 0
+  explanation: |
+    IP 封包每經一跳 TTL 減 1，降到 0 時 router 丟棄並回 ICMP Time Exceeded。Traceroute 從 TTL=1 開始逐步增加，藉由回覆封包的送出者推測每一跳。
+- id: net-route-018
+  difficulty: master
+  tags: [ecmp, hashing]
+  question: |
+    ECMP (Equal-Cost Multi-Path) 常以 flow hash 分配流量，而非逐封包輪流，主要原因是什麼？
+  options:
+    - "避免同一 flow 的封包因走不同路徑而亂序"
+    - "讓所有路徑都必定零延遲"
+    - "避免 router 需要 forwarding table"
+    - "讓 IP header 不需要目的位址"
+  answer: 0
+  explanation: |
+    多條等成本路徑可能延遲不同。若逐封包分散，同一 TCP flow 容易亂序，觸發重傳或降低吞吐。以五元組等 flow hash 分配可讓同一 flow 通常走同一路徑。
+- id: net-route-019
+  difficulty: master
+  tags: [ipv6, subnetting]
+  question: |
+    IPv6 中企業或 LAN 常以 /64 作為單一子網路大小，重要原因之一是什麼？
+  options:
+    - "SLAAC 等機制通常假設 interface identifier 為 64 bits"
+    - "IPv6 位址只有 64 bits"
+    - "/64 只能容納 64 台主機"
+    - "IPv6 沒有任何路由前綴概念"
+  answer: 0
+  explanation: |
+    IPv6 位址為 128 bits，/64 留下 64-bit interface identifier。SLAAC 與許多鄰居發現相關設計以 /64 為常見假設，因此一般 LAN 子網路常使用 /64。
+- id: net-route-020
+  difficulty: master
+  tags: [route-filtering, security]
+  question: |
+    為何邊界 router 需要 route filtering 或 prefix validation？
+  options:
+    - "避免接受不該由鄰居宣告的前綴，降低 route leak 或 prefix hijack 風險"
+    - "讓所有封包都改用廣播傳送"
+    - "把私有 IP 自動變成 MAC address"
+    - "保證所有 BGP 路徑都是最低延遲"
+  answer: 0
+  explanation: |
+    若無過濾，錯誤或惡意的路由公告可能把流量導向不該到的 AS。Prefix list、IRR/RPKI validation 與 policy 可限制鄰居可宣告的前綴與 origin AS，提高路由安全性。

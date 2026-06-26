@@ -1,0 +1,260 @@
+- id: os-fs-001
+  difficulty: basic
+  tags: [file-system, abstraction]
+  question: |
+    作業系統提供 file system 的主要抽象是什麼？
+  options:
+    - "把持久化資料組織成命名檔案與目錄，並提供讀寫、保護與管理介面"
+    - "讓 CPU 不需要執行指令"
+    - "將所有資料只存在暫存器中"
+    - "取代網路協定"
+  answer: 0
+  explanation: |
+    File system 將底層 block device 包裝成檔案、目錄、metadata 與權限等抽象，使應用程式可用名稱與 offset 存取持久化資料，而不必直接管理磁碟區塊。
+- id: os-fs-002
+  difficulty: basic
+  tags: [inode, metadata]
+  question: |
+    Unix-like file system 中，inode 通常不直接儲存下列哪一項？
+  options:
+    - "檔案大小"
+    - "檔案資料區塊的位置資訊"
+    - "檔案擁有者與權限"
+    - "檔案在某個目錄中的文字名稱"
+  answer: 3
+  explanation: |
+    Inode 儲存檔案 metadata 與資料區塊指標，但檔名通常存在目錄項目中。目錄項目把名稱映射到 inode number，因此同一 inode 可被多個名稱連到。
+- id: os-fs-003
+  difficulty: basic
+  tags: [directory, path]
+  question: |
+    目錄在 file system 中本質上通常扮演什麼角色？
+  options:
+    - "名稱到檔案識別碼或 inode 的映射表"
+    - "CPU 排程佇列"
+    - "網路封包的 checksum"
+    - "只存放可執行程式碼的特殊記憶體"
+  answer: 0
+  explanation: |
+    目錄是一種特殊檔案或資料結構，記錄檔名與 inode number 等對應關係。Path lookup 就是逐層查目錄，將文字路徑解析為目標 inode。
+- id: os-fs-004
+  difficulty: basic
+  tags: [hard-link, inode]
+  question: |
+    Hard link 的正確描述是什麼？
+  options:
+    - "建立另一個目錄項目指向同一個 inode"
+    - "建立一份完整檔案資料複本"
+    - "只是一個包含目標路徑字串的普通檔案內容"
+    - "只能指向尚未存在的檔案"
+  answer: 0
+  explanation: |
+    Hard link 讓多個檔名對應同一 inode，資料與 metadata 共享。刪除其中一個名稱只會減少 link count；直到 link count 為 0 且無開啟參照時才可回收。
+- id: os-fs-005
+  difficulty: basic
+  tags: [symbolic-link, path]
+  question: |
+    Symbolic link 與 hard link 的主要差異是什麼？
+  options:
+    - "Symbolic link 儲存目標路徑，解析時再跟隨該路徑"
+    - "Symbolic link 一定與目標共用同一 inode"
+    - "Symbolic link 不能跨 file system"
+    - "Symbolic link 會自動複製目標檔案資料"
+  answer: 0
+  explanation: |
+    Symlink 本身有自己的 inode，內容是目標路徑字串。它可指向不存在的路徑，也通常可跨 file system；hard link 則直接連到同一 inode。
+- id: os-fs-006
+  difficulty: intermediate
+  tags: [allocation, contiguous]
+  question: |
+    Contiguous allocation 配置檔案資料區塊的主要優點與缺點為何？
+  options:
+    - "順序讀取快且定位簡單，但容易產生外部碎片並使檔案成長困難"
+    - "完全沒有碎片，且檔案可無限制成長"
+    - "每個 block 都必須存一個下一塊指標，隨機存取最慢"
+    - "只能用於唯讀記憶體"
+  answer: 0
+  explanation: |
+    連續配置讓檔案 block 在磁碟上相鄰，順序 I/O 與 offset 計算都有效率。但要找到足夠連續空間不容易，檔案擴張也可能需要搬移或預留空間。
+- id: os-fs-007
+  difficulty: intermediate
+  tags: [fat, linked-allocation]
+  question: |
+    FAT 類 file system 使用 File Allocation Table 的主要目的為何？
+  options:
+    - "集中記錄每個檔案 block 鏈的下一個 block，避免把指標散在資料區塊內"
+    - "將所有檔案壓縮成單一 inode"
+    - "只用來儲存使用者密碼"
+    - "讓檔案系統不需要 free-space 管理"
+  answer: 0
+  explanation: |
+    FAT 將 block 鏈結資訊集中於表格中，每個 entry 指向下一個 block 或表示結尾。這比單純 linked allocation 更容易快取配置資訊，但表格本身可能成為大容量磁碟的瓶頸。
+- id: os-fs-008
+  difficulty: intermediate
+  tags: [indexed-allocation, inode]
+  question: |
+    Indexed allocation 相較於 linked allocation 的主要好處是什麼？
+  options:
+    - "可透過索引直接找到第 k 個資料區塊，隨機存取較有效率"
+    - "完全不需要 metadata"
+    - "檔案內容一定連續"
+    - "每次讀檔都必須從第一個 block 走到最後"
+  answer: 0
+  explanation: |
+    Indexed allocation 將資料 block 指標集中在 inode 或索引 block 中，可依 offset 找到對應 block。Linked allocation 若沒有額外索引，找第 k 塊需要沿鏈走 k 步。
+- id: os-fs-009
+  difficulty: intermediate
+  tags: [free-space, bitmap]
+  question: |
+    Free-space bitmap 如何表示磁碟區塊是否可用？
+  options:
+    - "每個區塊用一個 bit 表示 free 或 allocated"
+    - "每個檔案用一個 process id 表示"
+    - "每個使用者用一個 cache line 表示"
+    - "每個目錄只能記錄一個空閒區塊"
+  answer: 0
+  explanation: |
+    Bitmap 以 bit 對應 block，空間成本低且容易尋找連續空間。File system 需在配置與釋放時正確更新 bitmap，否則可能造成洩漏或重複配置。
+- id: os-fs-010
+  difficulty: intermediate
+  tags: [journaling, consistency]
+  question: |
+    Journaling file system 的主要目的為何？
+  options:
+    - "在實際修改 metadata 前先記錄意圖或交易，崩潰後可 replay 或 rollback 保持一致性"
+    - "讓所有寫入都不落盤"
+    - "取消檔案權限檢查"
+    - "把每個檔案改成網路連線"
+  answer: 0
+  explanation: |
+    Journaling 將一組 metadata 更新包成交易，先寫入 journal。若系統崩潰，重開後可根據 journal 完成或放棄未完成更新，避免目錄、inode、bitmap 彼此不一致。
+- id: os-fs-011
+  difficulty: intermediate
+  tags: [buffer-cache, page-cache]
+  question: |
+    Page cache 或 buffer cache 對 file I/O 的主要效果是什麼？
+  options:
+    - "快取最近讀寫的檔案資料或 metadata，減少實際裝置 I/O"
+    - "把所有檔案永久存到 CPU register"
+    - "讓 fsync 不再有任何意義"
+    - "只用於網路路由表"
+  answer: 0
+  explanation: |
+    OS 會用記憶體快取檔案內容與 metadata。讀取可命中 cache，寫入也可能先變成 dirty page 再由背景回寫；需要持久性保證時才使用 fsync 等同步機制。
+- id: os-fs-012
+  difficulty: intermediate
+  tags: [permissions, access-control]
+  question: |
+    Unix 權限 rwxr-x--- 對檔案擁有者、群組、其他人分別代表什麼？
+  options:
+    - "擁有者 rwx，群組 r-x，其他人無權限"
+    - "擁有者 r-x，群組 rwx，其他人無權限"
+    - "擁有者無權限，群組 r-x，其他人 rwx"
+    - "三者都只有讀取權限"
+  answer: 0
+  explanation: |
+    權限每三個字元一組，依序為 owner、group、others。rwx 表示可讀寫執行，r-x 表示可讀與執行但不可寫，--- 表示沒有權限。
+- id: os-fs-013
+  difficulty: advanced
+  tags: [crash-consistency, ordering]
+  question: |
+    為何 file system 在更新 metadata 時特別在意寫入順序？
+  options:
+    - "錯誤順序在崩潰後可能造成指標指向未初始化 block、重複配置或遺失空間"
+    - "寫入順序只影響檔名字體"
+    - "硬碟只接受依檔名字母排序的寫入"
+    - "Metadata 永遠不會被快取"
+  answer: 0
+  explanation: |
+    例如先把 inode 指向新 block，再更新 bitmap；若中途崩潰，可能讓未標記已配置的 block 被重複使用。Journaling、copy-on-write 或 soft updates 都是在管理這類一致性問題。
+- id: os-fs-014
+  difficulty: advanced
+  tags: [extents, allocation]
+  question: |
+    Extent-based allocation 相較於逐 block 指標的優點是什麼？
+  options:
+    - "用起始 block 加長度描述連續區段，能以較少 metadata 表示大型連續檔案"
+    - "每個 byte 都需要一個 inode"
+    - "完全禁止檔案成長"
+    - "只能表示大小為 0 的檔案"
+  answer: 0
+  explanation: |
+    Extent 描述一段連續 block 範圍。大型檔案若多數區塊連續，用少量 extents 即可表示，metadata 較少且順序 I/O 較友善；碎片多時 extents 數量會增加。
+- id: os-fs-015
+  difficulty: advanced
+  tags: [fsck, consistency]
+  question: |
+    傳統 fsck 檢查 file system 時，通常會尋找哪類問題？
+  options:
+    - "未被任何 inode 參照但標為已配置的 block，或被多個不應共享的 inode 參照的 block"
+    - "CPU 分支預測錯誤率"
+    - "TCP 三向交握次數"
+    - "編譯器語法錯誤"
+  answer: 0
+  explanation: |
+    fsck 會掃描 metadata，檢查 inode、目錄、free-space map 與 link count 是否一致。它可修復遺失 block、錯誤 link count、目錄結構問題等，但大型檔案系統掃描成本高。
+- id: os-fs-016
+  difficulty: advanced
+  tags: [log-structured-file-system, write-optimization]
+  question: |
+    Log-structured file system 將更新順序寫到 log 中，主要想改善什麼？
+  options:
+    - "把大量小型隨機寫入轉成較大的順序寫入"
+    - "讓讀取永遠不需要索引"
+    - "取消 garbage collection 的需求"
+    - "讓所有檔案只能 append，不能修改邏輯內容"
+  answer: 0
+  explanation: |
+    LFS 假設寫入成本較高，將資料與 metadata 更新追加到 log 的尾端，以提升寫入吞吐。舊版本區段之後需由 cleaner 回收，否則空間會被無效資料占用。
+- id: os-fs-017
+  difficulty: advanced
+  tags: [copy-on-write, snapshot]
+  question: |
+    Copy-on-write file system 支援快照 snapshot 的關鍵機制是什麼？
+  options:
+    - "修改時不覆寫原 block，而是寫到新 block，讓舊版本仍可由 snapshot 參照"
+    - "快照時必須立即複製整個磁碟"
+    - "所有檔案都只能保存在 RAM"
+    - "快照會刪除原本 metadata"
+  answer: 0
+  explanation: |
+    COW 避免原地覆寫。Snapshot 可保留舊 metadata root 指向舊 block，新寫入建立新 block 與新 metadata 路徑，因此能有效保留多版本資料。
+- id: os-fs-018
+  difficulty: master
+  tags: [fsync, durability]
+  question: |
+    應用程式呼叫 write() 成功後，為何資料仍可能在斷電時遺失？
+  options:
+    - "write() 可能只把資料複製到 kernel page cache，尚未保證持久化到儲存裝置"
+    - "write() 一定只修改 CPU flags"
+    - "File system 不允許資料落盤"
+    - "斷電只會影響網路，不會影響儲存"
+  answer: 0
+  explanation: |
+    一般 write() 成功表示 OS 接收資料並排程寫回，不代表裝置已安全寫入非揮發媒體。需要持久性時，應用通常要使用 fsync、fdatasync 或具同步語意的 open flags。
+- id: os-fs-019
+  difficulty: master
+  tags: [rename, atomicity]
+  question: |
+    為何許多程式以「寫入暫存檔、fsync、再 rename」更新重要檔案？
+  options:
+    - "同目錄內 rename 通常具原子替換語意，可避免讀者看到半寫入檔案"
+    - "rename 會自動壓縮檔案"
+    - "暫存檔不需要任何權限"
+    - "rename 可保證資料已經進入 CPU cache"
+  answer: 0
+  explanation: |
+    先完整寫好新檔並同步，再用 atomic rename 替換舊名稱，可讓崩潰或並行讀取時只看到舊版或新版，而不是部分內容。實務上還需注意目錄 fsync 以持久化名稱變更。
+- id: os-fs-020
+  difficulty: master
+  tags: [distributed-file-system, cache-consistency]
+  question: |
+    分散式 file system 中，client-side caching 最棘手的問題之一是什麼？
+  options:
+    - "多個 client 快取同一檔案時，如何維持一致性與可接受的效能"
+    - "單機 CPU 無法執行 system call"
+    - "檔名不能包含英文字母"
+    - "所有資料都必須改用 stack 儲存"
+  answer: 0
+  explanation: |
+    Client cache 可降低延遲與伺服器負載，但多個 client 讀寫同一檔案時，必須定義 close-to-open consistency、lease、callback invalidation 等規則，否則可能讀到過期資料。

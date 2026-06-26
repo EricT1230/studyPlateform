@@ -1,0 +1,260 @@
+- id: co-dlogic-001
+  difficulty: basic
+  tags: [boolean-algebra, gates]
+  question: |
+    依 De Morgan's Law，NOT(A AND B) 等價於下列何者？
+  options:
+    - "(NOT A) AND (NOT B)"
+    - "(NOT A) OR (NOT B)"
+    - "A OR B"
+    - "A AND (NOT B)"
+  answer: 1
+  explanation: |
+    De Morgan's Law 指出 AND 的反相可轉成輸入各自反相後做 OR：¬(A·B)=¬A+¬B。這常用於把邏輯式改寫成 NAND/NOR 實作。
+- id: co-dlogic-002
+  difficulty: basic
+  tags: [combinational-logic, mux]
+  question: |
+    4-to-1 multiplexer 至少需要幾條 select lines 才能選出其中一個輸入？
+  options:
+    - "1"
+    - "2"
+    - "3"
+    - "4"
+  answer: 1
+  explanation: |
+    k 條 select lines 可表示 2^k 種選擇。要在 4 個輸入中選 1 個，需要 2^k = 4，因此 k = 2。
+- id: co-dlogic-003
+  difficulty: basic
+  tags: [sequential-logic, flip-flop]
+  question: |
+    D flip-flop 在 clock edge 到來時的基本行為是什麼？
+  options:
+    - "輸出 Q 取樣並保存 D 輸入的值"
+    - "輸出 Q 永遠保持 0"
+    - "輸出 Q 等於 D 的反相，且不受 clock 影響"
+    - "同時執行加法與乘法"
+  answer: 0
+  explanation: |
+    D flip-flop 是邊緣觸發儲存元件，在指定 clock edge 取樣 D 並更新 Q。兩個 clock edge 之間，Q 通常維持先前值。
+- id: co-dlogic-004
+  difficulty: basic
+  tags: [decoder, combinational-logic]
+  question: |
+    3-to-8 decoder 若啟用，對每組 3-bit 輸入通常會有幾條輸出線為 active？
+  options:
+    - "0 條"
+    - "1 條"
+    - "3 條"
+    - "8 條"
+  answer: 1
+  explanation: |
+    Decoder 將 n-bit 輸入轉成 2^n 條 one-hot 輸出。3-to-8 decoder 啟用時，8 條輸出中恰有一條對應輸入編碼而 active。
+- id: co-dlogic-005
+  difficulty: basic
+  tags: [truth-table, xor]
+  question: |
+    XOR gate 的輸出何時為 1？
+  options:
+    - "所有輸入都為 0 時"
+    - "兩個輸入相同時"
+    - "兩個輸入不同時"
+    - "只要任一輸入為 1 就一定為 1"
+  answer: 2
+  explanation: |
+    二輸入 XOR 表示 exclusive OR，只有輸入不同時輸出為 1。輸入 00 或 11 時輸出為 0；01 或 10 時輸出為 1。
+- id: co-dlogic-006
+  difficulty: intermediate
+  tags: [karnaugh-map, simplification]
+  question: |
+    Karnaugh map 中將相鄰的 1 分組，其主要目的為何？
+  options:
+    - "找出可消去的變數，得到較簡化的 sum-of-products 或 product-of-sums"
+    - "把時脈頻率提高兩倍"
+    - "將所有輸出強制為 0"
+    - "把 sequential circuit 轉成 analog circuit"
+  answer: 0
+  explanation: |
+    K-map 的相鄰格只差一個變數。把 1 以 2 的冪次大小分組，可消去在組內變化的變數，簡化布林式並減少 gate 數或延遲。
+- id: co-dlogic-007
+  difficulty: intermediate
+  tags: [adder, carry]
+  question: |
+    Ripple-carry adder 的主要延遲瓶頸是什麼？
+  options:
+    - "每一位的 carry 必須等前一位產生後才能往下一位傳遞"
+    - "所有 sum bits 必須先寫入 DRAM"
+    - "輸入位元數越多，clock edge 會消失"
+    - "每個 full adder 都需要浮點除法"
+  answer: 0
+  explanation: |
+    Ripple-carry adder 的 carry 從最低位逐級傳到最高位，最壞情況延遲與位元數線性成長。Carry-lookahead 等設計用額外邏輯縮短 carry 產生時間。
+- id: co-dlogic-008
+  difficulty: intermediate
+  tags: [timing, setup-hold]
+  question: |
+    Setup time violation 指的是什麼？
+  options:
+    - "資料在 clock edge 後保持太久"
+    - "資料在 clock edge 前未能提早穩定足夠時間"
+    - "Clock 週期比電源電壓大"
+    - "Combinational logic 沒有任何延遲"
+  answer: 1
+  explanation: |
+    Flip-flop 要求 D 輸入在取樣 edge 前至少穩定一段 setup time。若資料太晚到，可能被錯誤取樣或導致 metastability。
+- id: co-dlogic-009
+  difficulty: intermediate
+  tags: [finite-state-machine, sequential-logic]
+  question: |
+    Moore machine 與 Mealy machine 的核心差異是什麼？
+  options:
+    - "Moore output 只依賴目前狀態；Mealy output 可同時依賴目前狀態與輸入"
+    - "Moore 不能有 clock，Mealy 一定沒有狀態"
+    - "Mealy 只能表示組合邏輯"
+    - "兩者差異只在使用 NAND 或 NOR"
+  answer: 0
+  explanation: |
+    Moore machine 的輸出是狀態函數，通常較穩定但可能反應慢一個狀態轉移。Mealy machine 的輸出可直接受輸入影響，反應較快但需小心輸入 glitch。
+- id: co-dlogic-010
+  difficulty: intermediate
+  tags: [critical-path, timing]
+  question: |
+    在同步數位電路中，critical path 最直接限制的是什麼？
+  options:
+    - "最低可用電源線長度"
+    - "可安全使用的最短 clock period，也就是最高 clock frequency"
+    - "輸出 pin 的顏色"
+    - "ROM 的檔名"
+  answer: 1
+  explanation: |
+    Critical path 是兩個暫存器之間最慢的組合邏輯路徑。Clock period 必須大於 clock-to-Q、組合邏輯延遲、setup time 與 skew 等總和，否則可能取樣錯誤。
+- id: co-dlogic-011
+  difficulty: intermediate
+  tags: [latch, flip-flop]
+  question: |
+    Level-sensitive latch 與 edge-triggered flip-flop 的主要差異是什麼？
+  options:
+    - "Latch 在 enable 有效期間可能透明傳遞；flip-flop 主要在 clock edge 取樣"
+    - "Latch 只能儲存 8-bit 資料"
+    - "Flip-flop 不能用在同步設計"
+    - "兩者都不具備記憶能力"
+  answer: 0
+  explanation: |
+    Latch 對 clock 或 enable 的電平敏感，有效期間輸入變化可能直接影響輸出。Flip-flop 通常對邊緣敏感，較適合簡化同步時序分析。
+- id: co-dlogic-012
+  difficulty: intermediate
+  tags: [tri-state, bus]
+  question: |
+    多個 tri-state driver 連到同一條 bus 時，最重要的控制原則是什麼？
+  options:
+    - "任意時刻只能有一個 driver 主動驅動 bus，其餘需為 high-impedance"
+    - "所有 driver 必須同時輸出不同值"
+    - "High-impedance 等同於強制輸出 1"
+    - "Bus 不需要任何 enable 控制"
+  answer: 0
+  explanation: |
+    若多個 driver 同時驅動不同電平，會造成 bus contention、過大電流與錯誤資料。Tri-state 允許未使用的 driver 進入 high-Z，等同暫時不驅動 bus。
+- id: co-dlogic-013
+  difficulty: advanced
+  tags: [hazards, combinational-logic]
+  question: |
+    Combinational circuit 的 static-1 hazard 是什麼情況？
+  options:
+    - "理論輸出應保持 1，但因不同路徑延遲造成短暫掉到 0 的 glitch"
+    - "輸出永遠卡在 1，且與輸入無關"
+    - "Clock edge 被完全消除"
+    - "Flip-flop 無法重置"
+  answer: 0
+  explanation: |
+    Static hazard 來自多條邏輯路徑延遲不一致。當輸入切換時，布林函數穩態前後都應為 1，但中途可能出現短暫 0；可用冗餘項覆蓋 K-map 相鄰區域降低風險。
+- id: co-dlogic-014
+  difficulty: advanced
+  tags: [clock-domain-crossing, metastability]
+  question: |
+    將單一 bit 訊號從一個 clock domain 傳到另一個非同步 clock domain，常用兩級 flip-flop synchronizer 的目的為何？
+  options:
+    - "保證資料永遠不延遲"
+    - "降低 metastability 傳到後續邏輯的機率"
+    - "把單一 bit 自動變成 Gray code"
+    - "消除所有 combinational delay"
+  answer: 1
+  explanation: |
+    非同步取樣可能讓第一級 flip-flop 進入 metastability。第二級提供額外解析時間，使不穩定狀態傳到系統邏輯的機率大幅下降，但不能把機率降為絕對 0。
+- id: co-dlogic-015
+  difficulty: advanced
+  tags: [carry-lookahead, adder]
+  question: |
+    Carry-lookahead adder 使用 generate 與 propagate 訊號的主要目的為何？
+  options:
+    - "預先以邏輯式計算多個 carry，減少逐位 ripple 的延遲"
+    - "把二進位加法改成十進位字串相加"
+    - "讓所有輸入都必須為 0"
+    - "只支援 subtraction，不支援 addition"
+  answer: 0
+  explanation: |
+    每位可定義 generate Gi 與 propagate Pi，表示該位是否產生或傳遞 carry。Carry-lookahead 以組合邏輯並行推導 carry，縮短最壞延遲，代價是硬體更複雜。
+- id: co-dlogic-016
+  difficulty: advanced
+  tags: [state-encoding, fsm]
+  question: |
+    One-hot state encoding 的典型優缺點為何？
+  options:
+    - "使用較多 flip-flops，但 next-state/output 邏輯可能較簡單且快"
+    - "使用最少 flip-flops，且永遠比 binary encoding 快"
+    - "不需要任何 reset"
+    - "只能表示兩個狀態"
+  answer: 0
+  explanation: |
+    One-hot 每個狀態通常對應一個 flip-flop，因此狀態多時暫存器成本高。但每個狀態 bit 直接表示狀態，解碼與轉移邏輯常較簡單，適合 FPGA 或追求時序的設計。
+- id: co-dlogic-017
+  difficulty: advanced
+  tags: [pla, logic-implementation]
+  question: |
+    PLA (Programmable Logic Array) 適合用來實作哪類邏輯？
+  options:
+    - "可表示成多個 product terms 再 OR 起來的組合邏輯"
+    - "只能實作 DRAM refresh"
+    - "只能產生 clock signal"
+    - "只能儲存大型檔案"
+  answer: 0
+  explanation: |
+    PLA 具有可程式化 AND plane 與 OR plane，適合實作 sum-of-products 形式的多輸出組合邏輯。它常用於控制邏輯或規則性布林函數。
+- id: co-dlogic-018
+  difficulty: master
+  tags: [retiming, timing-optimization]
+  question: |
+    Retiming 在同步電路最佳化中的概念是什麼？
+  options:
+    - "在不改變外部序列行為的前提下移動暫存器位置，以平衡組合邏輯延遲"
+    - "把所有 flip-flops 移除，讓電路完全非同步"
+    - "只改變 Verilog 註解，不改變硬體"
+    - "把 clock frequency 固定為 1 Hz"
+  answer: 0
+  explanation: |
+    Retiming 重新分配暫存器到邏輯閘之間，使最長暫存器到暫存器路徑變短，同時保持輸入輸出序列等價。它是改善 clock period 的常見技術。
+- id: co-dlogic-019
+  difficulty: master
+  tags: [gray-code, asynchronous-interface]
+  question: |
+    非同步 FIFO 的讀寫指標常使用 Gray code 傳遞，主要原因是什麼？
+  options:
+    - "Gray code 每次遞增只有一個 bit 改變，可降低跨 clock domain 取樣到混合狀態的風險"
+    - "Gray code 可把 FIFO 容量變成無限大"
+    - "Gray code 不需要同步器"
+    - "Gray code 只能表示質數"
+  answer: 0
+  explanation: |
+    Binary counter 遞增時可能多個 bit 同時改變，跨域取樣可能看到不一致的中間值。Gray code 相鄰值只變一個 bit，配合同步器可更可靠地比較空滿狀態。
+- id: co-dlogic-020
+  difficulty: master
+  tags: [power, clock-gating]
+  question: |
+    Clock gating 可降低動態功耗，但設計上最需要避免什麼？
+  options:
+    - "用不穩定或有 glitch 的 enable 直接產生 gated clock，造成額外 clock edge 或時序問題"
+    - "降低未使用暫存器的切換"
+    - "讓 idle 模組少消耗切換功率"
+    - "使用 cell library 提供的 integrated clock-gating cell"
+  answer: 0
+  explanation: |
+    Clock 是高敏感訊號，若用普通邏輯閘與未鎖存 enable 產生 gated clock，glitch 可能被當成額外 clock edge。實務上會使用專用 clock-gating cell 並滿足 enable timing。

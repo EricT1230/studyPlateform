@@ -1,0 +1,260 @@
+- id: co-pipecache-001
+  difficulty: basic
+  tags: [pipeline, throughput]
+  question: |
+    Pipeline 設計在理想情況下主要提升處理器的哪個面向？
+  options:
+    - "單一指令的邏輯功能"
+    - "長串指令的 throughput"
+    - "記憶體容量"
+    - "指令集可見暫存器數量"
+  answer: 1
+  explanation: |
+    Pipeline 將多條指令的不同階段重疊執行，穩定後可提高每單位時間完成的指令數。單一指令仍要通過所有階段，因此 latency 不一定降低。
+- id: co-pipecache-002
+  difficulty: basic
+  tags: [pipeline, hazards]
+  question: |
+    Load 指令後緊接著使用載入結果的指令，最常造成哪一類 pipeline hazard？
+  options:
+    - "Data hazard"
+    - "Structural hazard"
+    - "Control hazard"
+    - "Power hazard"
+  answer: 0
+  explanation: |
+    後續指令需要前一個 load 產生的資料，但資料可能要到 memory stage 後才可用。這是 read-after-write data hazard，常需要 forwarding 或 stall。
+- id: co-pipecache-003
+  difficulty: basic
+  tags: [cache, locality]
+  question: |
+    Cache 能有效提升平均記憶體效能，主要依賴程式的哪個特性？
+  options:
+    - "Locality"
+    - "Encryption"
+    - "Dynamic linking"
+    - "Instruction naming"
+  answer: 0
+  explanation: |
+    時間局部性表示剛用過的資料近期可能再用，空間局部性表示附近資料近期可能被用。Cache 利用這兩者，把常用或鄰近資料放在較快層級。
+- id: co-pipecache-004
+  difficulty: basic
+  tags: [cache, blocks]
+  question: |
+    Cache line 或 block 通常包含什麼？
+  options:
+    - "一個從主記憶體搬入 cache 的連續 byte 區塊"
+    - "一條作業系統行程"
+    - "一個網路封包的完整路由"
+    - "一個 compiler 最佳化 pass"
+  answer: 0
+  explanation: |
+    Cache 以 block 或 line 為搬移單位，不是每次只搬單一 byte。較大的 line 可利用 spatial locality，但也可能帶來額外頻寬消耗。
+- id: co-pipecache-005
+  difficulty: basic
+  tags: [branch, control-hazard]
+  question: |
+    分支指令在 pipeline 中常造成 control hazard，主要原因是什麼？
+  options:
+    - "尚未確定下一個正確取指位址"
+    - "ALU 無法做加法"
+    - "Cache line 永遠為空"
+    - "Register file 沒有讀 port"
+  answer: 0
+  explanation: |
+    分支是否跳轉與目標位址可能要到後面階段才知道。在此之前 pipeline 不確定該從哪裡取下一條指令，因此可能 stall 或依賴 branch prediction。
+- id: co-pipecache-006
+  difficulty: intermediate
+  tags: [pipeline, cpi]
+  question: |
+    某 pipeline 理想 CPI 為 1，但 20% 指令各造成 2 個 stall cycles。平均 CPI 為多少？
+  options:
+    - "1.0"
+    - "1.2"
+    - "1.4"
+    - "2.0"
+  answer: 2
+  explanation: |
+    平均 stall cycles per instruction = 0.2×2 = 0.4。CPI = ideal CPI + stall CPI = 1 + 0.4 = 1.4。
+- id: co-pipecache-007
+  difficulty: intermediate
+  tags: [forwarding, data-hazard]
+  question: |
+    Forwarding 或 bypassing 在 pipeline 中的用途是什麼？
+  options:
+    - "把尚未寫回 register file 的結果直接送到需要它的後續執行階段"
+    - "把所有分支都改成不跳"
+    - "把 cache 容量加倍"
+    - "讓 clock period 無限制縮短"
+  answer: 0
+  explanation: |
+    Forwarding 從 ALU 或 memory stage 的輸出路徑直接供給下一條指令，減少 RAW data hazard 造成的 stall。不過 load-use 情況仍可能因資料太晚到而需要停一拍。
+- id: co-pipecache-008
+  difficulty: intermediate
+  tags: [cache, mapping]
+  question: |
+    Direct-mapped cache 的一個主記憶體 block 可以放到 cache 的幾個位置？
+  options:
+    - "只能 1 個固定位置"
+    - "任意位置"
+    - "所有 set 中各 1 個位置"
+    - "只要 tag 相同就可放任意位置"
+  answer: 0
+  explanation: |
+    Direct-mapped cache 每個 memory block 由 index bits 決定唯一 cache line。硬體簡單且命中快速，但容易發生 conflict miss。
+- id: co-pipecache-009
+  difficulty: intermediate
+  tags: [cache, associativity]
+  question: |
+    提高 cache associativity 通常可減少哪一種 miss？
+  options:
+    - "Compulsory miss"
+    - "Conflict miss"
+    - "Coherence miss 必定消失"
+    - "所有 capacity miss"
+  answer: 1
+  explanation: |
+    Associativity 讓同一 index 的多個 blocks 可放在同一 set 的不同 ways，減少彼此競爭固定位置造成的 conflict miss。它不能消除首次存取的 compulsory miss，也不能保證解決容量不足。
+- id: co-pipecache-010
+  difficulty: intermediate
+  tags: [amat, cache]
+  question: |
+    L1 hit time 為 1 ns，miss rate 為 5%，miss penalty 為 40 ns。AMAT 約為多少？
+  options:
+    - "1 ns"
+    - "2 ns"
+    - "3 ns"
+    - "41 ns"
+  answer: 2
+  explanation: |
+    AMAT = hit time + miss rate × miss penalty = 1 + 0.05×40 = 3 ns。Miss penalty 雖然只在 miss 時發生，但比例不低時會明顯影響平均時間。
+- id: co-pipecache-011
+  difficulty: intermediate
+  tags: [write-policy, cache]
+  question: |
+    Write-allocate policy 通常表示什麼？
+  options:
+    - "寫入 miss 時先把目標 block 載入 cache，再在 cache 中寫入"
+    - "寫入 hit 時一定不更新 cache"
+    - "所有寫入都直接丟棄"
+    - "Cache 只能服務 instruction fetch"
+  answer: 0
+  explanation: |
+    Write-allocate 在 write miss 時把 block 帶進 cache，適合後續可能繼續寫或讀同一 block 的情境。No-write-allocate 則常搭配 write-through，直接寫到下一層。
+- id: co-pipecache-012
+  difficulty: intermediate
+  tags: [replacement, cache]
+  question: |
+    Set-associative cache 中的 replacement policy 主要在何時使用？
+  options:
+    - "Cache hit 且所有 ways 都空著時"
+    - "Cache miss 且目標 set 中沒有空 way，需要選一個 victim line 時"
+    - "每次 ALU 加法時"
+    - "作業系統切換使用者介面語言時"
+  answer: 1
+  explanation: |
+    當 set 已滿又有新 block 要放入，硬體必須選擇要替換哪個 way。LRU、pseudo-LRU、random 等 policy 都是為此服務。
+- id: co-pipecache-013
+  difficulty: advanced
+  tags: [address-decomposition, cache]
+  question: |
+    32-bit 位址、4-way set-associative cache，總容量 32 KiB、block size 64 bytes。Tag、set index、block offset 位元數分別是多少？
+  options:
+    - "tag 17、index 9、offset 6"
+    - "tag 19、index 7、offset 6"
+    - "tag 20、index 6、offset 6"
+    - "tag 18、index 8、offset 6"
+  answer: 1
+  explanation: |
+    32 KiB / 64 bytes = 512 lines。4-way 表示 set 數 = 512/4 = 128，需要 7 個 index bits。Block offset 為 log2(64)=6 bits，tag = 32-7-6 = 19 bits。
+- id: co-pipecache-014
+  difficulty: advanced
+  tags: [branch-prediction, performance]
+  question: |
+    某分支佔指令 15%，branch predictor 錯誤率 10%，每次錯誤 penalty 為 8 cycles。若基礎 CPI 為 1，忽略其他 stall，平均 CPI 約為多少？
+  options:
+    - "1.012"
+    - "1.12"
+    - "1.80"
+    - "2.20"
+  answer: 1
+  explanation: |
+    每指令分支錯誤成本 = 0.15×0.10×8 = 0.12 cycles。平均 CPI = 1 + 0.12 = 1.12。
+- id: co-pipecache-015
+  difficulty: advanced
+  tags: [out-of-order, hazards]
+  question: |
+    Out-of-order execution 搭配 register renaming 主要能消除哪類假相依？
+  options:
+    - "RAW 真相依"
+    - "WAR 與 WAW 名稱相依"
+    - "所有 cache miss"
+    - "所有 branch misprediction"
+  answer: 1
+  explanation: |
+    RAW 代表真正需要前一結果，不能被 renaming 消除。WAR 與 WAW 來自多條指令使用同一架構暫存器名稱，renaming 可映射到不同 physical registers，解除假相依。
+- id: co-pipecache-016
+  difficulty: advanced
+  tags: [cache, miss-types]
+  question: |
+    一個工作集大小明顯超過 cache 容量，即使 fully associative 也反覆替換造成 miss。這主要是哪類 miss？
+  options:
+    - "Compulsory miss"
+    - "Capacity miss"
+    - "Conflict miss"
+    - "TLB shootdown"
+  answer: 1
+  explanation: |
+    Capacity miss 是因 cache 總容量不足以容納工作集而產生。若 fully associative 仍無法避免，問題不是映射衝突，而是容量不夠。
+- id: co-pipecache-017
+  difficulty: advanced
+  tags: [prefetching, memory-hierarchy]
+  question: |
+    Hardware prefetching 的主要風險是什麼？
+  options:
+    - "只要開啟就會讓所有存取變成 cache hit"
+    - "預取錯誤可能污染 cache 並浪費記憶體頻寬"
+    - "只能用在沒有 spatial locality 的程式"
+    - "會改變程式的 ISA 語意"
+  answer: 1
+  explanation: |
+    Prefetcher 嘗試提早載入未來可能使用的資料。若預測不準，帶入的 line 可能擠掉真正有用的資料並消耗頻寬，反而降低效能。
+- id: co-pipecache-018
+  difficulty: master
+  tags: [cache-coherence, multiprocessor]
+  question: |
+    多核心系統中，write-invalidate coherence protocol 的基本想法是什麼？
+  options:
+    - "某核心寫入共享 cache line 前，使其他核心的該 line 副本失效"
+    - "所有核心永遠各自維持不同記憶體值"
+    - "寫入時只更新磁碟，不更新 cache"
+    - "禁止任何核心讀取共享資料"
+  answer: 0
+  explanation: |
+    Write-invalidate 讓寫入者取得獨占或修改權限，並使其他快取副本 invalid。之後其他核心若讀取會 miss 並取得新值，藉此維持單一記憶體位置的可見一致性。
+- id: co-pipecache-019
+  difficulty: master
+  tags: [memory-consistency, store-buffer]
+  question: |
+    Store buffer 可能讓單核心程式變快，但在多核心同步中需要 memory fence 的原因是什麼？
+  options:
+    - "Store 可能先停留在 buffer 中，其他核心尚未看見，導致可見順序不同於程式順序"
+    - "Store buffer 會把所有資料加密"
+    - "Memory fence 用來增加 cache 容量"
+    - "Store buffer 只存在於磁碟控制器"
+  answer: 0
+  explanation: |
+    Store buffer 可讓 CPU 不必等寫入完全到 cache coherence 系統就繼續執行。但同步演算法常需要特定讀寫可見順序，memory fence 可限制重排或等待前序寫入變得可見。
+- id: co-pipecache-020
+  difficulty: master
+  tags: [nonblocking-cache, miss-handling]
+  question: |
+    Non-blocking cache 與 MSHR (Miss Status Holding Register) 的主要作用是什麼？
+  options:
+    - "在處理一個或多個 outstanding misses 時，仍允許其他可服務的 cache access 繼續進行"
+    - "讓 cache 不再需要 tag"
+    - "把所有 misses 轉成 branch prediction"
+    - "保證 miss penalty 等於 0"
+  answer: 0
+  explanation: |
+    Non-blocking cache 可在 miss 尚未回來時繼續處理 hit-under-miss 或多個 miss。MSHR 記錄每個 outstanding miss 的狀態、目標與等待的 load/store，使記憶體層級能並行處理延遲。

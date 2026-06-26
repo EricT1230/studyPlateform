@@ -1,0 +1,260 @@
+- id: os-io-001
+  difficulty: basic
+  tags: [io, polling]
+  question: |
+    Polling I/O 的基本做法是什麼？
+  options:
+    - "CPU 反覆讀取裝置狀態暫存器，直到裝置就緒"
+    - "裝置主動修改程式碼"
+    - "磁碟直接執行使用者行程"
+    - "所有 I/O 都不需要作業系統參與"
+  answer: 0
+  explanation: |
+    Polling 由 CPU 主動查詢裝置狀態，實作簡單且在極短等待時可能有效，但若裝置慢，CPU 會浪費時間在重複檢查上。
+- id: os-io-002
+  difficulty: basic
+  tags: [interrupt, io]
+  question: |
+    Interrupt-driven I/O 相較於 polling 的主要優點是什麼？
+  options:
+    - "CPU 不必持續忙等裝置，可在裝置需要服務時才被通知"
+    - "完全消除中斷處理成本"
+    - "保證所有 I/O 都同步完成"
+    - "讓裝置不需要控制器"
+  answer: 0
+  explanation: |
+    中斷讓 CPU 可先執行其他工作，裝置就緒或完成時再通知 OS。代價是中斷進出、保存狀態與 handler 執行都有 overhead。
+- id: os-io-003
+  difficulty: basic
+  tags: [dma, device]
+  question: |
+    DMA (Direct Memory Access) 的用途是什麼？
+  options:
+    - "讓裝置控制器可直接在主記憶體與裝置之間搬移資料，減少 CPU 逐字搬運"
+    - "讓 CPU 不再需要 cache"
+    - "把所有 I/O 轉成網路封包"
+    - "讓使用者程式直接控制所有實體位址"
+  answer: 0
+  explanation: |
+    DMA 由裝置控制器負責大量資料搬移，CPU 只需設定讀寫端點、長度與方向，完成後由中斷通知。這降低 CPU 負擔並提高吞吐。
+- id: os-io-004
+  difficulty: basic
+  tags: [device-driver, kernel]
+  question: |
+    Device driver 在 OS 中的主要角色是什麼？
+  options:
+    - "將一般 OS I/O 介面轉換成特定硬體裝置的命令、狀態與中斷處理"
+    - "負責把 C 程式編譯成機器碼"
+    - "決定所有使用者密碼"
+    - "只用來顯示桌面背景"
+  answer: 0
+  explanation: |
+    Driver 知道特定裝置的暫存器、命令格式、DMA、queue 與中斷語意，對上提供 OS 統一抽象，對下控制硬體。
+- id: os-io-005
+  difficulty: basic
+  tags: [storage, latency-throughput]
+  question: |
+    在儲存系統中，latency 與 throughput 的差異為何？
+  options:
+    - "Latency 是單次請求等待時間；throughput 是單位時間可完成的資料量或請求數"
+    - "Latency 只用於 CPU，throughput 只用於鍵盤"
+    - "兩者永遠數值相同"
+    - "Throughput 表示錯誤率"
+  answer: 0
+  explanation: |
+    單次 I/O 可能 latency 高，但透過併發與排程仍可有高 throughput。系統設計常需在互動延遲與批次吞吐之間取捨。
+- id: os-io-006
+  difficulty: intermediate
+  tags: [memory-mapped-io, port-io]
+  question: |
+    Memory-mapped I/O 的特徵是什麼？
+  options:
+    - "裝置暫存器被映射到處理器位址空間，CPU 以一般 load/store 存取"
+    - "所有裝置都只能透過檔名存取"
+    - "I/O 不需要任何保護機制"
+    - "裝置資料只能經由浮點暫存器傳遞"
+  answer: 0
+  explanation: |
+    MMIO 將裝置控制暫存器放在特定實體位址範圍。Kernel driver 透過 load/store 讀寫這些位址，但必須使用正確的 memory ordering 與不可快取屬性。
+- id: os-io-007
+  difficulty: intermediate
+  tags: [buffering, caching]
+  question: |
+    I/O buffering 的常見目的不包含下列哪一項？
+  options:
+    - "吸收生產者與消費者速率差異"
+    - "合併小 I/O 減少裝置操作次數"
+    - "提供資料暫存以支援非同步處理"
+    - "保證任何斷電後資料都已持久化"
+  answer: 3
+  explanation: |
+    Buffering 可平滑速度差、合併請求並支援非同步，但記憶體 buffer 通常是 volatile。持久化需靠 flush、fsync、write barrier 或裝置本身的非揮發保護。
+- id: os-io-008
+  difficulty: intermediate
+  tags: [disk-scheduling, hdd]
+  question: |
+    HDD 上，SCAN 或 elevator disk scheduling 的基本想法是什麼？
+  options:
+    - "磁頭沿一個方向服務請求，移到端點後再反向，以減少來回 seek"
+    - "永遠先服務最新到達的請求"
+    - "只服務位於同一 cylinder 的請求，其他永不處理"
+    - "把所有讀取改成寫入"
+  answer: 0
+  explanation: |
+    Elevator 類演算法利用磁頭目前移動方向，沿途服務請求，降低隨機往返造成的 seek time。它在公平性與總移動距離間取得折衷。
+- id: os-io-009
+  difficulty: intermediate
+  tags: [ssd, flash]
+  question: |
+    SSD 中 FTL (Flash Translation Layer) 的主要功能是什麼？
+  options:
+    - "將邏輯 block 位址映射到實體 flash pages/blocks，並處理 wear leveling 與 garbage collection"
+    - "把 SATA 訊號轉成音訊"
+    - "只負責檔案權限"
+    - "讓 flash 可以原地覆寫任意 byte"
+  answer: 0
+  explanation: |
+    NAND flash 不能像磁碟一樣任意原地覆寫，需先 erase block。FTL 提供 LBA 抽象，管理映射、壞塊、磨耗平均與回收，以隱藏 flash 限制。
+- id: os-io-010
+  difficulty: intermediate
+  tags: [trim, ssd]
+  question: |
+    TRIM 指令對 SSD 的作用是什麼？
+  options:
+    - "通知 SSD 哪些邏輯區塊已不再使用，可在背景回收與最佳化"
+    - "強制 SSD 把容量變成兩倍"
+    - "讓所有寫入變成同步"
+    - "關閉 FTL 映射表"
+  answer: 0
+  explanation: |
+    檔案刪除後，SSD 若不知道哪些 LBAs 已無效，仍可能保留並搬移舊資料。TRIM 讓 SSD 提前得知可丟棄區塊，改善 garbage collection 與寫入放大。
+- id: os-io-011
+  difficulty: intermediate
+  tags: [raid, reliability]
+  question: |
+    RAID 1 的核心概念是什麼？
+  options:
+    - "Mirroring：相同資料寫到兩個或多個磁碟以提高容錯"
+    - "Striping with parity，只需一顆磁碟"
+    - "把所有資料只寫到 RAM"
+    - "用壓縮取代備份"
+  answer: 0
+  explanation: |
+    RAID 1 將資料鏡射到多個磁碟，單顆磁碟故障時仍可由另一份讀出。它提升可用性，但有效容量通常約為總容量的一半，且不能取代離線備份。
+- id: os-io-012
+  difficulty: intermediate
+  tags: [raid, parity]
+  question: |
+    RAID 5 相較於 RAID 0 的關鍵差異是什麼？
+  options:
+    - "RAID 5 分散儲存 parity，可容忍單顆磁碟故障"
+    - "RAID 5 完全沒有任何寫入成本"
+    - "RAID 0 提供 parity 容錯"
+    - "RAID 5 只能使用一顆磁碟"
+  answer: 0
+  explanation: |
+    RAID 0 只有 striping，效能與容量好但無容錯。RAID 5 將資料與 parity 分散在多顆磁碟，能重建單顆故障磁碟，但小寫入需更新 parity，成本較高。
+- id: os-io-013
+  difficulty: advanced
+  tags: [async-io, blocking]
+  question: |
+    Non-blocking I/O 與 asynchronous I/O 的差異，下列何者最精確？
+  options:
+    - "Non-blocking 呼叫若不能立即完成會返回；asynchronous I/O 由系統完成後再通知或回呼"
+    - "兩者都必定讓硬體中斷消失"
+    - "Non-blocking 只適用於磁帶，asynchronous 只適用於鍵盤"
+    - "Asynchronous I/O 表示資料不需要 buffer"
+  answer: 0
+  explanation: |
+    Non-blocking 常要求應用稍後重試或搭配 readiness notification；asynchronous I/O 則提交操作後由 kernel 或 runtime 背景完成，完成時通知應用取得結果。
+- id: os-io-014
+  difficulty: advanced
+  tags: [io-scheduling, fairness]
+  question: |
+    I/O scheduler 除了追求吞吐，也需要考慮公平性的原因是什麼？
+  options:
+    - "避免某些行程的請求因持續被重新排序而長期飢餓"
+    - "公平性會讓所有 I/O latency 固定為 0"
+    - "儲存裝置只能同時服務同一使用者"
+    - "公平性只影響檔名字串排序"
+  answer: 0
+  explanation: |
+    如果 scheduler 只選擇對裝置最有效的請求，可能讓位置較遠或優先權較低的行程長時間等不到服務。實務演算法會在 locality、deadline、priority 與公平性間平衡。
+- id: os-io-015
+  difficulty: advanced
+  tags: [scatter-gather, dma]
+  question: |
+    Scatter-gather DMA 的主要好處是什麼？
+  options:
+    - "一次 DMA 操作可處理多段不連續記憶體 buffer，減少額外複製"
+    - "要求所有 buffer 必須實體連續"
+    - "只能傳輸 1 byte"
+    - "讓裝置不需要位址"
+  answer: 0
+  explanation: |
+    OS 常以多個 page 或 iovec 表示 I/O buffer。Scatter-gather list 讓裝置依描述表搬移多段記憶體，避免先整理成一大塊連續 buffer 的 copy overhead。
+- id: os-io-016
+  difficulty: advanced
+  tags: [interrupt-coalescing, networking-storage]
+  question: |
+    Interrupt coalescing 的效益與代價為何？
+  options:
+    - "合併多個完成事件再中斷 CPU，降低 overhead，但可能增加單一 I/O 完成延遲"
+    - "每個 byte 都觸發一次中斷，降低延遲且無成本"
+    - "只用於關閉 DMA"
+    - "會讓裝置失去佇列能力"
+  answer: 0
+  explanation: |
+    高速裝置若每個完成都中斷，CPU overhead 會很高。Coalescing 可批次通知降低中斷率，但等待湊批可能使個別請求完成通知稍晚。
+- id: os-io-017
+  difficulty: advanced
+  tags: [write-barrier, ordering]
+  question: |
+    Storage write barrier 或 flush 的用途是什麼？
+  options:
+    - "要求裝置遵守特定寫入順序或將先前寫入推到持久媒體，以支援一致性"
+    - "把所有資料寫到螢幕"
+    - "提升 CPU 分支預測準確率"
+    - "讓檔案大小變成 0"
+  answer: 0
+  explanation: |
+    儲存裝置與 OS 可能為效能重新排序或快取寫入。File system 或資料庫需要順序保證時，會使用 barrier/flush 確保某些資料先持久化，再進行後續 metadata 或 commit record 更新。
+- id: os-io-018
+  difficulty: master
+  tags: [nvme, queues]
+  question: |
+    NVMe 使用多組 submission/completion queues 的主要優勢是什麼？
+  options:
+    - "讓多核心可並行提交與回收 I/O，減少鎖競爭並提高 SSD 併發度"
+    - "把所有 I/O 改成 PIO"
+    - "讓 SSD 不需要控制器韌體"
+    - "限制系統同時只能有一個 outstanding request"
+  answer: 0
+  explanation: |
+    NVMe 為高併發 flash 儲存設計，多 queue 讓不同核心或工作負載各自提交請求，避免單一全域佇列瓶頸，也能讓裝置內部平行度被充分利用。
+- id: os-io-019
+  difficulty: master
+  tags: [io-memory-management, iommu]
+  question: |
+    IOMMU 在 DMA 系統中的主要用途是什麼？
+  options:
+    - "將裝置看到的 I/O virtual address 轉成實體位址，並限制裝置可 DMA 的記憶體範圍"
+    - "讓裝置任意讀寫所有實體記憶體"
+    - "取代 CPU 的整數 ALU"
+    - "把磁碟排程改成 FIFO"
+  answer: 0
+  explanation: |
+    IOMMU 類似裝置端的位址轉換與保護機制。它支援 scatter-gather、虛擬化裝置直通，也能防止錯誤或惡意裝置 DMA 到未授權記憶體。
+- id: os-io-020
+  difficulty: master
+  tags: [write-amplification, ssd]
+  question: |
+    SSD write amplification 指的是什麼？
+  options:
+    - "主機寫入少量邏輯資料，SSD 內部因搬移、erase 與 garbage collection 實際寫入更多 flash 資料"
+    - "SSD 將所有讀取自動變成寫入"
+    - "CPU 把每個 store 指令執行兩次"
+    - "RAID 1 的讀取速度降低"
+  answer: 0
+  explanation: |
+    NAND flash 以 page 寫入、以 block erase，更新資料常需寫新頁並在回收時搬移仍有效頁。實際寫入 flash 的量大於主機請求量，會影響效能與壽命。
