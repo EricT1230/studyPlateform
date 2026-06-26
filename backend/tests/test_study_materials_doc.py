@@ -36,3 +36,37 @@ def test_study_materials_doc_has_actionable_learning_structure():
     assert "學習目標" in markdown
     assert "刷題策略" in markdown
     assert "常見誤區" in markdown
+
+
+def test_study_materials_doc_has_completeness_table_and_visual_aids():
+    assert MATERIALS_DOC.exists()
+
+    markdown = MATERIALS_DOC.read_text(encoding="utf-8")
+    required_fragments = [
+        "## 完整性檢核",
+        "## 圖表索引",
+        "| 科目 | 目前章節 | 參考基準 | 完整性判斷 | 圖表輔助 |",
+        "```mermaid",
+        "讀書循環",
+        "演算法選型",
+        "系統堆疊",
+        "資料庫查詢",
+        "ML 評估",
+    ]
+    missing = [
+        fragment for fragment in required_fragments if fragment not in markdown
+    ]
+
+    assert missing == []
+    assert markdown.count("```mermaid") >= 6
+
+    subjects = sorted(
+        path.name
+        for path in CONTENT_DIR.iterdir()
+        if path.is_dir() and any(path.glob("*.yaml"))
+    )
+    missing_subject_rows = [
+        subject for subject in subjects if f"| {subject} |" not in markdown
+    ]
+
+    assert missing_subject_rows == []

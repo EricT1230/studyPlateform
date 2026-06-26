@@ -21,6 +21,169 @@
 - 每章都要能接到選擇題：定義題、比較題、情境判斷題、計算題、程式碼/系統行為題。
 - 內容只做原創整理與重寫；市場教材只用來校準範圍、難度與章節順序。
 
+## 完整性檢核
+
+這裡的「完整」定義為：足以支撐資工所核心考科、工程師系統設計/面試基本盤、以及你往 Senior RD 前進時需要補齊的底層概念。它不是整個 Computer Science 的百科全書；compiler、distributed systems、advanced cryptography、advanced NLP/CV 等主題目前不列入本輪，除非之後新增科目與題庫。
+
+| 科目 | 目前章節 | 參考基準 | 完整性判斷 | 圖表輔助 |
+|---|---:|---|---|---|
+| algorithms | 6 | MIT 6.006 的建模、複雜度、資料結構與演算法範式 | 核心完整；DP/圖論/貪婪/分治/搜尋均覆蓋 | 全局路線圖、演算法選型圖 |
+| data-structures | 7 | 常見 CS2/DSA 教材的 array、list、tree、hash、heap、stack/queue | 核心完整；進階樹與圖結構已有入口 | 全局路線圖、演算法選型圖 |
+| programming | 2 | CS50 與系統程式基礎中的 C、指標、記憶體模型 | 考研與系統底層打底完整；大型軟工模式暫不納入 | 系統堆疊圖 |
+| computer-organization | 4 | MIT 6.004 與 CSAPP 的資料表示、數位邏輯、pipeline、cache | 核心完整；assembly/compilers 只保留必要背景 | 系統堆疊圖 |
+| operating-systems | 6 | OSTEP 的 virtualization、concurrency、persistence 三主軸 | 核心完整；分散式 OS 不列入本輪 | 系統堆疊圖 |
+| networking | 5 | Top-Down Networking 的 application、transport、network 分層 | 核心完整；wireless/SDN 只作延伸方向 | 系統堆疊圖 |
+| databases | 5 | CMU 15-445 的 relational model、SQL、index、transaction、optimizer | 核心完整；distributed DB 先不列入 | 資料庫查詢與交易圖 |
+| discrete-math | 5 | MIT 6.042J 的集合、邏輯、證明、計數、圖論、關係 | 核心完整；數論只保留資安會用到的必要背景 | 全局路線圖 |
+| linear-algebra | 4 | MIT 18.06 的矩陣、空間、秩、線性轉換、特徵值 | ML 與考研核心完整；數值線代先不納入 | 全局路線圖、ML 評估圖 |
+| probability-statistics | 3 | Stat 110/6.041 的條件機率、隨機變數、估計與檢定 | 核心完整；隨機過程先不納入 | 全局路線圖、ML 評估圖 |
+| machine-learning | 4 | Stanford CS229 的 supervised learning、評估、正則化、NN 基礎 | 工程與考題入門完整；RL/advanced generative AI 先不納入 | ML 評估圖 |
+| artificial-intelligence | 1 | Berkeley CS188 的搜尋、heuristic、planning 基礎 | 搜尋規劃完整；機率圖模型與 RL 先不納入 | 演算法選型圖 |
+| information-security | 2 | Web Security Academy 與基礎資安教材的威脅模型、密碼用途 | 入門完整；滲透測試實作與進階密碼學先不納入 | 系統堆疊圖 |
+| english | 3 | TOEFL/技術英文閱讀、外商工程溝通情境 | 支援考題閱讀與外商溝通；文學與商英不納入 | 讀書循環圖 |
+
+## 圖表索引
+
+下列圖表用來輔助你快速建立全局地圖。讀每章正文前先看對應圖表，刷題後再回來確認自己錯在哪一層。
+
+### 全局學習路線
+
+```mermaid
+flowchart LR
+    DM["離散數學<br/>邏輯、證明、計數、圖論"]
+    LA["線性代數<br/>矩陣、空間、特徵值"]
+    PS["機率統計<br/>條件機率、分布、檢定"]
+    C["C 與記憶體<br/>型別、指標、配置"]
+    CO["計算機組織<br/>資料表示、pipeline、cache"]
+    DS["資料結構<br/>陣列、樹、hash、heap"]
+    ALG["演算法<br/>複雜度、分治、貪婪、圖、搜尋"]
+    OS["作業系統<br/>process、memory、sync、file"]
+    NET["網路<br/>DNS、HTTP、TCP/IP、routing"]
+    DB["資料庫<br/>SQL、index、transaction、optimizer"]
+    ML["機器學習<br/>評估、正則化、NN"]
+    AI["AI 搜尋規劃<br/>state space、A*、planning"]
+    SEC["資安<br/>威脅模型、密碼協定"]
+    ENG["技術英文<br/>閱讀、詞彙、溝通"]
+
+    DM --> DS
+    DM --> ALG
+    LA --> ML
+    PS --> ML
+    C --> CO
+    CO --> OS
+    DS --> ALG
+    ALG --> AI
+    OS --> NET
+    OS --> DB
+    NET --> SEC
+    DB --> ML
+    ML --> AI
+    ENG --> ALG
+    ENG --> DB
+    ENG --> ML
+```
+
+### 讀書循環
+
+```mermaid
+flowchart TD
+    A["讀本教材總綱<br/>確認章節目的"] --> B["讀 topic 短筆記<br/>整理 3-5 個關鍵句"]
+    B --> C["刷同 topic 題目<br/>限制時間作答"]
+    C --> D{"答錯原因"}
+    D --> E["概念不熟<br/>回章節安排"]
+    D --> F["條件漏看<br/>標題幹關鍵字"]
+    D --> G["公式或流程套錯<br/>重畫圖表"]
+    D --> H["英文誤讀<br/>補詞彙與句構"]
+    E --> I["寫入筆記"]
+    F --> I
+    G --> I
+    H --> I
+    I --> J["隔天 review 錯題"]
+    J --> C
+```
+
+### 演算法選型
+
+```mermaid
+flowchart TD
+    Q["題目輸入與限制"] --> N{"是否需要列舉所有解或找可行組合"}
+    N -->|是| BT["回溯/DFS<br/>狀態、選擇、剪枝"]
+    N -->|否| O{"是否有最優子結構"}
+    O -->|有重疊子問題| DP["動態規劃<br/>state、transition、base case"]
+    O -->|局部選擇可交換證明| GR["貪婪<br/>排序鍵、exchange argument"]
+    O -->|可拆獨立子問題| DC["分治<br/>split、solve、merge"]
+    O -->|圖上的可達或路徑| GP["圖演算法<br/>BFS/DFS/shortest path/MST"]
+    O -->|只需快速查找或計數| HT["Hash / Heap / Tree<br/>依操作成本選結構"]
+```
+
+### 系統堆疊
+
+```mermaid
+flowchart TB
+    APP["應用程式<br/>HTTP、SQL、ML service"]
+    LANG["語言與 runtime<br/>C、memory、calling convention"]
+    OS["作業系統<br/>process、thread、virtual memory、file"]
+    ISA["ISA / microarchitecture<br/>instruction、pipeline、cache"]
+    LOGIC["數位邏輯<br/>gate、register、FSM"]
+    NET["網路堆疊<br/>DNS、TCP、routing"]
+    STORAGE["儲存系統<br/>block device、filesystem、database pages"]
+    SEC["安全邊界<br/>authn/authz、TLS、least privilege"]
+
+    APP --> LANG
+    LANG --> OS
+    OS --> ISA
+    ISA --> LOGIC
+    APP --> NET
+    APP --> STORAGE
+    NET --> SEC
+    OS --> SEC
+    STORAGE --> SEC
+```
+
+### 資料庫查詢與交易
+
+```mermaid
+flowchart LR
+    SQL["SQL query"] --> PARSE["Parse / validate"]
+    PARSE --> ALG["Relational algebra"]
+    ALG --> OPT["Optimizer<br/>rewrite、join order、cost"]
+    OPT --> PLAN["Execution plan"]
+    PLAN --> IDX["Index / table scan"]
+    IDX --> LOCK["Transaction layer<br/>lock 或 MVCC"]
+    LOCK --> PAGE["Buffer pool / pages"]
+    PAGE --> LOG["WAL / recovery log"]
+    LOG --> RESULT["Result / commit"]
+```
+
+### ML 評估
+
+```mermaid
+flowchart TD
+    DATA["資料與問題定義"] --> SPLIT["Train / validation / test split"]
+    SPLIT --> MODEL["模型與 loss"]
+    MODEL --> TRAIN["訓練與最佳化"]
+    TRAIN --> EVAL["評估指標<br/>accuracy、precision、recall、F1、AUC"]
+    EVAL --> ERR{"錯誤型態"}
+    ERR -->|High bias| UNDER["Underfitting<br/>增加特徵或模型能力"]
+    ERR -->|High variance| OVER["Overfitting<br/>regularization、early stopping"]
+    ERR -->|資料問題| DATAFIX["資料清理<br/>leakage、imbalance、drift"]
+    UNDER --> MODEL
+    OVER --> MODEL
+    DATAFIX --> DATA
+```
+
+### 資安威脅模型
+
+```mermaid
+flowchart TD
+    ASSET["Asset<br/>資料、服務、金鑰、身份"] --> THREAT["Threat actor<br/>能力與目標"]
+    THREAT --> VULN["Vulnerability<br/>輸入驗證、權限、協定、設定"]
+    VULN --> IMPACT["Impact<br/>機密性、完整性、可用性"]
+    IMPACT --> CONTROL["Control<br/>加密、簽章、ACL、logging、rate limit"]
+    CONTROL --> VERIFY["Verify<br/>測試、監控、review"]
+    VERIFY --> ASSET
+```
+
 ## 科目教材
 
 下面每個 `subject/topic` 對應平台中的一組題庫與一份短教學筆記。你可以把它當作完整學習路線，也可以當作弱點補洞清單。
