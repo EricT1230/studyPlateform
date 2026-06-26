@@ -1,0 +1,180 @@
+- id: ds-heap-001
+  difficulty: basic
+  tags: [heap, priority-queue]
+  question: |
+    Min-heap 的 heap property 是什麼？
+  options: ["每個節點的 key 不大於其子節點的 key", "每個節點的左子樹都小於右子樹", "整棵樹必須是 binary search tree", "葉節點必須依插入時間排序"]
+  answer: 0
+  explanation: |
+    Min-heap 要求父節點 key 小於或等於子節點 key，因此 root 會保存全 heap 最小值。
+- id: ds-heap-002
+  difficulty: basic
+  tags: [heap, array-representation]
+  question: |
+    以 0-based array 表示 binary heap 時，索引 i 的左子節點索引通常是？
+  options: ["2i + 1", "2i", "i + 1", "i / 2"]
+  answer: 0
+  explanation: |
+    0-based binary heap 中，left child 是 `2i + 1`，right child 是 `2i + 2`，parent 是 `(i - 1) // 2`。
+- id: ds-heap-003
+  difficulty: basic
+  tags: [priority-queue, operation]
+  question: |
+    Priority queue 的 delete-min 操作語意是？
+  options: ["移除並回傳目前 priority 最小的元素", "移除最後插入的元素", "移除隨機元素", "移除所有重複 priority 的元素"]
+  answer: 0
+  explanation: |
+    Min-priority queue 依 priority 服務，delete-min 會取出目前最小 priority 的項目。
+- id: ds-heap-004
+  difficulty: intermediate
+  tags: [heap, insertion, complexity]
+  question: |
+    在含 n 個元素的 binary heap 插入一個新元素，標準 worst-case tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    新元素先放在最後，再沿樹高向上 sift-up。Complete binary tree 高度為 Theta(log n)。
+- id: ds-heap-005
+  difficulty: intermediate
+  tags: [heap, extract-min, complexity]
+  question: |
+    Binary min-heap 的 extract-min 在 worst-case 的 tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n^2)"]
+  answer: 1
+  explanation: |
+    移除 root 後把最後元素放到 root，再向下 sift-down，最多走 heap 高度 Theta(log n)。
+- id: ds-heap-006
+  difficulty: advanced
+  tags: [heap, build-heap, complexity]
+  question: |
+    Floyd build-heap 從任意陣列建立 binary heap 的 tight bound 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(log n)", "Theta(n^2)"]
+  answer: 0
+  explanation: |
+    自底向上 heapify 時，多數節點高度很小；所有 sift-down 成本加總為 Theta(n)，不是 n 次插入的 Theta(n log n)。
+- id: ds-heap-007
+  difficulty: intermediate
+  tags: [heap, heapsort]
+  question: |
+    Heapsort 的 worst-case tight time bound 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(log n)", "Theta(n^2)"]
+  answer: 1
+  explanation: |
+    Build heap 為 Theta(n)，接著做 n 次 extract 或等價的 heap 調整，每次 Theta(log n)，總計 Theta(n log n)。
+- id: ds-heap-008
+  difficulty: intermediate
+  tags: [heap, stability]
+  question: |
+    一般原地 heapsort 是否穩定 (stable)？
+  options: ["通常不穩定", "一定穩定", "只有 n 為偶數才穩定", "只要 key 是整數就穩定"]
+  answer: 0
+  explanation: |
+    Heap 操作會交換相距很遠的元素，可能改變相等 key 的相對順序，因此一般原地 heapsort 不穩定。
+- id: ds-heap-009
+  difficulty: advanced
+  tags: [priority-queue, dijkstra]
+  question: |
+    Dijkstra 演算法使用 priority queue 的主要目的為何？
+  options: ["快速取出目前 tentative distance 最小的頂點", "檢查圖是否為 binary tree", "把所有邊依輸入順序輸出", "儲存遞迴呼叫狀態"]
+  answer: 0
+  explanation: |
+    Dijkstra 每步需要選擇尚未確定中距離最小的頂點，priority queue 正好支援這種 delete-min。
+- id: ds-heap-010
+  difficulty: advanced
+  tags: [heap, decrease-key]
+  question: |
+    Binary heap 若要有效支援 decrease-key，通常還需要什麼額外資訊？
+  options: ["元素到 heap array index 的位置表", "所有元素的排序後複本", "每個 key 的質因數分解", "一個只存 root 的 stack"]
+  answer: 0
+  explanation: |
+    decrease-key 必須先找到元素在 heap 中的位置，再向上調整。沒有位置表時，尋找元素可能退化為線性掃描。
+- id: ds-heap-011
+  difficulty: intermediate
+  tags: [heap, top-k]
+  question: |
+    要從 n 個數中找出最大的 k 個，且 k 遠小於 n，常見作法是維護大小 k 的哪種 heap？
+  options: ["min-heap", "max-heap", "suffix heap", "Fibonacci tree only"]
+  answer: 0
+  explanation: |
+    維護大小 k 的 min-heap，heap root 是目前 top-k 中最小者；新元素若更大就替換 root。
+- id: ds-heap-012
+  difficulty: intermediate
+  tags: [heap, k-way-merge]
+  question: |
+    合併 k 個已排序串列、總元素數 n 時，用 heap 的標準 tight time bound 是？
+  options: ["Theta(n log k)", "Theta(nk)", "Theta(k log n)", "Theta(n^2)"]
+  answer: 0
+  explanation: |
+    Heap 中最多放 k 個候選元素，每取出一個並插入下一個成本 Theta(log k)，總共處理 n 個元素。
+- id: ds-heap-013
+  difficulty: advanced
+  tags: [heap, d-ary-heap]
+  question: |
+    d-ary heap 相對 binary heap 的一個典型 trade-off 是什麼？
+  options: ["高度較低但每次 sift-down 需比較更多子節點", "高度較高但不需比較", "只能做 max-heap 不能做 min-heap", "不支援 array 表示法"]
+  answer: 0
+  explanation: |
+    分支數 d 增加會降低高度約 log_d n，但每層要從 d 個子節點中找最佳者，比較數上升。
+- id: ds-heap-014
+  difficulty: basic
+  tags: [heap, complete-tree]
+  question: |
+    Binary heap 的形狀限制通常是？
+  options: ["Complete binary tree", "任意 binary search tree", "所有節點都只有右子節點", "高度必須等於元素數"]
+  answer: 0
+  explanation: |
+    Binary heap 是 complete binary tree，除最後一層外皆填滿，最後一層由左到右填入，方便用陣列表示。
+- id: ds-heap-015
+  difficulty: intermediate
+  tags: [heap, find-min]
+  question: |
+    在 binary min-heap 中查詢最小元素但不刪除的 tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 0
+  explanation: |
+    Min-heap 的最小元素永遠在 root；讀取 array[0] 即可，不需調整 heap。
+- id: ds-heap-016
+  difficulty: advanced
+  tags: [heap, find-max]
+  question: |
+    在 binary min-heap 中找最大元素的 worst-case tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 2
+  explanation: |
+    Min-heap 只保證父節點不大於子節點，最大值一定在某個 leaf，但 leaf 可能有 Theta(n) 個，需掃描。
+- id: ds-heap-017
+  difficulty: master
+  tags: [priority-queue, meld]
+  question: |
+    若應用程式非常頻繁地合併兩個 priority queues，binary heap 的哪個限制會變明顯？
+  options: ["meld 兩個 heap 通常不能在 worst-case Theta(log n) 內自然完成", "find-min 需要 Theta(n)", "insert 一定需要 Theta(n^2)", "heap property 不允許重複 key"]
+  answer: 0
+  explanation: |
+    Binary heap 的陣列形狀限制讓 meld 不如 binomial heap、Fibonacci heap 等 meldable heaps 自然有效。
+- id: ds-heap-018
+  difficulty: advanced
+  tags: [heap, invariant]
+  question: |
+    對 binary heap 的任一子樹而言，下列何者正確？
+  options: ["該子樹本身也滿足 heap property", "該子樹一定是 binary search tree", "該子樹的中序走訪必定排序", "該子樹高度一定為 1"]
+  answer: 0
+  explanation: |
+    Heap property 是局部父子關係，任一節點與其後代形成的子樹仍滿足相同父子順序限制。
+- id: ds-heap-019
+  difficulty: intermediate
+  tags: [priority-queue, event-simulation]
+  question: |
+    離散事件模擬常用 priority queue 的原因是？
+  options: ["每次需要取出時間最早的下一個事件", "事件永遠只能用 LIFO 處理", "事件之間不能比較時間", "所有事件必須一次全部執行"]
+  answer: 0
+  explanation: |
+    模擬時下一個要處理的是 timestamp 最小的事件，min-priority queue 能有效維護這個集合。
+- id: ds-heap-020
+  difficulty: master
+  tags: [heap, correctness]
+  question: |
+    對 min-heap 執行 sift-down 時，每一步選擇較小的 child 交換，主要是為了維持什麼？
+  options: ["交換後父節點不大於兩個子節點", "讓整個陣列變成全域排序", "讓左右子樹節點數完全相等", "讓 root 變成最大值"]
+  answer: 0
+  explanation: |
+    若與較大的 child 交換，可能仍大於較小 child 而違反 heap property。選較小 child 才能恢復當層父子關係。

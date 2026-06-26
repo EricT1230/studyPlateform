@@ -1,0 +1,180 @@
+- id: algo-dc-001
+  difficulty: basic
+  tags: [divide-and-conquer, concept]
+  question: |
+    Divide and conquer 演算法通常包含哪三個步驟？
+  options: ["Divide、conquer、combine", "Hash、probe、rehash", "Push、pop、peek", "Lock、wait、signal"]
+  answer: 0
+  explanation: |
+    典型分治會把問題切成子問題，遞迴解子問題，再把子解合併成原問題答案。
+- id: algo-dc-002
+  difficulty: basic
+  tags: [binary-search, complexity]
+  question: |
+    Binary search 在已排序長度 n 陣列上的 worst-case tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    每次比較可排除約一半候選範圍，因此最多進行對數次比較。
+- id: algo-dc-003
+  difficulty: intermediate
+  tags: [merge-sort, recurrence]
+  question: |
+    Merge sort 的標準 recurrence `T(n)=2T(n/2)+Theta(n)` 解為？
+  options: ["Theta(n)", "Theta(log n)", "Theta(n log n)", "Theta(n^2)"]
+  answer: 2
+  explanation: |
+    每層合併成本 Theta(n)，共有 Theta(log n) 層，所以總時間為 Theta(n log n)。
+- id: algo-dc-004
+  difficulty: intermediate
+  tags: [merge-sort, stability]
+  question: |
+    Merge sort 要保持 stable，合併兩段時遇到相等 key 應如何處理？
+  options: ["優先取左半段較早出現的元素", "一定優先取右半段元素", "丟棄其中一個元素", "把相等 key 隨機排列"]
+  answer: 0
+  explanation: |
+    Stable 要保留原本相等元素的相對順序。左半段元素原本在右半段相等元素之前，因此應先輸出左側。
+- id: algo-dc-005
+  difficulty: advanced
+  tags: [recurrence, master-theorem]
+  question: |
+    Recurrence `T(n)=3T(n/2)+Theta(n)` 的 tight bound 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(n^(log2 3))", "Theta(n^2)"]
+  answer: 2
+  explanation: |
+    Master theorem 中 a=3、b=2，n^(log_b a)=n^(log2 3)，而 f(n)=n 較小，因此由子問題項主導。
+- id: algo-dc-006
+  difficulty: advanced
+  tags: [quickselect, expected-time]
+  question: |
+    Randomized quickselect 找第 k 小元素的標準 expected tight time 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(log n)", "Theta(n^2)"]
+  answer: 0
+  explanation: |
+    隨機 pivot 使期望上每次丟掉固定比例的元素；雖然 worst-case 可到 Theta(n^2)，expected time 是 Theta(n)。
+- id: algo-dc-007
+  difficulty: advanced
+  tags: [quickselect, worst-case]
+  question: |
+    Median-of-medians selection 演算法的 worst-case tight time bound 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(n^2)", "Theta(log n)"]
+  answer: 0
+  explanation: |
+    Median-of-medians 以線性時間選出足夠好的 pivot，確保每次丟掉固定比例元素，因此 worst-case Theta(n)。
+- id: algo-dc-008
+  difficulty: intermediate
+  tags: [inversion-count, merge-sort]
+  question: |
+    使用 merge-sort 思想計算陣列 inversion 數時，跨左右兩半的 inversion 在何時被計算？
+  options: ["合併兩個已排序半段時", "遞迴開始前隨機猜測", "每次 hash collision 時", "只在陣列已完全排序後掃一次"]
+  answer: 0
+  explanation: |
+    左右半段各自排序後，若右側元素小於左側目前元素，左側剩餘元素都與它形成 inversion，可在 merge 時累計。
+- id: algo-dc-009
+  difficulty: advanced
+  tags: [closest-pair, geometry]
+  question: |
+    平面 closest pair 分治演算法在合併階段只需檢查 strip 中有限鄰近點，關鍵原因是？
+  options: ["點已依座標排序且距離下界限制了局部密度", "所有點都在同一直線上", "strip 中永遠只有兩個點", "距離可以用 hash value 取代"]
+  answer: 0
+  explanation: |
+    左右子問題已有最小距離 delta，strip 中若點太密會違反此下界，因此每點只需檢查常數個鄰近候選。
+- id: algo-dc-010
+  difficulty: advanced
+  tags: [karatsuba, multiplication]
+  question: |
+    Karatsuba multiplication 相較於傳統四個半長乘法，主要節省在哪裡？
+  options: ["把四個子乘法減為三個子乘法", "完全不需要加法", "把乘法改成排序", "只適用於一位數"]
+  answer: 0
+  explanation: |
+    Karatsuba 用代數重組，以三個約 n/2 位數乘法加上線性加減法完成，降低漸進時間。
+- id: algo-dc-011
+  difficulty: master
+  tags: [karatsuba, recurrence]
+  question: |
+    Karatsuba 的 recurrence `T(n)=3T(n/2)+Theta(n)` 對應的 tight bound 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(n^(log2 3))", "Theta(n^2)"]
+  answer: 2
+  explanation: |
+    由 Master theorem，三個半規模子問題主導，得到 Theta(n^(log2 3))，約為 Theta(n^1.585)。
+- id: algo-dc-012
+  difficulty: master
+  tags: [strassen, matrix-multiplication]
+  question: |
+    Strassen matrix multiplication 的分治想法主要是？
+  options: ["用 7 次子矩陣乘法取代傳統 8 次", "把矩陣先轉成 linked list", "只計算對角線元素", "用 BFS 找最短路"]
+  answer: 0
+  explanation: |
+    Strassen 對 2x2 block 做代數組合，將 8 個半規模矩陣乘法降為 7 個，改善漸進複雜度。
+- id: algo-dc-013
+  difficulty: intermediate
+  tags: [divide-and-conquer, recursion-tree]
+  question: |
+    Recursion tree 中每一層成本皆為 Theta(n)，且共有 Theta(log n) 層時，總成本為？
+  options: ["Theta(log n)", "Theta(n)", "Theta(n log n)", "Theta(n^2)"]
+  answer: 2
+  explanation: |
+    每層 Theta(n) 乘上 Theta(log n) 層，得到 Theta(n log n)。
+- id: algo-dc-014
+  difficulty: intermediate
+  tags: [quick-sort, partition]
+  question: |
+    Quicksort 的 partition 步驟完成後，pivot 具有什麼性質？
+  options: ["pivot 左側元素不大於它，右側元素不小於它", "pivot 一定是全陣列中位數", "pivot 必定在 index 0", "pivot 左右兩側大小一定完全相同"]
+  answer: 0
+  explanation: |
+    Partition 只保證相對於 pivot 的左右分割；pivot 不一定是中位數，也不保證平衡。
+- id: algo-dc-015
+  difficulty: advanced
+  tags: [quick-sort, complexity]
+  question: |
+    Quicksort 若每次 pivot 都切出 0 與 n-1 的子問題，worst-case tight time 是？
+  options: ["Theta(n)", "Theta(n log n)", "Theta(n^2)", "Theta(log n)"]
+  answer: 2
+  explanation: |
+    每層 partition 花 Theta(n) 且只縮小 1，形成 n 層左右的遞迴，總和為 Theta(n^2)。
+- id: algo-dc-016
+  difficulty: advanced
+  tags: [recurrence, substitution]
+  question: |
+    Recurrence `T(n)=T(n/2)+Theta(1)` 的 tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    問題規模每次減半，每層只花常數成本，到 base case 需 Theta(log n) 層。
+- id: algo-dc-017
+  difficulty: master
+  tags: [divide-and-conquer, parallelism]
+  question: |
+    分治演算法常容易平行化的主要原因是？
+  options: ["子問題在合併前常可獨立求解", "所有分治演算法都沒有資料相依", "合併步驟永遠是 Theta(1)", "遞迴會自動使用 GPU"]
+  answer: 0
+  explanation: |
+    Divide 後的多個子問題通常可在沒有互相寫入衝突下求解；但 combine 或共享資料仍可能限制平行度。
+- id: algo-dc-018
+  difficulty: intermediate
+  tags: [divide-and-conquer, base-case]
+  question: |
+    分治遞迴實作中 base case 的主要作用是？
+  options: ["停止遞迴並直接解足夠小的問題", "讓所有輸入變成偶數長度", "強制使用 heap", "刪除已排序資料"]
+  answer: 0
+  explanation: |
+    沒有 base case 遞迴無法終止；足夠小的問題可直接回傳答案，再由上層合併。
+- id: algo-dc-019
+  difficulty: advanced
+  tags: [divide-and-conquer, memory]
+  question: |
+    Merge sort 相較於 in-place heapsort，常見空間取捨是？
+  options: ["Merge sort 通常需要 Theta(n) 額外陣列", "Merge sort 完全不需要額外空間", "Heapsort 一定需要 Theta(n^2) 空間", "兩者都必須使用 adjacency list"]
+  answer: 0
+  explanation: |
+    標準 merge sort 合併時需要輔助陣列保存結果，額外空間 Theta(n)；heapsort 可原地完成但不穩定。
+- id: algo-dc-020
+  difficulty: master
+  tags: [divide-and-conquer, correctness]
+  question: |
+    分治演算法正確性證明通常最自然使用哪種方法？
+  options: ["對問題規模做 induction", "只測一筆最大輸入", "假設遞迴永遠不會返回", "把所有變數改成 global"]
+  answer: 0
+  explanation: |
+    分治假設較小子問題已被正確解出，再證明 divide 與 combine 能產生原問題正確答案，這正是規模歸納。

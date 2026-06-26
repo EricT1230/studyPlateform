@@ -1,0 +1,180 @@
+- id: ds-sq-001
+  difficulty: basic
+  tags: [stack, lifo]
+  question: |
+    Stack 的核心存取規則最準確的描述是？
+  options: ["先進先出 (FIFO)", "後進先出 (LIFO)", "依 key 排序取出", "依 hash 值取出"]
+  answer: 1
+  explanation: |
+    Stack 只允許從同一端 push 與 pop，最後放入的元素會最先被移除，因此是 LIFO。
+- id: ds-sq-002
+  difficulty: basic
+  tags: [queue, fifo]
+  question: |
+    Queue 最適合直接表達下列哪一種處理順序？
+  options: ["函式遞迴尚未返回的呼叫", "印表機工作依送出時間排隊", "每次取出目前最小權重節點", "依字典序查找字串"]
+  answer: 1
+  explanation: |
+    Queue 是 FIFO，先進入的工作先被服務，印表機工作佇列正是這種語意。
+- id: ds-sq-003
+  difficulty: basic
+  tags: [stack, complexity]
+  question: |
+    以動態陣列實作 stack，push 與 pop 在標準 amortized 分析下的時間複雜度為何？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 0
+  explanation: |
+    大多數 push/pop 只改動尾端。push 偶爾擴容需 Theta(n)，但攤平到每次操作仍是 Theta(1)。
+- id: ds-sq-004
+  difficulty: intermediate
+  tags: [queue, circular-buffer]
+  question: |
+    用大小為 m 的 circular buffer 實作 queue，通常用哪個資訊判斷下一個 rear 位置？
+  options: ["rear = rear + front", "rear = (rear + 1) mod m", "rear = m - rear", "rear = hash(rear)"]
+  answer: 1
+  explanation: |
+    Circular buffer 到陣列尾端後要繞回開頭，因此下一格索引使用模數運算 `(rear + 1) mod m`。
+- id: ds-sq-005
+  difficulty: intermediate
+  tags: [queue, circular-buffer]
+  question: |
+    Circular queue 若只保存 front 與 rear，常見的滿/空混淆可用哪種方法避免？
+  options: ["保留一個空槽或額外記錄 size", "每次 enqueue 都重新排序", "把所有元素改成指標", "rear 永遠固定在 0"]
+  answer: 0
+  explanation: |
+    只看 front/rear 時，某些表示法會讓滿與空看起來相同。保留空槽或額外維護 size 可消除歧義。
+- id: ds-sq-006
+  difficulty: intermediate
+  tags: [stack, parsing]
+  question: |
+    檢查括號字串是否正確配對時，為什麼 stack 是自然選擇？
+  options: ["最近開啟的括號必須最先被關閉", "所有括號都需要依字典序排序", "每個括號都需要 random access", "關閉括號一定比開啟括號多"]
+  answer: 0
+  explanation: |
+    括號配對有巢狀結構，最後遇到的未關閉左括號必須先被匹配，這正符合 stack 的 LIFO。
+- id: ds-sq-007
+  difficulty: intermediate
+  tags: [stack, expression]
+  question: |
+    將 infix expression 轉成 postfix expression 時，operator stack 的主要用途是什麼？
+  options: ["暫存尚未輸出的運算子並維持優先權處理", "把所有 operand 反向輸出", "計算每個變數的記憶體位址", "移除所有括號內的 operand"]
+  answer: 0
+  explanation: |
+    Operator stack 讓演算法能延後輸出低優先權運算子，並在括號或較低優先權出現時正確彈出。
+- id: ds-sq-008
+  difficulty: basic
+  tags: [queue, bfs]
+  question: |
+    Breadth-first search (BFS) 通常使用 queue 的原因是什麼？
+  options: ["要先展開較早被發現的頂點", "要先展開遞迴最深的頂點", "要依邊權重最小者展開", "要永久保存所有路徑"]
+  answer: 0
+  explanation: |
+    BFS 逐層展開，先被發現的頂點應先處理，所以使用 FIFO queue。
+- id: ds-sq-009
+  difficulty: advanced
+  tags: [queue, two-stacks, amortized]
+  question: |
+    用兩個 stack 實作 queue，若 enqueue push 到 in-stack，dequeue 在 out-stack 空時才搬移所有元素，單次操作的標準 amortized 時間為何？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n^2)"]
+  answer: 0
+  explanation: |
+    每個元素最多被 push 到 in-stack、搬到 out-stack、再 pop 一次，總成本對 k 個操作為 Theta(k)，故攤平 Theta(1)。
+- id: ds-sq-010
+  difficulty: advanced
+  tags: [stack, monotonic-stack]
+  question: |
+    Monotonic stack 解 next greater element 時，為何整體時間是 tight bound Theta(n)？
+  options: ["每個元素最多進 stack 一次、出 stack 一次", "每次查詢都需要 binary search", "stack 會自動排序所有元素", "所有 pair 都必須比較一次"]
+  answer: 0
+  explanation: |
+    雖然某次迴圈可能 pop 多個元素，但每個元素只會被 push 與 pop 各一次，因此總操作數是 Theta(n)。
+- id: ds-sq-011
+  difficulty: intermediate
+  tags: [deque, data-structure]
+  question: |
+    Deque 與一般 queue 的主要差異是什麼？
+  options: ["Deque 可在兩端插入與刪除", "Deque 只能儲存整數", "Deque 必須用 tree 實作", "Deque 會自動移除重複元素"]
+  answer: 0
+  explanation: |
+    Deque 是 double-ended queue，支援 front/back 兩端的 push 與 pop；一般 queue 通常只在尾端進、前端出。
+- id: ds-sq-012
+  difficulty: intermediate
+  tags: [deque, sliding-window]
+  question: |
+    Sliding window maximum 使用 monotonic deque 時，維護 deque 中元素遞減的目的為何？
+  options: ["讓 deque front 永遠是目前視窗最大值", "讓所有元素依原始索引遞減", "讓每次插入都變成 Theta(log n)", "讓視窗大小自動加倍"]
+  answer: 0
+  explanation: |
+    遞減 deque 會移除不可能成為最大值的尾端元素，因此 front 保存仍在視窗內的最大候選。
+- id: ds-sq-013
+  difficulty: advanced
+  tags: [stack, min-stack]
+  question: |
+    若要設計支援 push、pop、top、getMin 的 MinStack，且每個操作都為 Theta(1)，常見作法是？
+  options: ["另用一個 stack 記錄目前最小值歷史", "每次 getMin 時掃描整個 stack", "把 stack 改成 hash table", "每次 push 後執行 merge sort"]
+  answer: 0
+  explanation: |
+    輔助 stack 可同步保存每一層對應的最小值，pop 時一起回復，因此 getMin 不需掃描。
+- id: ds-sq-014
+  difficulty: basic
+  tags: [stack, recursion]
+  question: |
+    程式語言執行遞迴函式時，呼叫尚未返回的 activation records 通常以哪種概念管理？
+  options: ["Stack", "Priority queue", "Hash table", "Trie"]
+  answer: 0
+  explanation: |
+    遞迴呼叫最後進入的 frame 會最先返回，符合 call stack 的 LIFO 行為。
+- id: ds-sq-015
+  difficulty: intermediate
+  tags: [queue, linked-list]
+  question: |
+    以 singly linked list 實作 queue，若只保存 head 而不保存 tail，enqueue 到尾端的 tight bound 通常是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 2
+  explanation: |
+    沒有 tail 指標時，插入尾端前必須從 head 走到最後一個節點，所以是 Theta(n)。
+- id: ds-sq-016
+  difficulty: intermediate
+  tags: [queue, linked-list]
+  question: |
+    以 linked list 實作 queue 並同時保存 head 與 tail，enqueue 與 dequeue 的 tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n^2)"]
+  answer: 0
+  explanation: |
+    enqueue 可直接接到 tail 後方，dequeue 可直接移除 head；更新常數個指標即可。
+- id: ds-sq-017
+  difficulty: advanced
+  tags: [stack, invariant]
+  question: |
+    用 stack 模擬 DFS 時，若圖有 cycle，哪個條件最能避免無限重複走訪？
+  options: ["在 push 或 pop 時維護 visited 狀態", "把 stack 容量設為節點數的一半", "每條邊只存權重不存端點", "把 adjacency list 反向排序"]
+  answer: 0
+  explanation: |
+    有 cycle 的圖可能反覆把同一頂點放回 stack。正確維護 visited 可確保每個頂點只被展開有限次。
+- id: ds-sq-018
+  difficulty: master
+  tags: [stack, amortized, dynamic-array]
+  question: |
+    動態陣列 stack 若在容量滿時加倍、在使用量降到 1/4 時減半，為何標準攤平成本仍可維持 Theta(1)？
+  options: ["擴張與縮小之間保留足夠空間，避免每次操作都 resize", "每次 pop 都複製整個陣列", "容量永遠等於元素數量", "resize 的成本被作業系統忽略"]
+  answer: 0
+  explanation: |
+    1/4 閾值提供 hysteresis，resize 後需要許多 push/pop 才會再次 resize，因此昂貴成本可攤到多個便宜操作。
+- id: ds-sq-019
+  difficulty: advanced
+  tags: [deque, implementation]
+  question: |
+    若要支援 deque 兩端操作皆為標準 amortized Theta(1)，下列哪個實作最合理？
+  options: ["循環陣列並在需要時擴容", "排序陣列並每次插入後重排", "只保存單向 head 指標", "使用未壓縮的 adjacency matrix"]
+  answer: 0
+  explanation: |
+    循環陣列可在兩端移動索引，擴容成本可攤平；排序陣列或單 head linked list 不能同時有效支援兩端。
+- id: ds-sq-020
+  difficulty: master
+  tags: [stack, queue, design]
+  question: |
+    設計一個瀏覽器上一頁/下一頁功能時，兩個 stack 的典型分工是什麼？
+  options: ["back stack 存可返回頁面，forward stack 存返回後可前進頁面", "兩個 stack 都只存目前頁面", "一個 stack 存網址長度，另一個存 hash 值", "back stack 必須依網址字典序排序"]
+  answer: 0
+  explanation: |
+    造訪新頁面會把舊頁放入 back stack 並清空 forward stack；按上一頁時目前頁進 forward stack，符合兩個 LIFO 歷史區的設計。

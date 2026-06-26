@@ -1,0 +1,180 @@
+- id: ds-atree-001
+  difficulty: basic
+  tags: [balanced-tree, bst]
+  question: |
+    Balanced binary search tree 的主要目的通常是什麼？
+  options: ["避免樹高退化，使查找維持對數級", "讓所有節點都只能有一個子節點", "讓中序走訪不再有序", "把每個 key 都映射成 hash bucket"]
+  answer: 0
+  explanation: |
+    BST 若高度退化為 n，操作會變慢。平衡樹透過 rotation 或顏色規則限制高度，讓操作維持 Theta(log n) 等級。
+- id: ds-atree-002
+  difficulty: intermediate
+  tags: [avl-tree, rotation]
+  question: |
+    AVL tree 在插入後發現某節點 balance factor 超出允許範圍時，通常用什麼操作修復？
+  options: ["Tree rotation", "Hash rehash", "Heap sift-down", "Linear probing"]
+  answer: 0
+  explanation: |
+    AVL tree 以旋轉調整局部結構，恢復左右子樹高度差最多 1 的 invariant。
+- id: ds-atree-003
+  difficulty: intermediate
+  tags: [avl-tree, complexity]
+  question: |
+    含 n 個節點的 AVL tree 查找一個 key 的 worst-case tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    AVL tree 的高度被嚴格限制在 Theta(log n)，查找沿單一路徑往下走，因此 worst-case 是 Theta(log n)。
+- id: ds-atree-004
+  difficulty: advanced
+  tags: [red-black-tree, invariant]
+  question: |
+    Red-black tree 的黑高 (black-height) 規則主要用來保證什麼？
+  options: ["任一路徑長度不會相差過大，樹高為 Theta(log n)", "所有紅節點都必須是 root", "中序走訪結果會反向排序", "每個 leaf 必須存兩個 key"]
+  answer: 0
+  explanation: |
+    黑高一致加上紅節點不能連續，限制最長路徑最多約為最短路徑兩倍，因而保證對數高度。
+- id: ds-atree-005
+  difficulty: intermediate
+  tags: [b-tree, disk-index]
+  question: |
+    B-tree 常用於資料庫與檔案系統索引的主要原因是？
+  options: ["高分支度可降低磁碟或頁面 I/O 次數", "只能儲存在 CPU register", "每個節點一定只有兩個 child", "查找必須掃描整個檔案"]
+  answer: 0
+  explanation: |
+    B-tree 節點可對應磁碟頁面，單次 I/O 讀入多個 key 與 child pointer，高分支度使樹高很低。
+- id: ds-atree-006
+  difficulty: advanced
+  tags: [b-plus-tree, range-query]
+  question: |
+    B+ tree 相較於一般 B-tree，對 range scan 特別友善的設計是？
+  options: ["資料多存於 leaf，且 leaf 常以 linked list 串接", "所有內部節點都不保存 key", "root 必須是紅色", "每次查詢都要重建整棵樹"]
+  answer: 0
+  explanation: |
+    B+ tree 的 leaf 保存有序資料並串接，找到範圍起點後可沿 leaf 順序掃描，減少反覆回到上層節點。
+- id: ds-atree-007
+  difficulty: basic
+  tags: [trie, strings]
+  question: |
+    Trie 最適合支援哪一類查詢？
+  options: ["字串前綴查詢", "任意兩點最短路", "數值陣列排序", "矩陣乘法"]
+  answer: 0
+  explanation: |
+    Trie 依字元逐層分支，走過 prefix 後即可找到所有具有該 prefix 的字串。
+- id: ds-atree-008
+  difficulty: intermediate
+  tags: [trie, complexity]
+  question: |
+    在 alphabet 大小視為常數的 trie 中，查找長度 L 的字串 tight bound 是？
+  options: ["Theta(1)", "Theta(log L)", "Theta(L)", "Theta(n)"]
+  answer: 2
+  explanation: |
+    查找需依序讀取字串的 L 個字元，每層前進一次，因此時間與字串長度成正比。
+- id: ds-atree-009
+  difficulty: intermediate
+  tags: [segment-tree, range-query]
+  question: |
+    Segment tree 最典型支援的操作組合是？
+  options: ["區間查詢與單點或區間更新", "只支援 stack pop", "只支援 hash collision 處理", "只能做字串前綴搜尋"]
+  answer: 0
+  explanation: |
+    Segment tree 將陣列區間遞迴拆分，可用於 range sum/min/max 等查詢，並支援更新後重新維護相關節點。
+- id: ds-atree-010
+  difficulty: advanced
+  tags: [segment-tree, complexity]
+  question: |
+    一棵支援 range sum 的 segment tree，在 n 個元素上做單點更新的 tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    單點更新只影響從 leaf 到 root 的一條路徑，segment tree 高度為 Theta(log n)。
+- id: ds-atree-011
+  difficulty: advanced
+  tags: [fenwick-tree, prefix-sum]
+  question: |
+    Fenwick tree (Binary Indexed Tree) 最自然支援哪種查詢？
+  options: ["Prefix sum 與單點更新", "任意 graph SCC", "postfix expression evaluation", "hash table rehash"]
+  answer: 0
+  explanation: |
+    Fenwick tree 用 lowbit 結構保存部分前綴資訊，可在 Theta(log n) 完成 prefix sum 與 point update。
+- id: ds-atree-012
+  difficulty: master
+  tags: [fenwick-tree, invariant]
+  question: |
+    Fenwick tree 中 tree[i] 通常保存哪個範圍的彙總值？
+  options: ["長度為 lowbit(i)、結尾在 i 的區間", "從 i 到 n 的所有元素", "只有第 i 個元素本身", "整棵樹的最大深度"]
+  answer: 0
+  explanation: |
+    Fenwick tree 的核心 invariant 是 `tree[i]` 管理 `(i - lowbit(i) + 1)..i`，查詢時沿 index 減 lowbit 收集區塊。
+- id: ds-atree-013
+  difficulty: advanced
+  tags: [order-statistic-tree, augmentation]
+  question: |
+    Order-statistic tree 通常在 balanced BST 節點中額外保存什麼，以支援 select(k)？
+  options: ["子樹大小", "節點的 hash seed", "父節點顏色的 ASCII code", "所有祖先 key 的字串串接"]
+  answer: 0
+  explanation: |
+    有了每個節點的 subtree size，就能判斷第 k 小在左子樹、目前節點或右子樹，並在 Theta(log n) 尋找。
+- id: ds-atree-014
+  difficulty: master
+  tags: [splay-tree, amortized]
+  question: |
+    Splay tree 的查找、插入、刪除標準保證通常如何描述？
+  options: ["amortized Theta(log n)，單次可能較慢", "每次 worst-case Theta(1)", "只要資料已排序就 Theta(n^2)", "完全不支援刪除"]
+  answer: 0
+  explanation: |
+    Splay tree 透過 splay 將存取節點旋到 root，單次操作可退化，但長序列操作有攤平對數保證。
+- id: ds-atree-015
+  difficulty: advanced
+  tags: [treap, randomized]
+  question: |
+    Treap 同時維持哪兩種性質？
+  options: ["依 key 的 BST property 與依 priority 的 heap property", "依 key 的 hash property 與 queue FIFO", "AVL balance factor 與 B-tree 頁面大小", "Trie prefix 與 graph topological order"]
+  answer: 0
+  explanation: |
+    Treap 的中序順序由 key 決定，同時每個節點有隨機 priority 並滿足 heap property，期望高度為對數級。
+- id: ds-atree-016
+  difficulty: master
+  tags: [lca, binary-lifting]
+  question: |
+    樹上 Lowest Common Ancestor 使用 binary lifting 預處理後，單次查詢常見 tight bound 是？
+  options: ["Theta(1) always", "Theta(log n)", "Theta(n)", "Theta(n log n)"]
+  answer: 1
+  explanation: |
+    Binary lifting 預存每個節點的 2^j 祖先，查詢時用二進位跳躍對齊深度並一起上跳，成本 Theta(log n)。
+- id: ds-atree-017
+  difficulty: intermediate
+  tags: [tree, traversal]
+  question: |
+    對 binary search tree 做 inorder traversal 會得到什麼結果？
+  options: ["依 key 遞增的序列", "依插入時間遞減的序列", "level order 序列", "hash bucket 順序"]
+  answer: 0
+  explanation: |
+    BST 左子樹 key 小於節點，右子樹 key 大於節點；inorder 先左、再節點、再右，因此輸出有序。
+- id: ds-atree-018
+  difficulty: advanced
+  tags: [persistent-tree, versioning]
+  question: |
+    Persistent segment tree 常用 path copying 的原因是？
+  options: ["更新只複製受影響的 root-to-leaf 路徑並共享未變子樹", "每次更新都完整複製所有節點才最省空間", "它不需要保存任何 root", "它只能處理空陣列"]
+  answer: 0
+  explanation: |
+    單點更新只改變一條路徑，複製該路徑並重用其他子樹即可保留舊版本，單次額外空間為 Theta(log n)。
+- id: ds-atree-019
+  difficulty: master
+  tags: [lazy-propagation, segment-tree]
+  question: |
+    Segment tree 的 lazy propagation 主要解決什麼問題？
+  options: ["區間更新時避免立刻更新所有被覆蓋的葉節點", "讓 BST 不需要 rotation", "讓 hash table 不發生 collision", "讓 trie 查找變成不讀字元"]
+  answer: 0
+  explanation: |
+    Lazy tag 把整段更新延後下推，只在需要訪問子區間時傳遞，讓區間更新與查詢維持對數級節點數。
+- id: ds-atree-020
+  difficulty: master
+  tags: [balanced-tree, tradeoff]
+  question: |
+    AVL tree 相較於 red-black tree 常見的取捨是什麼？
+  options: ["AVL 平衡較嚴格，查找可能略快但更新 rotation 較多", "AVL 不支援查找", "Red-black tree 必須是 complete tree", "兩者都無法保證對數高度"]
+  answer: 0
+  explanation: |
+    AVL 對高度差限制更嚴，因此樹通常更矮；red-black tree 平衡較寬鬆，更新時常有較少結構調整。

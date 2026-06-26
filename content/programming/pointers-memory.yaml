@@ -1,0 +1,180 @@
+- id: prog-ptr-001
+  difficulty: basic
+  tags: [c, pointers]
+  question: |
+    在 C 中，`int *p;` 最準確表示什麼？
+  options: ["p 是指向 int 的指標", "p 是 int 陣列的長度", "p 是不可改變的整數常數", "p 是函式回傳值"]
+  answer: 0
+  explanation: |
+    `int *p` 宣告 p 的型別為 pointer to int；它可保存某個 int 物件的位址。
+- id: prog-ptr-002
+  difficulty: basic
+  tags: [c, address-of]
+  question: |
+    若 `int x;` 已宣告，`&x` 的意義是？
+  options: ["x 的位址", "x 的平方", "x 的型別名稱字串", "x 所在函式的回傳值"]
+  answer: 0
+  explanation: |
+    `&` 是 address-of operator，用來取得物件在記憶體中的位址，結果可賦給相容指標。
+- id: prog-ptr-003
+  difficulty: basic
+  tags: [c, dereference]
+  question: |
+    若 `int *p = &x;`，表達式 `*p = 5;` 會造成什麼效果？
+  options: ["把 x 的值改成 5", "把 p 的位址改成 5", "釋放 x 的記憶體", "宣告一個新指標"]
+  answer: 0
+  explanation: |
+    `*p` dereference 指標，代表 p 指向的 int 物件；賦值會修改該物件，也就是 x。
+- id: prog-ptr-004
+  difficulty: intermediate
+  tags: [c, arrays, pointer-arithmetic]
+  question: |
+    若 `int a[10]; int *p = a;`，`p + 1` 指向哪裡？
+  options: ["a[1]", "a 的下一個 byte", "a[10]", "p 變成 NULL"]
+  answer: 0
+  explanation: |
+    指標算術會依 pointed type 大小前進；`p + 1` 前進一個 int，因此指向 `a[1]`。
+- id: prog-ptr-005
+  difficulty: intermediate
+  tags: [c, arrays, sizeof]
+  question: |
+    在同一 scope 中，`int a[10];` 與 `int *p = a;`，下列敘述何者正確？
+  options: ["`sizeof(a)` 是整個陣列大小，`sizeof(p)` 是指標大小", "`sizeof(a)` 一定等於 `sizeof(p)`", "`a` 可被重新指定到其他陣列", "`p` 不能做任何指標算術"]
+  answer: 0
+  explanation: |
+    陣列物件本身的 sizeof 是所有元素總大小；指標變數的 sizeof 是位址大小，兩者不同。
+- id: prog-ptr-006
+  difficulty: intermediate
+  tags: [c, malloc, heap]
+  question: |
+    `malloc(n * sizeof(int))` 成功時回傳的是什麼？
+  options: ["指向至少可放 n 個 int 的未初始化 heap 記憶體", "已自動清為 0 的 stack 記憶體", "int 數值 n", "永遠不可被 free 的常數指標"]
+  answer: 0
+  explanation: |
+    `malloc` 配置 heap memory 並回傳 void pointer；內容未初始化，使用後應以 `free` 釋放。
+- id: prog-ptr-007
+  difficulty: intermediate
+  tags: [c, calloc, initialization]
+  question: |
+    `calloc` 與 `malloc` 的常見差異是？
+  options: ["calloc 會把配置的記憶體初始化為 0", "calloc 一定配置在 stack", "malloc 不能配置陣列", "calloc 不會回傳指標"]
+  answer: 0
+  explanation: |
+    `calloc(count, size)` 配置 count*size bytes 並將 bits 清為 0；`malloc` 不初始化內容。
+- id: prog-ptr-008
+  difficulty: intermediate
+  tags: [c, free, dangling-pointer]
+  question: |
+    呼叫 `free(p)` 後繼續 dereference `p` 的問題是？
+  options: ["造成 dangling pointer 使用，行為未定義", "C 會自動重新配置同一塊記憶體", "p 會自動變成有效陣列", "只會得到 0 不會有風險"]
+  answer: 0
+  explanation: |
+    `free` 後該物件生命週期結束，指標值仍可能保留舊位址，但 dereference 已是 undefined behavior。
+- id: prog-ptr-009
+  difficulty: advanced
+  tags: [c, double-free, undefined-behavior]
+  question: |
+    對同一個仍未重新配置的 heap block 呼叫兩次 `free`，屬於什麼問題？
+  options: ["Double free，行為未定義", "合法的 reference counting", "自動壓縮 heap", "只會忽略第二次呼叫且標準保證安全"]
+  answer: 0
+  explanation: |
+    C 標準不允許重複釋放同一 allocation；double free 會破壞 allocator 狀態或造成安全漏洞，行為未定義。
+- id: prog-ptr-010
+  difficulty: intermediate
+  tags: [c, null-pointer]
+  question: |
+    在 C 中，dereference NULL pointer 的結果是？
+  options: ["Undefined behavior", "一定回傳 0", "自動配置一個 int", "編譯器必須把它改成例外處理"]
+  answer: 0
+  explanation: |
+    NULL 不指向有效物件，對它 dereference 屬於 undefined behavior；實務上常見 crash，但標準不保證特定結果。
+- id: prog-ptr-011
+  difficulty: advanced
+  tags: [c, const, pointers]
+  question: |
+    `const int *p` 的正確解讀是？
+  options: ["p 指向的 int 不能透過 p 修改，但 p 本身可改指向別處", "p 本身不能改，但可透過 p 修改 int", "p 與指向的 int 都不能改", "p 必須是 NULL"]
+  answer: 0
+  explanation: |
+    `const int *` 是 pointer to const int；const 修飾 pointed value。若要指標本身不可改，需寫成 `int * const p`。
+- id: prog-ptr-012
+  difficulty: advanced
+  tags: [c, const, pointers]
+  question: |
+    `int * const p = &x;` 的正確解讀是？
+  options: ["p 本身不能改指向別處，但可透過 p 修改 x", "p 指向的 int 永遠不能修改", "p 是指向 const int 的可變指標", "p 是函式指標"]
+  answer: 0
+  explanation: |
+    `const` 放在 `*` 右側修飾指標變數本身，因此 p 必須一直保存同一位址；pointed int 不因此成為 const。
+- id: prog-ptr-013
+  difficulty: advanced
+  tags: [c, pointer-to-pointer]
+  question: |
+    函式若需要修改呼叫端的指標變數，常見參數型別是？
+  options: ["指標的指標，例如 `int **pp`", "普通 `int p`", "只讀 `const int value`", "沒有參數即可"]
+  answer: 0
+  explanation: |
+    C 以值傳遞參數；若要讓函式改變呼叫端的 pointer value，必須傳入該指標變數的位址，也就是 pointer to pointer。
+- id: prog-ptr-014
+  difficulty: intermediate
+  tags: [c, realloc]
+  question: |
+    使用 `realloc(p, new_size)` 時，較安全的寫法通常先把回傳值存到暫時指標，原因是？
+  options: ["realloc 失敗會回傳 NULL，原本 p 仍需保留以避免 memory leak", "realloc 成功時一定不搬移資料", "realloc 只能用在 stack 陣列", "realloc 會自動 free 所有其他 allocation"]
+  answer: 0
+  explanation: |
+    若直接 `p = realloc(p, size)` 且失敗，原位址會遺失而無法 free。暫存可先檢查 NULL 再更新 p。
+- id: prog-ptr-015
+  difficulty: advanced
+  tags: [c, buffer-overflow]
+  question: |
+    對長度為 n 的 C 陣列寫入 `a[n]` 的問題是？
+  options: ["越界寫入，行為未定義", "合法寫入最後一個元素", "自動擴充陣列", "只在 n 為偶數時合法"]
+  answer: 0
+  explanation: |
+    C 陣列合法索引是 0 到 n-1；`a[n]` 是 one-past 位置，可形成指標但不可 dereference 或寫入。
+- id: prog-ptr-016
+  difficulty: advanced
+  tags: [c, lifetime, stack]
+  question: |
+    函式回傳指向區域變數的指標為何錯誤？
+  options: ["區域變數在函式返回後生命週期結束，指標懸空", "區域變數永遠配置在 heap", "C 會自動延長所有區域變數生命週期", "指標不能指向 int"]
+  answer: 0
+  explanation: |
+    自動儲存期的區域變數在 block 結束後不再有效；回傳其位址會讓呼叫端拿到 dangling pointer。
+- id: prog-ptr-017
+  difficulty: master
+  tags: [c, strict-aliasing]
+  question: |
+    C 的 strict aliasing rule 大致限制什麼？
+  options: ["不同不相容型別的指標通常不能任意指向同一物件並讀寫", "所有指標都必須指向同一型別名稱的字串", "任何 cast 都一定安全", "char pointer 不能檢視物件 bytes"]
+  answer: 0
+  explanation: |
+    編譯器可假設不相容型別指標不 alias 以最佳化；違反規則讀寫可能造成 undefined behavior。`char *` 檢視 bytes 是重要例外之一。
+- id: prog-ptr-018
+  difficulty: master
+  tags: [c, function-pointer]
+  question: |
+    `int (*fp)(int, int);` 宣告的是什麼？
+  options: ["fp 是指向函式的指標，該函式收兩個 int 並回傳 int", "fp 是含兩個 int 的陣列", "fp 是指向 int 的 const 指標", "fp 是已呼叫函式後的回傳值"]
+  answer: 0
+  explanation: |
+    括號使 `*fp` 先與名稱結合，表示 fp 是 function pointer；目標函式型別為 `(int, int) -> int`。
+- id: prog-ptr-019
+  difficulty: advanced
+  tags: [c, linked-list, ownership]
+  question: |
+    刪除 singly linked list 節點時，為何通常要先保存 `node->next` 再 `free(node)`？
+  options: ["free 後不能再安全讀取 node->next", "free 會自動回傳下一個節點", "node->next 一定是 NULL", "保存 next 會讓時間變成 Theta(n^2)"]
+  answer: 0
+  explanation: |
+    節點釋放後 dereference `node` 是 undefined behavior。若還需要串接或繼續走訪，必須在 free 前保存 next。
+- id: prog-ptr-020
+  difficulty: master
+  tags: [c, memory-ownership]
+  question: |
+    在 C API 設計中明確說明 ownership 的主要目的為何？
+  options: ["讓呼叫者知道誰負責 free、何時物件仍有效", "讓編譯器自動產生 garbage collector", "保證所有函式都不會失敗", "避免使用任何 pointer"]
+  answer: 0
+  explanation: |
+    C 沒有內建 ownership 檢查；API 若不說明配置與釋放責任，容易造成 leak、double free 或 dangling pointer。

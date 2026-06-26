@@ -1,0 +1,180 @@
+- id: algo-backtrack-001
+  difficulty: basic
+  tags: [backtracking, concept]
+  question: |
+    Backtracking 的基本想法是？
+  options: ["逐步建立候選解，發現不可行就撤回上一選擇", "永遠只選目前最大權重邊", "先把所有資料放入 hash table", "只使用迭代不能使用遞迴"]
+  answer: 0
+  explanation: |
+    Backtracking 會在搜尋樹中嘗試選擇，若部分解已不可能形成合法答案，就回退並嘗試其他分支。
+- id: algo-backtrack-002
+  difficulty: basic
+  tags: [backtracking, dfs]
+  question: |
+    Backtracking 通常與哪種搜尋順序最密切相關？
+  options: ["Depth-first search", "Level-order BFS only", "Dijkstra shortest path", "Heapify"]
+  answer: 0
+  explanation: |
+    Backtracking 常沿著一條決策路徑深入，失敗後回退，這與 DFS 的控制流程一致。
+- id: algo-backtrack-003
+  difficulty: intermediate
+  tags: [backtracking, pruning]
+  question: |
+    Pruning 在 backtracking 中的目的為何？
+  options: ["提早排除不可能導致有效或更佳答案的分支", "保證所有分支都完整走到底", "把問題改成排序問題", "讓遞迴深度固定為 1"]
+  answer: 0
+  explanation: |
+    剪枝利用約束或界限判斷某些 partial solution 沒必要展開，可減少搜尋節點但不改變正確答案。
+- id: algo-backtrack-004
+  difficulty: intermediate
+  tags: [n-queens, constraints]
+  question: |
+    N-Queens backtracking 中，放置第 r 列皇后時最常檢查哪些衝突？
+  options: ["同欄與兩條對角線", "只檢查同列", "只檢查棋盤四角", "只檢查是否在主記憶體內"]
+  answer: 0
+  explanation: |
+    若每列只放一個皇后，同列已由遞迴層控制；仍需檢查欄與兩種對角線是否已有皇后。
+- id: algo-backtrack-005
+  difficulty: intermediate
+  tags: [subsets, complexity]
+  question: |
+    枚舉 n 個元素的所有 subset，輸出量本身的 tight bound 是？
+  options: ["Theta(n)", "Theta(log n)", "Theta(2^n)", "Theta(n^3)"]
+  answer: 2
+  explanation: |
+    每個元素有選或不選兩種狀態，因此共有 2^n 個 subsets；任何完整枚舉都至少需要 Theta(2^n) 輸出數量。
+- id: algo-backtrack-006
+  difficulty: intermediate
+  tags: [permutation, complexity]
+  question: |
+    枚舉 n 個互異元素所有 permutations 的輸出數量是？
+  options: ["Theta(n)", "Theta(2^n)", "Theta(n!)", "Theta(log n)"]
+  answer: 2
+  explanation: |
+    第一個位置有 n 種選擇，第二個有 n-1 種，依此類推，總共 n! 種排列。
+- id: algo-backtrack-007
+  difficulty: advanced
+  tags: [backtracking, state]
+  question: |
+    Backtracking 實作中「做選擇」後通常必須在遞迴返回時「撤銷選擇」，主要原因是？
+  options: ["避免目前分支的狀態污染兄弟分支", "讓所有答案都變成相同", "讓 stack 永遠為空", "避免使用任何條件判斷"]
+  answer: 0
+  explanation: |
+    同一份可變狀態常被多個分支共用；若不撤銷，下一個分支會看到錯誤的已選項或約束狀態。
+- id: algo-backtrack-008
+  difficulty: advanced
+  tags: [branch-and-bound, optimization]
+  question: |
+    Branch and bound 與一般 backtracking 相比，額外強調什麼？
+  options: ["用上下界排除不可能優於目前最佳解的分支", "只尋找第一個可行解且不比較目標值", "完全不需要 partial solution", "必須使用 adjacency matrix"]
+  answer: 0
+  explanation: |
+    Optimization 問題可維護目前最佳值，若某分支的理想界限仍不可能改善答案，即可剪枝。
+- id: algo-backtrack-009
+  difficulty: intermediate
+  tags: [sudoku, constraint-propagation]
+  question: |
+    Sudoku solver 常選擇候選數最少的空格先嘗試，這種 heuristic 的目的為何？
+  options: ["提早暴露矛盾並縮小分支", "讓答案字典序最大", "避免檢查 row/column/block", "把問題變成 BFS 最短路"]
+  answer: 0
+  explanation: |
+    Minimum remaining values 會優先處理最受限制的位置，若不可行能更早失敗，通常可大幅減少搜尋。
+- id: algo-backtrack-010
+  difficulty: advanced
+  tags: [backtracking, exact-cover]
+  question: |
+    Exact cover 問題中的一個合法解需要滿足什麼？
+  options: ["每個 constraint 恰好被選到一次", "至少一個 constraint 被選到兩次", "所有 column 都可忽略", "只選權重最大的 row"]
+  answer: 0
+  explanation: |
+    Exact cover 要從候選集合中選若干列，使每個需求欄位剛好被覆蓋一次；多覆蓋或漏覆蓋都不合法。
+- id: algo-backtrack-011
+  difficulty: advanced
+  tags: [backtracking, hamiltonian-path]
+  question: |
+    Hamiltonian path 的 backtracking 搜尋中，visited 集合主要用來避免什麼？
+  options: ["同一頂點在同一路徑中重複出現", "邊權重變成負數", "priority queue 為空", "圖被轉成 tree"]
+  answer: 0
+  explanation: |
+    Hamiltonian path 必須每個頂點至多使用一次；visited 可確保 partial path 不重複頂點。
+- id: algo-backtrack-012
+  difficulty: intermediate
+  tags: [backtracking, combination-sum]
+  question: |
+    在 combination backtracking 中，遞迴傳入 start index 的常見目的為何？
+  options: ["避免同一組合因順序不同被重複產生", "強制所有數字都使用一次", "讓陣列變成 circular buffer", "保存 heap 的 root"]
+  answer: 0
+  explanation: |
+    只允許從 start 之後選元素，可讓組合以固定順序生成，避免 `{a,b}` 與 `{b,a}` 重複。
+- id: algo-backtrack-013
+  difficulty: master
+  tags: [backtracking, complexity]
+  question: |
+    為什麼 backtracking 即使有 pruning，最壞情況仍常是 exponential？
+  options: ["有些輸入可能讓剪枝幾乎無效，仍需探索大量組合", "pruning 會增加答案數量", "遞迴函式不能回傳", "所有 backtracking 都會排序 n! 次"]
+  answer: 0
+  explanation: |
+    剪枝改善實務表現但不一定改變最壞情況；若約束很弱，搜尋樹大小仍可能隨 n 指數成長。
+- id: algo-backtrack-014
+  difficulty: advanced
+  tags: [backtracking, recursion]
+  question: |
+    Backtracking 中 partial solution 的可行性檢查若能在每層 Theta(1) 完成，對效能有何幫助？
+  options: ["降低每個搜尋節點的額外成本", "保證節點數變成 Theta(log n)", "讓問題一定變成 polynomial", "完全不需要遞迴終止條件"]
+  answer: 0
+  explanation: |
+    搜尋節點可能很多，因此每個節點的檢查成本很重要；用 bitset 或計數器可降低常數與階數。
+- id: algo-backtrack-015
+  difficulty: intermediate
+  tags: [search, iterative-deepening]
+  question: |
+    Iterative deepening DFS 的主要優點是？
+  options: ["保有 DFS 低記憶體並能逐層找到淺層解", "永遠比 BFS 少展開所有節點", "不需要重複搜尋任何節點", "只能用於 weighted graph"]
+  answer: 0
+  explanation: |
+    IDDFS 逐步增加深度限制，可像 BFS 一樣先找到淺層解，同時使用 DFS 的 O(depth) 記憶體；代價是重複展開上層節點。
+- id: algo-backtrack-016
+  difficulty: advanced
+  tags: [search, a-star]
+  question: |
+    A* search 若 heuristic 是 admissible，代表什麼？
+  options: ["從不高估到目標的真實剩餘成本", "永遠等於 0 以外的負數", "一定高估剩餘成本", "只依節點名稱排序"]
+  answer: 0
+  explanation: |
+    Admissible heuristic 不高估真實成本，使 A* 在適當條件下能保證找到最短路。
+- id: algo-backtrack-017
+  difficulty: master
+  tags: [search, a-star, consistency]
+  question: |
+    A* 的 consistent heuristic 額外保證通常帶來什麼好處？
+  options: ["節點一旦以最小 f 值取出，其最佳距離已確定", "所有邊都可為負且任意", "open set 永遠只有一個節點", "不需要保存 g score"]
+  answer: 0
+  explanation: |
+    Consistency 類似三角不等式，讓 f 值沿路不下降，因此取出的節點不需因更短路徑反覆重新打開。
+- id: algo-backtrack-018
+  difficulty: intermediate
+  tags: [backtracking, duplicate-handling]
+  question: |
+    在含重複元素的 permutation 生成中，常先排序並跳過同層重複選擇，目的是？
+  options: ["避免產生重複排列", "讓排列數增加", "保證所有元素互異", "讓每次遞迴都選同一個元素"]
+  answer: 0
+  explanation: |
+    排序使相同值相鄰；同一層若已用過某值，再選另一個相同值會產生重複分支，可跳過。
+- id: algo-backtrack-019
+  difficulty: advanced
+  tags: [backtracking, bitmask]
+  question: |
+    N-Queens 用 bitmask 記錄欄與對角線佔用狀態，主要改善什麼？
+  options: ["衝突檢查與狀態更新的效率", "解的數量本身", "棋盤大小限制", "皇后的攻擊規則"]
+  answer: 0
+  explanation: |
+    Bitmask 可用位元運算快速查詢與更新可放位置，避免每次掃描整個棋盤。
+- id: algo-backtrack-020
+  difficulty: master
+  tags: [backtracking, correctness]
+  question: |
+    Backtracking 正確性通常需要同時說明哪兩件事？
+  options: ["不漏掉任何合法解，且不輸出非法解", "只要跑得快即可", "所有分支都必須排序", "答案必須唯一"]
+  answer: 0
+  explanation: |
+    完備性確保所有可能合法選擇都被涵蓋；soundness 確保輸出的解通過所有約束。

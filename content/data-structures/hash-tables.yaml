@@ -1,0 +1,180 @@
+- id: ds-hash-001
+  difficulty: basic
+  tags: [hash-table, dictionary]
+  question: |
+    Hash table 最主要想提供哪一類操作的快速平均效能？
+  options: ["依 key 查找、插入、刪除", "依 value 自動排序", "找出所有 key 的中位數", "支援區間最小值查詢"]
+  answer: 0
+  explanation: |
+    Hash table 透過 hash function 將 key 映射到 bucket，目標是在平均或 expected 情況快速完成字典操作。
+- id: ds-hash-002
+  difficulty: basic
+  tags: [hash-table, collision]
+  question: |
+    Hash collision 指的是什麼？
+  options: ["兩個不同 key 映射到同一個 bucket", "同一個 key 被插入兩次一定產生錯誤", "hash table 的容量是質數", "bucket 中完全沒有元素"]
+  answer: 0
+  explanation: |
+    Collision 是不同 key 經 hash function 後落在同一位置，必須由 chaining 或 open addressing 等方法處理。
+- id: ds-hash-003
+  difficulty: basic
+  tags: [hash-table, load-factor]
+  question: |
+    Hash table 的 load factor 通常定義為？
+  options: ["元素數量除以 bucket 數量", "bucket 數量除以 key 長度", "最大 key 減最小 key", "collision 次數除以查詢次數"]
+  answer: 0
+  explanation: |
+    Load factor alpha = n/m，其中 n 是已存元素數，m 是表格或 bucket 數；它影響碰撞機率與效能。
+- id: ds-hash-004
+  difficulty: intermediate
+  tags: [hash-table, chaining]
+  question: |
+    Separate chaining 處理 collision 的方式是？
+  options: ["每個 bucket 維護一串落在該位置的元素", "發生 collision 就刪除舊元素", "把 table 立刻改成 binary heap", "要求 hash function 永遠不會 collision"]
+  answer: 0
+  explanation: |
+    Chaining 允許多個 key 存在同一 bucket，通常用 linked list、dynamic array 或小型 tree 保存。
+- id: ds-hash-005
+  difficulty: intermediate
+  tags: [hash-table, open-addressing]
+  question: |
+    Open addressing 與 separate chaining 的關鍵差異是什麼？
+  options: ["Open addressing 將元素直接放在 table 內並用 probe 找空位", "Open addressing 每個 bucket 都保存 linked list", "Open addressing 不需要 hash function", "Open addressing 只支援刪除不支援查詢"]
+  answer: 0
+  explanation: |
+    Open addressing 不在 bucket 外掛鏈，而是在表格內依 probing sequence 尋找下一個可用槽位。
+- id: ds-hash-006
+  difficulty: intermediate
+  tags: [hash-table, linear-probing]
+  question: |
+    Linear probing 最容易產生的典型問題是？
+  options: ["Primary clustering", "遞迴呼叫爆 stack", "B-tree 分裂", "圖不連通"]
+  answer: 0
+  explanation: |
+    Linear probing 連續檢查下一格，已形成的連續區塊會吸引更多 collision，造成 primary clustering。
+- id: ds-hash-007
+  difficulty: intermediate
+  tags: [hash-table, deletion]
+  question: |
+    Open addressing 中刪除元素時常使用 tombstone 的原因是？
+  options: ["避免中斷後續 key 的 probing 查找路徑", "讓所有 bucket 自動縮小", "保證 hash value 唯一", "把刪除操作改成排序操作"]
+  answer: 0
+  explanation: |
+    若直接清空槽位，查找可能誤以為 probing sequence 已結束。Tombstone 表示曾有元素，可讓搜尋繼續。
+- id: ds-hash-008
+  difficulty: advanced
+  tags: [hash-table, amortized, resizing]
+  question: |
+    Hash table 在 load factor 過高時擴容並 rehash，插入操作的標準 amortized 時間為何？
+  options: ["Theta(1) expected/amortized", "Theta(log n) worst-case", "Theta(n) per operation always", "Theta(n log n) amortized"]
+  answer: 0
+  explanation: |
+    單次 rehash 需 Theta(n)，但只在容量成長到門檻時發生；搭配良好 hash，長序列插入的 expected amortized 成本為 Theta(1)。
+- id: ds-hash-009
+  difficulty: advanced
+  tags: [hash-table, worst-case]
+  question: |
+    若所有 n 個 key 都被惡意映射到同一 bucket，separate chaining 查找不存在 key 的 worst-case tight bound 是？
+  options: ["Theta(1)", "Theta(log n)", "Theta(n)", "Theta(n^2)"]
+  answer: 2
+  explanation: |
+    不存在的 key 需要掃完整條長度 n 的 chain 才能確認，因此 worst-case 是 Theta(n)。
+- id: ds-hash-010
+  difficulty: intermediate
+  tags: [hash-table, hashing]
+  question: |
+    良好 hash function 在一般字典操作中的主要目標是？
+  options: ["讓 key 盡量均勻分布到 buckets", "讓所有 key 變成連續整數", "讓查詢結果依 value 排序", "讓 table 永遠不需要記憶體"]
+  answer: 0
+  explanation: |
+    均勻分布可降低 collision 與 cluster，使平均查找與插入更接近常數時間。
+- id: ds-hash-011
+  difficulty: advanced
+  tags: [hash-table, double-hashing]
+  question: |
+    Double hashing 的第二個 hash function 通常用來決定什麼？
+  options: ["probing step size", "bucket 中元素的排序鍵", "table 的資料型別", "答案是否正確"]
+  answer: 0
+  explanation: |
+    Double hashing 使用第一個 hash 決定起點，第二個 hash 決定探測步長，以減少 clustering。
+- id: ds-hash-012
+  difficulty: advanced
+  tags: [hash-table, open-addressing]
+  question: |
+    Open addressing 的 load factor 為什麼必須小於 1？
+  options: ["所有元素都存在固定表格槽位內，滿表時無空位可 probe", "因為 hash value 不能是 0", "因為 linked list 長度不能超過 1", "因為 key 必須小於 bucket index"]
+  answer: 0
+  explanation: |
+    Open addressing 需要在表格內找空槽；當 load factor 到 1 時，插入新 key 無可用槽位。
+- id: ds-hash-013
+  difficulty: master
+  tags: [hash-table, universal-hashing]
+  question: |
+    Universal hashing 的核心好處是什麼？
+  options: ["隨機選擇 hash function，使任兩 key collision 機率受控", "保證每次查找 worst-case 都是 Theta(0)", "完全不需要處理 collision", "讓所有 key 依插入時間排序"]
+  answer: 0
+  explanation: |
+    Universal hashing 從函式族中隨機選一個 hash function，可降低固定惡意輸入針對單一 hash function 攻擊的風險。
+- id: ds-hash-014
+  difficulty: intermediate
+  tags: [hash-table, equality]
+  question: |
+    在 hash table 中，除了計算 hash value，通常還必須能做什麼？
+  options: ["比較 key 是否相等", "求 key 的平方根", "把 value 轉成 machine code", "對所有 value 做 DFS"]
+  answer: 0
+  explanation: |
+    Collision 會讓不同 key 位於同一候選位置，因此仍需 equality check 確認找到的 key 是否真的是目標。
+- id: ds-hash-015
+  difficulty: advanced
+  tags: [hash-table, quadratic-probing]
+  question: |
+    Quadratic probing 相較於 linear probing，主要改善但不完全消除哪個問題？
+  options: ["clustering", "遞迴深度", "指標懸空", "tree rotation 次數"]
+  answer: 0
+  explanation: |
+    Quadratic probing 用平方偏移避免連續線性區塊的 primary clustering，但仍可能有 secondary clustering。
+- id: ds-hash-016
+  difficulty: intermediate
+  tags: [hash-table, set]
+  question: |
+    用 hash table 實作 set 時，value 欄位常可如何處理？
+  options: ["只保存 key 或保存固定 dummy value", "必須保存 key 的所有排列", "必須保存一棵 AVL tree", "完全不能刪除元素"]
+  answer: 0
+  explanation: |
+    Set 只關心成員是否存在，不需要額外 value；實作上可只存 key 或放一個固定占位值。
+- id: ds-hash-017
+  difficulty: master
+  tags: [hash-table, expected-time]
+  question: |
+    在 simple uniform hashing 假設下，separate chaining 的成功查找 expected time 通常與哪個量最直接相關？
+  options: ["load factor alpha", "CPU clock 頻率的平方", "key 的原始輸入順序必然唯一", "stack frame 數量"]
+  answer: 0
+  explanation: |
+    Chaining 的平均鏈長約為 alpha，因此成功或失敗查找的 expected cost 可用 alpha 估計。
+- id: ds-hash-018
+  difficulty: advanced
+  tags: [hash-table, security]
+  question: |
+    Web server 接收大量使用者 key 時，為何有些語言會對 hash table 採用 randomized hashing？
+  options: ["降低攻擊者構造大量 collision 造成退化的機率", "讓所有回應內容加密", "避免任何記憶體配置", "讓 CPU 不需要比較字串"]
+  answer: 0
+  explanation: |
+    若 hash function 可預測，攻擊者可能送出大量 collision key 讓操作退化。Randomization 可降低這種 hash flooding 風險。
+- id: ds-hash-019
+  difficulty: intermediate
+  tags: [hash-table, rehashing]
+  question: |
+    Hash table 擴容時為什麼通常必須 rehash 既有元素？
+  options: ["bucket 數改變會讓 index = hash(key) mod m 的結果改變", "key 的型別一定改變", "value 必須被排序", "所有 collision 都會自動消失且不需搬移"]
+  answer: 0
+  explanation: |
+    表格大小 m 是映射到 bucket index 的一部分；容量改變後，同一 hash value 對新 m 取模可能落在不同位置。
+- id: ds-hash-020
+  difficulty: master
+  tags: [hash-table, design]
+  question: |
+    若題目要求「依 key 查找 expected Theta(1)，且依 key 有序列出所有元素 Theta(n)」，單一 hash table 最缺少哪個能力？
+  options: ["維持 key 的全域有序順序", "用 key 找到 value", "處理 collision", "保存元素數量"]
+  answer: 0
+  explanation: |
+    Hash table 擅長查找，但不自然維持排序順序。若要有序輸出，通常需額外 balanced tree、排序步驟或有序索引。

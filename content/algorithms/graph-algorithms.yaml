@@ -1,0 +1,180 @@
+- id: algo-graph-001
+  difficulty: basic
+  tags: [graph, bfs]
+  question: |
+    在 unweighted graph 中，BFS 從起點到各頂點得到的距離代表什麼？
+  options: ["最少邊數距離", "最大權重路徑", "DFS 完成時間", "MST 的總權重"]
+  answer: 0
+  explanation: |
+    BFS 逐層擴張，每層多一條邊，因此第一次到達頂點時得到的是最少邊數。
+- id: algo-graph-002
+  difficulty: basic
+  tags: [graph, dfs]
+  question: |
+    DFS 最自然使用哪種控制流程或資料結構？
+  options: ["遞迴呼叫或 stack", "priority queue only", "hash table rehash", "B+ tree leaf scan"]
+  answer: 0
+  explanation: |
+    DFS 會沿一條路徑深入再回退，這種後進先出的未完成狀態可用 call stack 或顯式 stack 表達。
+- id: algo-graph-003
+  difficulty: intermediate
+  tags: [graph, adjacency-list, complexity]
+  question: |
+    使用 adjacency list 對 V 個頂點、E 條邊的圖做 BFS，tight time bound 是？
+  options: ["Theta(V + E)", "Theta(VE)", "Theta(V^2E)", "Theta(log V)"]
+  answer: 0
+  explanation: |
+    BFS 每個頂點入隊出隊常數次，且每條邊在 adjacency list 中被檢查有限次，因此為 Theta(V + E)。
+- id: algo-graph-004
+  difficulty: intermediate
+  tags: [graph, topological-sort]
+  question: |
+    Topological sort 適用於哪類圖？
+  options: ["Directed acyclic graph (DAG)", "任何有向圖包含 cycle", "只有 complete graph", "只有無權重 tree"]
+  answer: 0
+  explanation: |
+    Topological order 要求每條有向邊 u -> v 中 u 排在 v 前；若有 directed cycle，會產生互相矛盾的順序。
+- id: algo-graph-005
+  difficulty: intermediate
+  tags: [graph, cycle-detection]
+  question: |
+    Kahn's algorithm 做 topological sort 時，若最後輸出的頂點數少於 V，表示什麼？
+  options: ["圖中存在 directed cycle", "圖一定是 tree", "所有邊權重為負", "圖沒有任何邊"]
+  answer: 0
+  explanation: |
+    若有 cycle，cycle 內頂點 indegree 無法全部降為 0，因此無法被輸出完。
+- id: algo-graph-006
+  difficulty: advanced
+  tags: [graph, scc]
+  question: |
+    Strongly connected component (SCC) 的定義是？
+  options: ["任兩頂點彼此都有有向路徑可達的最大頂點集合", "任兩頂點之間都有直接邊", "所有入度為 0 的頂點集合", "權重總和最小的邊集合"]
+  answer: 0
+  explanation: |
+    SCC 要求集合內任兩點 u、v 皆有 u 到 v 與 v 到 u 的 directed path，且集合是極大的。
+- id: algo-graph-007
+  difficulty: advanced
+  tags: [graph, kosaraju]
+  question: |
+    Kosaraju 演算法為何需要在 transpose graph 上做第二次 DFS？
+  options: ["利用第一輪完成時間順序分離 SCC", "把無向圖轉成 MST", "計算每條邊的 hash", "刪除所有入度為 0 的點"]
+  answer: 0
+  explanation: |
+    第一輪 DFS 的完成時間提供 SCC condensation DAG 的處理順序；在反向圖依此順序 DFS 可一次收集一個 SCC。
+- id: algo-graph-008
+  difficulty: intermediate
+  tags: [graph, dijkstra]
+  question: |
+    Dijkstra 演算法不適合含負權邊圖的原因是？
+  options: ["已確定的最短距離可能之後被負權邊改善", "priority queue 不能存整數", "BFS 會自動取代所有步驟", "負權邊會讓圖沒有頂點"]
+  answer: 0
+  explanation: |
+    Dijkstra 的貪婪確定步驟依賴非負權重；負權邊可能讓已取出的頂點距離再下降。
+- id: algo-graph-009
+  difficulty: advanced
+  tags: [graph, bellman-ford]
+  question: |
+    Bellman-Ford 演算法除了最短路外，還可偵測什麼？
+  options: ["從起點可達的負權 cycle", "所有 articulation points", "所有 B-tree split", "hash collision 數量"]
+  answer: 0
+  explanation: |
+    進行 V-1 輪 relaxation 後，若仍有邊可改善距離，表示存在可達負權 cycle。
+- id: algo-graph-010
+  difficulty: advanced
+  tags: [graph, floyd-warshall, complexity]
+  question: |
+    Floyd-Warshall 求 all-pairs shortest paths 的標準 tight time bound 是？
+  options: ["Theta(V^3)", "Theta(V + E)", "Theta(E log V)", "Theta(log V)"]
+  answer: 0
+  explanation: |
+    Floyd-Warshall 有三層迴圈，依序允許每個頂點作為中繼點，因此時間為 Theta(V^3)。
+- id: algo-graph-011
+  difficulty: intermediate
+  tags: [graph, mst]
+  question: |
+    Minimum spanning tree 必須滿足哪個基本條件？
+  options: ["連接所有頂點且沒有 cycle", "包含圖中所有邊", "只包含權重最大的邊", "只適用於有向圖"]
+  answer: 0
+  explanation: |
+    Spanning tree 是連通且無 cycle 的邊集合，MST 是其中總權重最小者。
+- id: algo-graph-012
+  difficulty: advanced
+  tags: [graph, union-find]
+  question: |
+    Kruskal 演算法中 union-find 的主要用途是？
+  options: ["判斷加入一條邊是否會形成 cycle", "計算最短路距離", "保存 DFS finish time", "執行 matrix multiplication"]
+  answer: 0
+  explanation: |
+    若一條邊的兩端已在同一 connected component，加入它會形成 cycle；union-find 可快速判斷與合併 component。
+- id: algo-graph-013
+  difficulty: intermediate
+  tags: [graph, bipartite]
+  question: |
+    無向圖是 bipartite 的等價條件之一是？
+  options: ["不存在 odd cycle", "每個頂點度數都相同", "圖必須是 complete graph", "所有邊權重都是 1"]
+  answer: 0
+  explanation: |
+    Bipartite graph 可二著色；odd cycle 會迫使某個頂點同時需要兩種顏色，因此不可能二分。
+- id: algo-graph-014
+  difficulty: advanced
+  tags: [graph, bridges]
+  question: |
+    無向圖中的 bridge 是什麼？
+  options: ["移除後會增加 connected components 數量的邊", "權重為 0 的邊", "任何 self-loop", "DFS 中第一條被走訪的邊"]
+  answer: 0
+  explanation: |
+    Bridge 是連通性的關鍵邊；移除它會讓原本相連的部分斷開。
+- id: algo-graph-015
+  difficulty: master
+  tags: [graph, articulation-point]
+  question: |
+    DFS low-link 演算法判斷 articulation point 時，非 root 頂點 u 成為割點的典型條件是？
+  options: ["存在 child v 使 low[v] >= disc[u]", "u 的度數一定為 1", "u 沒有任何 DFS child", "u 的所有邊都是 self-loop"]
+  answer: 0
+  explanation: |
+    若某 child 子樹無法透過 back edge 回到 u 的祖先，移除 u 會讓該子樹與上方分離，因此 u 是割點。
+- id: algo-graph-016
+  difficulty: advanced
+  tags: [graph, max-flow]
+  question: |
+    Max-flow 中 residual graph 的主要用途是？
+  options: ["表示目前還能增加或取消流量的可行方向", "保存拓樸排序結果", "把所有邊變成無向邊", "記錄 heap 的父子關係"]
+  answer: 0
+  explanation: |
+    Residual graph 包含剩餘容量與反向邊，使演算法能沿 augmenting path 增加流量或調整既有流。
+- id: algo-graph-017
+  difficulty: master
+  tags: [graph, max-flow, min-cut]
+  question: |
+    Max-flow min-cut theorem 說明什麼？
+  options: ["最大流值等於最小 s-t cut 容量", "最短路一定等於 MST 權重", "任意 DAG 都有唯一拓樸序", "BFS 一定比 DFS 慢"]
+  answer: 0
+  explanation: |
+    定理連結流量與割容量，當不存在 augmenting path 時，可由 residual graph 找到容量等於目前流值的 cut。
+- id: algo-graph-018
+  difficulty: intermediate
+  tags: [graph, representation]
+  question: |
+    Dense graph 上若常需 O(1) 判斷邊 (u, v) 是否存在，哪種表示法較直接？
+  options: ["Adjacency matrix", "只用一個 stack", "Trie", "Fenwick tree"]
+  answer: 0
+  explanation: |
+    Adjacency matrix 可直接用 matrix[u][v] 查邊是否存在，成本 Theta(1)，但空間為 Theta(V^2)。
+- id: algo-graph-019
+  difficulty: advanced
+  tags: [graph, dag-shortest-path]
+  question: |
+    DAG 上含負權邊但無 cycle 的 single-source shortest paths 可如何有效求解？
+  options: ["依 topological order 做 relaxation", "直接使用未修改 Dijkstra 一定正確", "把所有負邊刪掉", "只做一次 random walk"]
+  answer: 0
+  explanation: |
+    DAG 沒有 cycle，依拓樸序處理可確保每個頂點在被放鬆時其前驅已處理完，允許負權邊。
+- id: algo-graph-020
+  difficulty: master
+  tags: [graph, eulerian]
+  question: |
+    有向圖存在 Eulerian circuit 的必要條件之一是？
+  options: ["每個頂點 indegree 等於 outdegree，且非零度頂點在同一強連通範圍內", "所有邊權重皆不同", "圖必須沒有任何 cycle", "頂點數必須是質數"]
+  answer: 0
+  explanation: |
+    Eulerian circuit 每進入一個頂點也必須能離開，因此 indegree=outdegree；並且相關頂點需連通到可完成一個閉合巡迴。

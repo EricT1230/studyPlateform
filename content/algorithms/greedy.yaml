@@ -1,0 +1,180 @@
+- id: algo-greedy-001
+  difficulty: basic
+  tags: [greedy, concept]
+  question: |
+    Greedy algorithm 的核心策略是？
+  options: ["每一步做當下看起來最好的局部選擇", "先枚舉所有解再排序", "永遠使用遞迴回溯", "把問題轉成矩陣乘法"]
+  answer: 0
+  explanation: |
+    Greedy 每步根據局部準則選擇，若問題具有 greedy-choice property 與 optimal substructure，才可保證全域最佳。
+- id: algo-greedy-002
+  difficulty: intermediate
+  tags: [greedy, interval-scheduling]
+  question: |
+    在 interval scheduling 中，要選最多互不重疊區間，正確的經典 greedy 準則是？
+  options: ["每次選結束時間最早的相容區間", "每次選開始時間最晚的區間但不檢查重疊", "每次選長度最長的區間", "每次選名稱字典序最小的區間"]
+  answer: 0
+  explanation: |
+    選最早結束的相容區間會留下最大剩餘空間，可用交換論證證明不會比最佳解差。
+- id: algo-greedy-003
+  difficulty: advanced
+  tags: [greedy, proof]
+  question: |
+    證明 greedy 演算法正確時，exchange argument 通常要展示什麼？
+  options: ["任一最佳解可轉換成包含 greedy 選擇的最佳解", "程式沒有語法錯誤", "所有輸入都會產生 collision", "遞迴深度一定等於 n"]
+  answer: 0
+  explanation: |
+    交換論證會把某個最佳解的第一個不同選擇換成 greedy 選擇，並證明可行性與目標值不變差。
+- id: algo-greedy-004
+  difficulty: intermediate
+  tags: [greedy, fractional-knapsack]
+  question: |
+    Fractional knapsack 的最佳 greedy 準則是？
+  options: ["依 value/weight ratio 由高到低取物品", "依重量由大到小取", "依輸入順序取", "依物品編號的 hash 值取"]
+  answer: 0
+  explanation: |
+    可切分物品時，每單位重量價值最高者最值得先放入。這與 0/1 knapsack 不同，後者不能直接用此 greedy 保證最佳。
+- id: algo-greedy-005
+  difficulty: intermediate
+  tags: [greedy, huffman]
+  question: |
+    Huffman coding 每一步合併哪兩個節點？
+  options: ["頻率最低的兩個節點", "頻率最高的兩個節點", "字典序最前的兩個字元", "深度最大的兩個內部節點"]
+  answer: 0
+  explanation: |
+    Huffman 的 greedy 選擇是讓最低頻的兩個符號成為最深的 sibling，以最小化加權路徑長。
+- id: algo-greedy-006
+  difficulty: intermediate
+  tags: [greedy, mst, kruskal]
+  question: |
+    Kruskal 演算法在建立 minimum spanning tree 時，每一步做什麼？
+  options: ["依權重由小到大選不形成 cycle 的邊", "從任意點做 DFS 並選第一條邊", "每次選權重最大的邊", "只選連到 root 的邊"]
+  answer: 0
+  explanation: |
+    Kruskal 根據 cut property，安全地加入目前最小且不造成 cycle 的邊，通常用 union-find 檢查 cycle。
+- id: algo-greedy-007
+  difficulty: intermediate
+  tags: [greedy, mst, prim]
+  question: |
+    Prim 演算法的 greedy 選擇是？
+  options: ["從目前樹跨到外部頂點的最小權重邊", "圖中任意最大權重邊", "尚未拜訪頂點中編號最大的點", "任意會形成 cycle 的邊"]
+  answer: 0
+  explanation: |
+    Prim 維持一棵成長中的 tree，每次用跨越目前 cut 的最小邊擴張，這是 MST 的 safe edge。
+- id: algo-greedy-008
+  difficulty: advanced
+  tags: [greedy, dijkstra]
+  question: |
+    Dijkstra 演算法的 greedy 正確性依賴哪個重要條件？
+  options: ["所有邊權重非負", "圖必須是 complete graph", "所有邊權重都相同且為負", "頂點必須已拓樸排序"]
+  answer: 0
+  explanation: |
+    非負邊保證目前 tentative distance 最小的頂點不會再被後續路徑改善，因此可安全確定。
+- id: algo-greedy-009
+  difficulty: advanced
+  tags: [greedy, coin-change]
+  question: |
+    對任意幣值系統，反覆取不超過剩餘金額的最大面額是否一定得到最少硬幣數？
+  options: ["不一定，需幣值系統有額外性質", "一定，這是所有整數的定理", "只要金額是偶數就一定", "只要幣值有 1 就一定"]
+  answer: 0
+  explanation: |
+    Greedy coin change 只對某些 canonical coin systems 正確；任意幣值可能需要 dynamic programming 才能保證最少硬幣。
+- id: algo-greedy-010
+  difficulty: advanced
+  tags: [greedy, scheduling]
+  question: |
+    單機排程中，若目標是最小化無權重工作的平均完成時間，常見正確 greedy 規則是？
+  options: ["Shortest processing time first", "Longest processing time first", "依工作名稱排序", "隨機順序一定最佳"]
+  answer: 0
+  explanation: |
+    短工作先做可降低後續等待總量；交換相鄰的長短工作可證明短者在前不會使目標變差。
+- id: algo-greedy-011
+  difficulty: master
+  tags: [greedy, matroid]
+  question: |
+    Greedy 在 matroid 上能保證最佳化的典型原因是？
+  options: ["independence system 具有 exchange property", "所有問題都可被排序一次解完", "matroid 不允許空集合", "每個元素的權重必須相同"]
+  answer: 0
+  explanation: |
+    Matroid 的交換性質讓 greedy 選擇可逐步擴充成最大權重獨立集合，這是一般 greedy 正確性的抽象條件。
+- id: algo-greedy-012
+  difficulty: intermediate
+  tags: [greedy, interval-partitioning]
+  question: |
+    Interval partitioning 要用最少教室安排所有區間，常見 greedy 作法使用哪個資料結構追蹤教室釋放時間？
+  options: ["Min-priority queue", "Stack only", "Trie", "Adjacency matrix"]
+  answer: 0
+  explanation: |
+    依開始時間處理課程，priority queue 保存各教室目前最早結束時間，可快速判斷是否能重用教室。
+- id: algo-greedy-013
+  difficulty: advanced
+  tags: [greedy, deadline-scheduling]
+  question: |
+    對有 deadline 與 profit、每個工作耗時 1 的排程問題，常見 greedy 會先依什麼排序？
+  options: ["profit 由高到低，盡量放到不超過 deadline 的最晚空槽", "deadline 由晚到早且忽略 profit", "工作名稱長度由短到長", "輸入順序反向"]
+  answer: 0
+  explanation: |
+    先考慮高 profit 工作，放在可行的最晚位置可保留較早空槽給 deadline 更緊的工作。
+- id: algo-greedy-014
+  difficulty: intermediate
+  tags: [greedy, set-cover]
+  question: |
+    一般 set cover 使用每次選覆蓋最多未覆蓋元素的 greedy，正確說法是？
+  options: ["通常是近似演算法，不保證永遠最優", "對所有輸入都精確最優", "無法產生可行解", "只適用於已排序陣列"]
+  answer: 0
+  explanation: |
+    Set cover 是 NP-hard；自然 greedy 有近似保證，但可能錯過全域最佳解。
+- id: algo-greedy-015
+  difficulty: advanced
+  tags: [greedy, complexity]
+  question: |
+    Kruskal 演算法若先排序 E 條邊，且 union-find 近似常數，整體標準 tight bound 通常寫為？
+  options: ["Theta(E log E)", "Theta(V)", "Theta(E^2)", "Theta(log V)"]
+  answer: 0
+  explanation: |
+    主要成本是排序 E 條邊，為 Theta(E log E)；union-find 操作通常較低階。
+- id: algo-greedy-016
+  difficulty: advanced
+  tags: [greedy, huffman, complexity]
+  question: |
+    Huffman coding 對 n 個符號使用 binary heap 時，標準 tight time bound 是？
+  options: ["Theta(n log n)", "Theta(n^2)", "Theta(log n)", "Theta(1)"]
+  answer: 0
+  explanation: |
+    建 heap 可 Theta(n)，接著做 n-1 次取出兩個最小與插入合併節點，每次 heap 操作 Theta(log n)。
+- id: algo-greedy-017
+  difficulty: master
+  tags: [greedy, cut-property]
+  question: |
+    MST 的 cut property 說明下列哪件事？
+  options: ["跨越任一 cut 的最小權重邊是某棵 MST 的安全邊", "任一 cycle 的最大邊必須在所有 MST 中", "所有最短路徑都形成 MST", "MST 只能在有向圖上定義"]
+  answer: 0
+  explanation: |
+    Cut property 是 Prim 與 Kruskal 正確性的基礎：對任一切割，跨 cut 的最小邊可安全加入某個 MST。
+- id: algo-greedy-018
+  difficulty: intermediate
+  tags: [greedy, activity-selection]
+  question: |
+    Activity selection 中，選「最短 duration」為 greedy 準則為何可能錯？
+  options: ["短活動可能卡在中間，阻擋兩側更多相容活動", "短活動一定沒有結束時間", "duration 越短權重一定越高", "所有短活動都互相重疊"]
+  answer: 0
+  explanation: |
+    最大化活動數量的關鍵是留下未來空間；最早結束有保證，最短 duration 沒有。
+- id: algo-greedy-019
+  difficulty: advanced
+  tags: [greedy, invariant]
+  question: |
+    Greedy 演算法實作時，維持 loop invariant 的主要用途是？
+  options: ["說明每一步選擇後仍可延伸到最佳解或可行解", "讓程式自動平行化", "讓所有變數變成 global", "避免使用任何資料結構"]
+  answer: 0
+  explanation: |
+    正確性證明常需指出每次迭代後 partial solution 仍滿足可行性，且沒有排除所有最佳延伸。
+- id: algo-greedy-020
+  difficulty: master
+  tags: [greedy, counterexample]
+  question: |
+    面對一個新問題，若想反駁某個 greedy 準則，最有效的方式通常是？
+  options: ["構造小型反例，使 greedy 結果劣於最佳解", "只說 greedy 看起來太簡單", "把程式改成遞迴即可", "假設所有輸入都已排序"]
+  answer: 0
+  explanation: |
+    一個具體反例足以推翻「對所有輸入皆最佳」的主張，也能指出局部選擇忽略了哪種全域互動。
