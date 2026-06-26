@@ -1,0 +1,260 @@
+- id: db-index-001
+  difficulty: basic
+  tags: [index, basics]
+  question: |
+    資料庫索引 (index) 的主要目的是？
+  options:
+    - "加速資料查找，避免每次都掃描整張表"
+    - "加密欄位內容"
+    - "減少資料表的欄位數"
+    - "保證資料一定不重複"
+  answer: 0
+  explanation: |
+    索引是額外的資料結構（常為 B+tree），讓資料庫能快速定位符合條件的列，避免全表掃描，大幅提升查詢效能。
+- id: db-index-002
+  difficulty: basic
+  tags: [index, tradeoff]
+  question: |
+    建立索引的主要「代價」是？
+  options:
+    - "佔用額外儲存空間，且每次 INSERT/UPDATE/DELETE 需同步維護索引，拖慢寫入"
+    - "讓查詢一定變慢"
+    - "使資料遺失"
+    - "完全沒有任何代價"
+  answer: 0
+  explanation: |
+    索引加速讀取，但需額外空間，且資料異動時得一併更新索引，增加寫入成本。因此索引應建在真正常用於查詢/連結/排序的欄位。
+- id: db-index-003
+  difficulty: basic
+  tags: [index, btree]
+  question: |
+    關聯式資料庫最常見的索引結構是？
+  options:
+    - "B-tree / B+tree"
+    - "連結串列"
+    - "堆疊"
+    - "雜湊表（在多數 RDBMS 為預設）"
+  answer: 0
+  explanation: |
+    多數 RDBMS 預設使用 B-tree/B+tree 索引，支援等值與範圍查詢且保持排序。雜湊索引擅長等值查詢但不支援範圍，較少作為預設。
+- id: db-index-004
+  difficulty: basic
+  tags: [index, primary-key]
+  question: |
+    在多數資料庫中，對主鍵會發生什麼？
+  options:
+    - "自動建立唯一索引（常為叢集索引）"
+    - "不會建立任何索引"
+    - "禁止查詢"
+    - "自動加密"
+  answer: 0
+  explanation: |
+    主鍵通常自動帶有唯一索引以強制唯一性並加速以主鍵的查找；在某些系統（如 InnoDB）主鍵即叢集索引，決定資料實體排列。
+- id: db-index-005
+  difficulty: basic
+  tags: [index, unique]
+  question: |
+    唯一索引 (unique index) 除了加速查詢，還提供？
+  options:
+    - "強制該欄（或欄組合）的值不可重複"
+    - "自動排序整張表的所有欄位"
+    - "壓縮資料"
+    - "加密索引鍵"
+  answer: 0
+  explanation: |
+    唯一索引同時是一種約束，確保索引鍵值唯一（依實作可能允許多個 NULL），常用於 email、帳號等需唯一的欄位。
+- id: db-index-006
+  difficulty: intermediate
+  tags: [index, clustered]
+  question: |
+    叢集索引 (clustered index) 與非叢集索引 (non-clustered) 的關鍵差別是？
+  options:
+    - "叢集索引決定資料列在磁碟上的「實體排列順序」，每表至多一個；非叢集索引是獨立結構，指向資料列，可有多個"
+    - "兩者完全相同"
+    - "非叢集索引決定實體順序"
+    - "叢集索引可以有很多個"
+  answer: 0
+  explanation: |
+    叢集索引讓資料「按索引鍵實體排序」儲存，故一表只能有一個；非叢集索引另存索引鍵與指標（指向實體列或叢集鍵），一表可建多個。
+- id: db-index-007
+  difficulty: intermediate
+  tags: [index, composite, leftmost]
+  question: |
+    複合索引 (a, b, c) 的「最左前綴 (leftmost prefix)」原則是指？
+  options:
+    - "查詢條件需包含最左欄位才能有效用到索引，如可用於 (a)、(a,b)、(a,b,c)，但通常無法只靠 (b) 或 (c)"
+    - "查詢可任意只用 c 欄位就走索引"
+    - "索引只對最右欄位有效"
+    - "三個欄位必須同時出現才有效"
+  answer: 0
+  explanation: |
+    B-tree 複合索引依欄位順序排序，須從最左欄連續使用才能利用，如 WHERE a=? 或 a=? AND b=? 有效；單獨 WHERE b=? 通常無法用此索引。
+- id: db-index-008
+  difficulty: intermediate
+  tags: [index, covering]
+  question: |
+    涵蓋索引 (covering index) 的好處是？
+  options:
+    - "索引本身已包含查詢所需的所有欄位，可只讀索引就回答查詢，免回主表取資料"
+    - "讓索引自動加密"
+    - "減少索引的數量"
+    - "保證資料唯一"
+  answer: 0
+  explanation: |
+    若查詢所需欄位都在索引中（含 SELECT 與 WHERE 用到的欄），資料庫可只掃索引完成查詢（index-only scan），省去回表 (lookup) 的 I/O。
+- id: db-index-009
+  difficulty: intermediate
+  tags: [index, function]
+  question: |
+    下列哪種寫法通常會「使索引失效」？
+  options:
+    - "在索引欄位上套用函數或運算，如 WHERE YEAR(created_at) = 2024"
+    - "WHERE indexed_col = 5"
+    - "WHERE indexed_col BETWEEN 1 AND 10"
+    - "以索引欄位做等值連結"
+  answer: 0
+  explanation: |
+    對索引欄位施加函數/運算後，其值不再對應索引中的排序鍵，優化器多半無法使用該索引。改寫成範圍條件（如 created_at >= '2024-01-01'）或建函數索引可解。
+- id: db-index-010
+  difficulty: intermediate
+  tags: [index, hash, btree]
+  question: |
+    雜湊索引 (hash index) 相較 B-tree 索引的限制是？
+  options:
+    - "擅長等值查詢 (=)，但無法支援範圍查詢 (<, >, BETWEEN) 與排序"
+    - "只支援範圍查詢"
+    - "完全無法做等值查詢"
+    - "永遠比 B-tree 慢"
+  answer: 0
+  explanation: |
+    雜湊索引以雜湊值定位，等值查找平均 O(1) 很快，但雜湊打散順序，無法支援範圍掃描或 ORDER BY；B-tree 則兩者皆可。
+- id: db-index-011
+  difficulty: intermediate
+  tags: [index, foreign-key]
+  question: |
+    為「外鍵欄位」建立索引的常見理由是？
+  options:
+    - "加速以外鍵做的 JOIN 與參照完整性檢查（如父列刪除時檢查子列）"
+    - "讓外鍵值可以重複"
+    - "取消外鍵約束"
+    - "加密外鍵"
+  answer: 0
+  explanation: |
+    外鍵常用於表間 JOIN 與級聯檢查。許多資料庫不會自動為外鍵建索引，手動建立可避免相關查詢與約束檢查時的全表掃描。
+- id: db-index-012
+  difficulty: intermediate
+  tags: [index, selectivity]
+  question: |
+    在「低選擇性 (low selectivity)」欄位（如布林 is_active）上建索引，通常？
+  options:
+    - "效益有限，因符合條件的列佔比過高，優化器可能仍選擇全表掃描"
+    - "一定大幅加速查詢"
+    - "能保證唯一性"
+    - "讓寫入變快"
+  answer: 0
+  explanation: |
+    選擇性低代表每個值對應大量列，走索引再逐筆回表可能比直接全表掃描更慢，優化器常因此放棄該索引。高選擇性欄位才適合建索引。
+- id: db-index-013
+  difficulty: advanced
+  tags: [index, bplus-tree]
+  question: |
+    B+tree 相對於 B-tree 作為資料庫索引的優勢是？
+  options:
+    - "所有資料指標都在葉節點且葉節點以串列相連，利於高效的「範圍掃描」與順序存取"
+    - "B+tree 高度一定比 B-tree 高"
+    - "B+tree 不支援範圍查詢"
+    - "B+tree 把資料存在內部節點"
+  answer: 0
+  explanation: |
+    B+tree 只在葉層存放鍵/指標，內部節點僅做導航，且葉節點互相連結。這讓範圍查詢可定位起點後沿葉串列順序掃描，非常適合資料庫。
+- id: db-index-014
+  difficulty: advanced
+  tags: [index, cardinality, optimizer]
+  question: |
+    優化器決定「是否使用某索引」時，最關鍵的統計資訊之一是？
+  options:
+    - "欄位的基數/選擇性 (cardinality/selectivity)：估計條件會命中多少列，以權衡走索引 vs 全表掃描"
+    - "資料表的建立日期"
+    - "欄位的名稱長度"
+    - "索引的字母順序"
+  answer: 0
+  explanation: |
+    優化器依統計（如直方圖、distinct 值數）估算謂詞命中列數。命中少→走索引划算；命中多→全表掃描可能更快。統計過期會導致選錯計畫。
+- id: db-index-015
+  difficulty: advanced
+  tags: [index, write-amplification]
+  question: |
+    在「寫入密集」的資料表上建立過多索引的後果是？
+  options:
+    - "每次寫入都要維護多個索引，造成寫入放大、降低吞吐並增加儲存與鎖競爭"
+    - "讓寫入自動變快"
+    - "完全沒有影響"
+    - "使索引自動消失"
+  answer: 0
+  explanation: |
+    索引越多，INSERT/UPDATE/DELETE 需同步更新越多索引結構，寫入成本與空間都上升。需依實際查詢取捨，移除未被使用的冗餘索引。
+- id: db-index-016
+  difficulty: advanced
+  tags: [index, partial]
+  question: |
+    部分索引 (partial / filtered index) 的用途是？
+  options:
+    - "只對「符合條件的子集」建索引（如 WHERE status = 'active'），縮小索引、降低維護成本"
+    - "對整張表的每一欄都建索引"
+    - "加密部分欄位"
+    - "只索引主鍵"
+  answer: 0
+  explanation: |
+    部分索引僅涵蓋常被查詢的子集（如只索引未刪除的列），讓索引更小、更新更省，特別適合大量列中只有少數常被查的情境。
+- id: db-index-017
+  difficulty: advanced
+  tags: [index, composite, order]
+  question: |
+    設計複合索引時，欄位「順序」的一般原則是？
+  options:
+    - "通常把等值條件、且選擇性高的欄位放前面；範圍條件欄位放後面，以利用最左前綴並縮小掃描範圍"
+    - "永遠按欄位名稱字母排序"
+    - "範圍欄位一定放最前面"
+    - "順序不影響效能"
+  answer: 0
+  explanation: |
+    把等值/高選擇性欄位置前能更快收斂；範圍條件欄位放後（因範圍之後的欄位無法再用於索引定位）。順序決定索引能服務哪些查詢模式。
+- id: db-index-018
+  difficulty: advanced
+  tags: [index, full-scan]
+  question: |
+    什麼情況下「全表掃描」反而可能優於使用索引？
+  options:
+    - "查詢需回傳表中很大比例的列時，逐筆走索引再回表的隨機 I/O 可能比循序全表掃描更慢"
+    - "查詢只回傳一列時"
+    - "永遠不會"
+    - "資料表為空時索引較快"
+  answer: 0
+  explanation: |
+    當命中列佔比高，索引帶來大量隨機 I/O（回表），其成本可能超過循序讀整表。此時優化器會選擇全表掃描，這通常是合理決策而非缺陷。
+- id: db-index-019
+  difficulty: master
+  tags: [index, bitmap]
+  question: |
+    點陣圖索引 (bitmap index) 最適合的情境是？
+  options:
+    - "低基數欄位（如性別、狀態）且讀多寫少的分析型查詢，能用位元運算快速組合多條件"
+    - "高基數、頻繁更新的 OLTP 欄位"
+    - "需要唯一性約束的主鍵"
+    - "全文檢索"
+  answer: 0
+  explanation: |
+    bitmap index 為每個相異值維護一個位元向量，低基數時很省空間，且多條件可用 AND/OR 位元運算快速合併，適合資料倉儲。但更新成本高、鎖粒度粗，不適合高並發寫入。
+- id: db-index-020
+  difficulty: master
+  tags: [index, index-only-scan]
+  question: |
+    要讓查詢達成「僅索引掃描 (index-only scan)」，必要條件是？
+  options:
+    - "查詢用到的所有欄位（SELECT 與 WHERE）都被該索引涵蓋，使資料庫無需回主表取列"
+    - "資料表必須沒有主鍵"
+    - "索引必須是雜湊索引"
+    - "查詢必須使用 SELECT *"
+  answer: 0
+  explanation: |
+    index-only scan 要求索引「涵蓋」查詢所需的全部欄位，才能只讀索引完成。SELECT * 通常會用到索引未含的欄位而被迫回表，故反而難以達成。

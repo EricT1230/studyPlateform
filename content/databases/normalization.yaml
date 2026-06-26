@@ -1,0 +1,260 @@
+- id: db-norm-001
+  difficulty: basic
+  tags: [normalization, basics]
+  question: |
+    資料庫正規化 (normalization) 的主要目的是？
+  options:
+    - "減少資料重複 (redundancy)，並消除新增/修改/刪除異常"
+    - "讓查詢一定變快"
+    - "加密資料"
+    - "增加資料表的欄位數"
+  answer: 0
+  explanation: |
+    正規化透過分解資料表、消除不當的函數相依，降低重複儲存，避免更新時資料不一致（更新/插入/刪除異常）。
+- id: db-norm-002
+  difficulty: basic
+  tags: [normalization, 1nf]
+  question: |
+    第一正規化 (1NF) 的核心要求是？
+  options:
+    - "每個欄位都是「原子值」(atomic)，不可有重複群組或多值欄位"
+    - "消除部分相依"
+    - "消除遞移相依"
+    - "每個表只能有一個欄位"
+  answer: 0
+  explanation: |
+    1NF 要求欄位值不可再分（原子性），且不允許在單一欄位塞入多值或重複群組（如一格存「A,B,C」）。
+- id: db-norm-003
+  difficulty: basic
+  tags: [normalization, functional-dependency]
+  question: |
+    函數相依 X → Y 的意義是？
+  options:
+    - "給定 X 的值，就能唯一決定 Y 的值"
+    - "X 與 Y 完全無關"
+    - "Y 的值可以決定 X"
+    - "X 與 Y 必須相等"
+  answer: 0
+  explanation: |
+    X → Y 表示 X「決定」Y：任兩列只要 X 相同，Y 也必相同。函數相依是正規化分析的基礎。
+- id: db-norm-004
+  difficulty: basic
+  tags: [normalization, anomalies]
+  question: |
+    資料重複可能造成的「更新異常 (update anomaly)」是指？
+  options:
+    - "同一份資訊重複存於多列，修改時若沒全部一起改，會導致資料不一致"
+    - "無法新增任何資料"
+    - "查詢速度變慢"
+    - "資料表被鎖定"
+  answer: 0
+  explanation: |
+    當同一事實重複出現在多列（如每筆訂單都存了客戶地址），更新地址時若漏改某些列，就會產生矛盾的不一致資料。
+- id: db-norm-005
+  difficulty: basic
+  tags: [normalization, keys]
+  question: |
+    候選鍵 (candidate key) 是指？
+  options:
+    - "能唯一識別每一列、且「最小」（移除任一欄就不再唯一）的屬性集合"
+    - "任何可以重複的欄位"
+    - "資料表的第一個欄位"
+    - "外鍵的別名"
+  answer: 0
+  explanation: |
+    候選鍵是「最小的超鍵」：足以唯一識別列，且不含多餘屬性。一個表可有多個候選鍵，從中選一個當主鍵。
+- id: db-norm-006
+  difficulty: intermediate
+  tags: [normalization, 2nf]
+  question: |
+    第二正規化 (2NF) 在 1NF 之上額外要求？
+  options:
+    - "消除「部分相依」：非主屬性不可只相依於複合候選鍵的一部分"
+    - "消除遞移相依"
+    - "讓每欄都是原子值"
+    - "去除所有外鍵"
+  answer: 0
+  explanation: |
+    2NF 要求每個非主屬性都完全函數相依於「整個」候選鍵，不能只相依於複合鍵的部分。只有在有複合候選鍵時 2NF 才有額外意義。
+- id: db-norm-007
+  difficulty: intermediate
+  tags: [normalization, 3nf]
+  question: |
+    第三正規化 (3NF) 在 2NF 之上額外要求？
+  options:
+    - "消除「遞移相依」：非主屬性不可透過另一個非主屬性間接相依於鍵"
+    - "讓每欄都是原子值"
+    - "消除部分相依"
+    - "允許任意多值欄位"
+  answer: 0
+  explanation: |
+    3NF 禁止非主屬性遞移相依於候選鍵（即 鍵→A→B 的 B 相依）。例：學號→系所→系辦電話，電話遞移相依於學號，應分出。
+- id: db-norm-008
+  difficulty: intermediate
+  tags: [normalization, superkey]
+  question: |
+    超鍵 (superkey) 與候選鍵 (candidate key) 的關係是？
+  options:
+    - "候選鍵是「最小的」超鍵；超鍵可包含多餘屬性仍能唯一識別"
+    - "兩者完全相同"
+    - "超鍵一定比候選鍵小"
+    - "超鍵不能唯一識別列"
+  answer: 0
+  explanation: |
+    超鍵是任何能唯一識別列的屬性集合（可含多餘欄位）；候選鍵是其中「最小」者。每個候選鍵都是超鍵，反之不然。
+- id: db-norm-009
+  difficulty: intermediate
+  tags: [normalization, prime-attribute]
+  question: |
+    「主屬性 (prime attribute)」的定義是？
+  options:
+    - "屬於「某個候選鍵」一部分的屬性"
+    - "資料表的第一個欄位"
+    - "永遠為 NULL 的欄位"
+    - "不屬於任何鍵的屬性"
+  answer: 0
+  explanation: |
+    主屬性是構成某候選鍵的屬性；不屬於任何候選鍵的則為非主屬性。2NF/3NF 的條件都圍繞「非主屬性對鍵的相依方式」來定義。
+- id: db-norm-010
+  difficulty: intermediate
+  tags: [normalization, bcnf]
+  question: |
+    BCNF (Boyce-Codd Normal Form) 的條件是？
+  options:
+    - "對每個非平凡函數相依 X → Y，X 都必須是超鍵"
+    - "允許非主屬性遞移相依"
+    - "只要求原子值"
+    - "與 3NF 完全相同且無更強要求"
+  answer: 0
+  explanation: |
+    BCNF 比 3NF 更嚴格：任何非平凡相依的左邊 (determinant) 都必須是超鍵。它消除了 3NF 仍可能殘留（當候選鍵重疊時）的某些異常。
+- id: db-norm-011
+  difficulty: intermediate
+  tags: [normalization, insert-anomaly]
+  question: |
+    「插入異常 (insertion anomaly)」的例子是？
+  options:
+    - "因把不同主題硬塞同一表，導致「想記錄某資訊卻被迫先有不相干的資料」才能插入"
+    - "插入後查詢變慢"
+    - "插入時自動去重"
+    - "無法刪除資料"
+  answer: 0
+  explanation: |
+    例如把「課程」與「選課學生」放同表，若一門新課還沒人選，就無法在缺學生資料下記錄課程資訊。分解後各自獨立即可避免。
+- id: db-norm-012
+  difficulty: intermediate
+  tags: [normalization, partial-dependency]
+  question: |
+    在以 (學號, 課號) 為複合主鍵的選課表中，「課名」只相依於「課號」。這違反哪個正規化？
+  options:
+    - "違反 2NF（部分相依：課名只依賴複合鍵的一部分）"
+    - "違反 1NF"
+    - "違反 BCNF 但符合 2NF"
+    - "完全沒有違反"
+  answer: 0
+  explanation: |
+    課名只相依於課號（複合鍵的一部分），屬部分相依，違反 2NF。應把 (課號, 課名) 分出成獨立的課程表。
+- id: db-norm-013
+  difficulty: advanced
+  tags: [normalization, 3nf-vs-bcnf]
+  question: |
+    3NF 與 BCNF 的關鍵差異是？
+  options:
+    - "BCNF 要求所有決定因素皆為超鍵；3NF 在「決定因素非超鍵但被決定者是主屬性」時仍可接受，故較寬鬆"
+    - "3NF 比 BCNF 嚴格"
+    - "兩者完全等價"
+    - "BCNF 允許遞移相依"
+  answer: 0
+  explanation: |
+    3NF 容許 X→A 中 X 非超鍵、只要 A 是主屬性；BCNF 不容許這種情況。當候選鍵彼此重疊時，表可能符合 3NF 卻不符 BCNF。
+- id: db-norm-014
+  difficulty: advanced
+  tags: [normalization, denormalization]
+  question: |
+    反正規化 (denormalization) 的動機與代價是？
+  options:
+    - "刻意引入重複以減少 JOIN、加快讀取；代價是更新需維護一致性、增加異常風險"
+    - "純粹為了符合更高正規化"
+    - "一定會讓寫入更快"
+    - "沒有任何缺點"
+  answer: 0
+  explanation: |
+    在讀多寫少、JOIN 成本高的場景，反正規化用冗餘換查詢效能；但需以應用邏輯或觸發器維持冗餘資料同步，否則重蹈更新異常。
+- id: db-norm-015
+  difficulty: advanced
+  tags: [normalization, lossless-join]
+  question: |
+    分解資料表時要求「無損連結 (lossless-join)」的意義是？
+  options:
+    - "把表分解後再 JOIN 回去，能「精確還原」原表，不多也不少（不產生假列）"
+    - "分解後資料一定變少"
+    - "JOIN 後會多出額外列"
+    - "分解一定無法還原"
+  answer: 0
+  explanation: |
+    無損分解確保子表自然連結後等於原關聯，不遺失也不憑空產生資料列。常見充分條件：兩子表的共同屬性是其中一方的鍵。
+- id: db-norm-016
+  difficulty: advanced
+  tags: [normalization, dependency-preservation]
+  question: |
+    「相依保持 (dependency preservation)」指的是？
+  options:
+    - "分解後，原本的函數相依都能在「各個子表內」單獨檢查，不必每次都 JOIN 才能驗證"
+    - "分解後函數相依全部消失"
+    - "保證查詢效能不變"
+    - "與正規化無關"
+  answer: 0
+  explanation: |
+    相依保持讓約束可在分解後的個別表上強制執行，無需重組整表來驗證。BCNF 分解有時無法同時保證無損且相依保持，這也是 3NF 仍被採用的原因之一。
+- id: db-norm-017
+  difficulty: advanced
+  tags: [normalization, transitive]
+  question: |
+    下列何者是「遞移相依」的例子（鍵為 emp_id）？
+  options:
+    - "emp_id → dept_id，dept_id → dept_name（dept_name 透過 dept_id 間接相依於 emp_id）"
+    - "emp_id → emp_name"
+    - "(emp_id, project) → hours"
+    - "emp_id → emp_id"
+  answer: 0
+  explanation: |
+    dept_name 並非直接由 emp_id 決定，而是經由非主屬性 dept_id 間接決定，屬遞移相依，違反 3NF，應拆出部門表。
+- id: db-norm-018
+  difficulty: advanced
+  tags: [normalization, 4nf, mvd]
+  question: |
+    第四正規化 (4NF) 處理的是哪種問題？
+  options:
+    - "多值相依 (multivalued dependency)：一個鍵對應到兩組互相獨立的多值屬性，造成笛卡兒式重複"
+    - "原子值問題"
+    - "部分相依"
+    - "外鍵約束"
+  answer: 0
+  explanation: |
+    4NF 消除非平凡的多值相依。例如某人同時有多個「技能」與多個「語言」且兩者獨立，硬放同表會產生技能×語言的重複組合，應分成兩表。
+- id: db-norm-019
+  difficulty: master
+  tags: [normalization, 3nf-not-bcnf]
+  question: |
+    一個關聯「符合 3NF 但不符合 BCNF」通常發生在什麼情況？
+  options:
+    - "存在「重疊的候選鍵」，且某個函數相依的決定因素是非超鍵的主屬性"
+    - "資料表沒有任何鍵"
+    - "所有欄位都是 NULL"
+    - "表只有一個欄位"
+  answer: 0
+  explanation: |
+    當有多個重疊候選鍵時，可能存在 X→Y 其中 X 非超鍵但 Y 是主屬性——這滿足 3NF 的寬鬆條件卻違反 BCNF。經典例子如某些「教師-科目-時段」排課關聯。
+- id: db-norm-020
+  difficulty: master
+  tags: [normalization, performance, tradeoff]
+  question: |
+    高度正規化 (如 BCNF) 對「查詢效能」的常見影響是？
+  options:
+    - "資料分散到更多表，複雜查詢需更多 JOIN，讀取可能變慢；故 OLAP/報表場景常適度反正規化"
+    - "一定讓所有查詢更快"
+    - "與效能完全無關"
+    - "會自動建立索引"
+  answer: 0
+  explanation: |
+    正規化降低冗餘與異常（利於寫入一致性），但把資料拆散使查詢需更多 JOIN。OLTP 偏正規化；分析型 OLAP/資料倉儲常用星狀綱要等反正規化設計換取讀取效能。

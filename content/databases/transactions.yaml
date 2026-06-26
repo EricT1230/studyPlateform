@@ -1,0 +1,260 @@
+- id: db-txn-001
+  difficulty: basic
+  tags: [transaction, basics]
+  question: |
+    資料庫「交易 (transaction)」的概念是？
+  options:
+    - "一組被視為「單一不可分割工作單元」的資料操作，全部成功或全部不生效"
+    - "單一的 SELECT 查詢"
+    - "資料表的備份"
+    - "使用者的登入動作"
+  answer: 0
+  explanation: |
+    交易把多個操作包成一個邏輯單元，確保它們作為整體被提交或撤銷，維持資料的正確性。
+- id: db-txn-002
+  difficulty: basic
+  tags: [transaction, acid]
+  question: |
+    ACID 四個性質指的是？
+  options:
+    - "原子性、一致性、隔離性、持久性 (Atomicity, Consistency, Isolation, Durability)"
+    - "可用性、快取、索引、查詢"
+    - "認證、授權、稽核、加密"
+    - "新增、查詢、更新、刪除"
+  answer: 0
+  explanation: |
+    ACID 是交易的可靠性保證：原子性、一致性、隔離性、持久性，共同確保交易正確且可信賴。
+- id: db-txn-003
+  difficulty: basic
+  tags: [transaction, atomicity]
+  question: |
+    原子性 (atomicity) 的意義是？
+  options:
+    - "交易中的所有操作「全部執行成功」或「全部不執行」，不存在中間狀態"
+    - "交易一定很快完成"
+    - "交易不能被其他交易看到"
+    - "資料永久保存"
+  answer: 0
+  explanation: |
+    原子性確保交易是「全有或全無」：若中途失敗，已做的部分會被回復 (rollback)，不留半完成的狀態。
+- id: db-txn-004
+  difficulty: basic
+  tags: [transaction, commit-rollback]
+  question: |
+    COMMIT 與 ROLLBACK 的差別是？
+  options:
+    - "COMMIT 永久套用交易變更；ROLLBACK 撤銷交易、回到交易開始前的狀態"
+    - "COMMIT 撤銷變更，ROLLBACK 套用變更"
+    - "兩者都儲存變更"
+    - "兩者都撤銷變更"
+  answer: 0
+  explanation: |
+    COMMIT 把交易內的所有變更確定下來、對外可見且持久；ROLLBACK 放棄這些變更，使資料回到交易前。
+- id: db-txn-005
+  difficulty: basic
+  tags: [transaction, durability]
+  question: |
+    持久性 (durability) 保證？
+  options:
+    - "一旦交易 COMMIT，其變更即使之後系統當機也不會遺失"
+    - "交易執行時不佔記憶體"
+    - "交易一定不會失敗"
+    - "資料永遠不重複"
+  answer: 0
+  explanation: |
+    持久性確保已提交的變更被永久保存（通常透過寫前日誌 WAL 等機制），系統崩潰後仍能在復原時重現。
+- id: db-txn-006
+  difficulty: intermediate
+  tags: [transaction, consistency]
+  question: |
+    交易的一致性 (consistency) 指的是？
+  options:
+    - "交易使資料庫從一個「滿足所有約束的有效狀態」轉換到「另一個有效狀態」"
+    - "所有交易同時執行"
+    - "資料一定不重複"
+    - "查詢結果永遠相同"
+  answer: 0
+  explanation: |
+    一致性要求交易遵守完整性約束（如外鍵、唯一、檢查條件），不會留下違反規則的狀態。它由原子性、隔離性與應用邏輯共同維持。
+- id: db-txn-007
+  difficulty: intermediate
+  tags: [transaction, isolation]
+  question: |
+    隔離性 (isolation) 的核心目標是？
+  options:
+    - "讓並行執行的交易彼此互不干擾，結果如同它們以某種順序逐一執行"
+    - "讓交易執行得更快"
+    - "把資料加密"
+    - "減少資料表數量"
+  answer: 0
+  explanation: |
+    隔離性控制並行交易間的可見性，理想上讓並行執行的效果等同於某種序列化執行，避免交易看到彼此的中間狀態而出錯。
+- id: db-txn-008
+  difficulty: intermediate
+  tags: [transaction, dirty-read]
+  question: |
+    「髒讀 (dirty read)」是指？
+  options:
+    - "一個交易讀到了另一交易「尚未提交」的變更，而該變更之後可能被回復"
+    - "讀到已刪除的資料表"
+    - "讀取速度過慢"
+    - "讀到加密的資料"
+  answer: 0
+  explanation: |
+    髒讀讀到未提交的暫時資料，若對方回復，讀到的就是從未真正存在的值。Read Uncommitted 隔離層級才會允許髒讀。
+- id: db-txn-009
+  difficulty: intermediate
+  tags: [transaction, non-repeatable-read]
+  question: |
+    「不可重複讀 (non-repeatable read)」是指？
+  options:
+    - "同一交易內兩次讀「同一列」得到不同值，因為其間有別的交易提交了修改"
+    - "查詢無法重複執行"
+    - "讀到未提交的資料"
+    - "查詢回傳重複的列"
+  answer: 0
+  explanation: |
+    不可重複讀指交易內重讀同一筆資料時值已被其他已提交交易改變。Repeatable Read 以上的隔離層級可避免。
+- id: db-txn-010
+  difficulty: intermediate
+  tags: [transaction, phantom-read]
+  question: |
+    「幻讀 (phantom read)」與不可重複讀的差別是？
+  options:
+    - "幻讀是「同一查詢條件」兩次執行回傳的「列集合」改變（多/少了列），因其他交易插入/刪除了符合條件的列"
+    - "幻讀只影響單一列的值"
+    - "兩者完全相同"
+    - "幻讀只發生在 SELECT 單列時"
+  answer: 0
+  explanation: |
+    不可重複讀針對「既有列的值」改變；幻讀針對「符合條件的列集合」改變（新增或消失整列）。需 Serializable（或範圍鎖/MVCC 機制）才能完全避免。
+- id: db-txn-011
+  difficulty: intermediate
+  tags: [transaction, isolation-levels]
+  question: |
+    SQL 標準的四個隔離層級由「寬鬆到嚴格」排列為？
+  options:
+    - "Read Uncommitted → Read Committed → Repeatable Read → Serializable"
+    - "Serializable → Repeatable Read → Read Committed → Read Uncommitted"
+    - "Read Committed → Read Uncommitted → Serializable → Repeatable Read"
+    - "四者沒有強弱之分"
+  answer: 0
+  explanation: |
+    層級越高，防止的並行異常越多但並行度越低：Read Uncommitted（允許髒讀）< Read Committed < Repeatable Read < Serializable（最嚴格）。
+- id: db-txn-012
+  difficulty: intermediate
+  tags: [transaction, lost-update]
+  question: |
+    「遺失更新 (lost update)」問題是指？
+  options:
+    - "兩交易讀同一值、各自計算後寫回，後寫的覆蓋了前者，使其中一次更新被「吃掉」"
+    - "交易提交後資料消失"
+    - "查詢遺失部分欄位"
+    - "索引遺失"
+  answer: 0
+  explanation: |
+    例如兩人同時把庫存從 10 各減 1，若都讀到 10、各寫回 9，最終是 9 而非 8，一次扣減遺失。可用較高隔離層級、鎖或樂觀並行（版本檢查）避免。
+- id: db-txn-013
+  difficulty: advanced
+  tags: [transaction, serializable]
+  question: |
+    Serializable 隔離層級的保證是？
+  options:
+    - "並行交易的執行結果等同於「某種逐一序列執行」的結果，杜絕髒讀、不可重複讀與幻讀"
+    - "只防止髒讀"
+    - "允許幻讀但防止髒讀"
+    - "完全不提供隔離"
+  answer: 0
+  explanation: |
+    Serializable 是最強隔離，保證並行結果與某序列執行一致，消除所有標準並行異常。代價是並行度最低（可能更多鎖或更高的中止重試率）。
+- id: db-txn-014
+  difficulty: advanced
+  tags: [transaction, read-committed, repeatable-read]
+  question: |
+    Read Committed 與 Repeatable Read 的差別是？
+  options:
+    - "Read Committed 只保證讀到已提交資料（仍可能不可重複讀）；Repeatable Read 進一步保證同一交易內重讀既有列的值不變"
+    - "兩者完全相同"
+    - "Read Committed 比 Repeatable Read 嚴格"
+    - "Repeatable Read 允許髒讀"
+  answer: 0
+  explanation: |
+    Read Committed 防髒讀但同一交易內重讀可能變值（不可重複讀）；Repeatable Read 鎖住或快照已讀列，避免不可重複讀（但標準上仍可能有幻讀）。
+- id: db-txn-015
+  difficulty: advanced
+  tags: [transaction, 2pl]
+  question: |
+    兩階段鎖定協定 (2PL, Two-Phase Locking) 的特徵是？
+  options:
+    - "交易分為「擴張期」（只取鎖不放鎖）與「收縮期」（只放鎖不取鎖），藉此保證可序列化"
+    - "交易先放掉所有鎖再取得"
+    - "交易完全不需要鎖"
+    - "交易在任意時刻可自由取放鎖"
+  answer: 0
+  explanation: |
+    2PL 規定一旦開始釋放鎖就不能再取得新鎖（成長後即收縮），可證明產生可序列化排程。Strict 2PL 更要求鎖持有到交易結束，避免級聯回復。
+- id: db-txn-016
+  difficulty: advanced
+  tags: [transaction, deadlock]
+  question: |
+    資料庫中以鎖實現隔離時可能發生死鎖，常見處理方式是？
+  options:
+    - "偵測死鎖（如等待圖找環）並中止其中一個交易，使其回復後重試"
+    - "永久等待直到鎖釋放"
+    - "忽略並重啟整個資料庫"
+    - "停用所有交易"
+  answer: 0
+  explanation: |
+    資料庫常用等待圖偵測循環等待，選一個「受害者」交易中止回復以打破死鎖，由應用重試；也有用逾時或鎖排序預防的策略。
+- id: db-txn-017
+  difficulty: advanced
+  tags: [transaction, mvcc]
+  question: |
+    多版本並行控制 (MVCC) 的核心做法是？
+  options:
+    - "為資料保留多個版本，讓讀取看到某個一致的快照，避免「讀」阻塞「寫」、「寫」阻塞「讀」"
+    - "對每次讀取都加排他鎖"
+    - "禁止並行交易"
+    - "把所有交易序列化執行"
+  answer: 0
+  explanation: |
+    MVCC（PostgreSQL、Oracle、InnoDB 等採用）讓寫入產生新版本、讀取存取符合其快照的舊版本，因此讀不擋寫、寫不擋讀，大幅提升並行讀效能。
+- id: db-txn-018
+  difficulty: advanced
+  tags: [transaction, optimistic-pessimistic]
+  question: |
+    樂觀並行控制 (optimistic) 與悲觀並行控制 (pessimistic) 的差別是？
+  options:
+    - "悲觀：先取鎖避免衝突；樂觀：先做、提交時才檢查衝突（如版本號），有衝突再回復重試"
+    - "兩者完全相同"
+    - "樂觀一定先取鎖"
+    - "悲觀不使用任何鎖"
+  answer: 0
+  explanation: |
+    悲觀並行假設衝突常見，先鎖再做（衝突少時開銷大）；樂觀並行假設衝突少，先做、提交時用版本/時間戳檢查，衝突時中止重試（衝突多時重試成本高）。依爭用程度選擇。
+- id: db-txn-019
+  difficulty: master
+  tags: [transaction, wal]
+  question: |
+    寫前日誌 (Write-Ahead Logging, WAL) 如何同時支撐原子性與持久性？
+  options:
+    - "變更先以日誌持久寫入「再」套用到資料頁；崩潰後可用日誌 redo 已提交、undo 未提交的交易"
+    - "把資料直接寫入而不記錄"
+    - "只在記憶體中保存變更"
+    - "在交易結束後才開始記錄"
+  answer: 0
+  explanation: |
+    WAL 規定修改資料前先把對應日誌記錄寫到穩定儲存。崩潰復原時，依日誌 redo 已提交但未落盤的變更（持久性）、undo 未提交的變更（原子性），保證一致。
+- id: db-txn-020
+  difficulty: master
+  tags: [transaction, two-phase-commit, distributed]
+  question: |
+    分散式交易的兩階段提交 (2PC) 中，協調者的角色是？
+  options:
+    - "先發 prepare 詢問各參與者能否提交，全部回 yes 才發 commit，否則發 abort，確保跨節點的原子性"
+    - "直接命令所有節點立即提交"
+    - "只負責讀取資料"
+    - "隨機選擇提交或回復"
+  answer: 0
+  explanation: |
+    2PC 第一階段協調者送 prepare、參與者持久化並回應是否可提交；第二階段協調者依全體結果統一下達 commit 或 abort。缺點是協調者故障可能造成參與者阻塞 (blocking)。

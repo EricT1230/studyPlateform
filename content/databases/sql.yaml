@@ -1,0 +1,260 @@
+- id: db-sql-001
+  difficulty: basic
+  tags: [sql, select]
+  question: |
+    SQL 中 SELECT 敘述的用途是？
+  options:
+    - "從資料表查詢並取出資料列"
+    - "刪除整個資料表"
+    - "建立新使用者"
+    - "備份資料庫"
+  answer: 0
+  explanation: |
+    SELECT 是查詢語句，用於從一或多個資料表（或檢視）取出符合條件的欄位與資料列。
+- id: db-sql-002
+  difficulty: basic
+  tags: [sql, primary-key]
+  question: |
+    主鍵 (primary key) 的特性是？
+  options:
+    - "可以重複且可為 NULL"
+    - "唯一識別每一列、不可重複且不可為 NULL"
+    - "只能是文字型別"
+    - "一個資料表可以有多個主鍵"
+  answer: 1
+  explanation: |
+    主鍵唯一識別資料表中的每一列，值必須唯一且非 NULL。一個資料表只能有一個主鍵（但可由多欄組成複合主鍵）。
+- id: db-sql-003
+  difficulty: basic
+  tags: [sql, join]
+  question: |
+    INNER JOIN 的結果是？
+  options:
+    - "只回傳兩表中「連結條件相符」的列"
+    - "回傳左表全部加上右表相符的列"
+    - "回傳兩表所有列的笛卡兒積，不過濾"
+    - "只回傳右表的列"
+  answer: 0
+  explanation: |
+    INNER JOIN 僅保留兩表中連結條件 (ON) 成立的配對列；任一邊沒有相符對象的列都會被排除。
+- id: db-sql-004
+  difficulty: basic
+  tags: [sql, group-by]
+  question: |
+    GROUP BY 子句的作用是？
+  options:
+    - "把資料列依指定欄位分組，常搭配聚合函數對每組計算"
+    - "排序查詢結果"
+    - "刪除重複列"
+    - "限制回傳列數"
+  answer: 0
+  explanation: |
+    GROUP BY 將具有相同分組欄位值的列歸為一組，配合 COUNT、SUM、AVG 等聚合函數對每組產生彙總結果。
+- id: db-sql-005
+  difficulty: basic
+  tags: [sql, ddl, dml]
+  question: |
+    下列哪一組「全部」屬於 DML（資料操作語言）？
+  options:
+    - "SELECT、INSERT、UPDATE、DELETE"
+    - "CREATE、ALTER、DROP"
+    - "GRANT、REVOKE"
+    - "COMMIT、ROLLBACK"
+  answer: 0
+  explanation: |
+    DML 操作資料內容：SELECT/INSERT/UPDATE/DELETE。CREATE/ALTER/DROP 屬 DDL（定義結構）；GRANT/REVOKE 屬 DCL（權限）；COMMIT/ROLLBACK 屬 TCL（交易控制）。
+- id: db-sql-006
+  difficulty: intermediate
+  tags: [sql, join]
+  question: |
+    LEFT (OUTER) JOIN 與 INNER JOIN 的差別是？
+  options:
+    - "LEFT JOIN 保留「左表」所有列，右表無相符時以 NULL 填補；INNER JOIN 只留相符列"
+    - "兩者完全相同"
+    - "LEFT JOIN 只回傳右表的列"
+    - "LEFT JOIN 會去除左表沒相符的列"
+  answer: 0
+  explanation: |
+    LEFT JOIN 確保左表每一列都出現，右表沒有對應時其欄位為 NULL；常用來找「左表有但右表沒有」的資料（再以 WHERE 右表鍵 IS NULL 過濾）。
+- id: db-sql-007
+  difficulty: intermediate
+  tags: [sql, where, having]
+  question: |
+    WHERE 與 HAVING 的差別是？
+  options:
+    - "WHERE 在分組「前」過濾個別列；HAVING 在分組「後」過濾各組（可用聚合結果）"
+    - "兩者完全相同"
+    - "HAVING 只能用於沒有 GROUP BY 的查詢"
+    - "WHERE 可以使用聚合函數，HAVING 不行"
+  answer: 0
+  explanation: |
+    WHERE 先過濾原始列（不能用聚合函數）；GROUP BY 分組後，HAVING 再對每組做條件過濾（可用 COUNT(*)>n 等聚合條件）。
+- id: db-sql-008
+  difficulty: intermediate
+  tags: [sql, null-handling]
+  question: |
+    在 SQL 中判斷某欄是否為 NULL，正確寫法是？
+  options:
+    - "WHERE col = NULL"
+    - "WHERE col IS NULL"
+    - "WHERE col == NULL"
+    - "WHERE col EQUALS NULL"
+  answer: 1
+  explanation: |
+    NULL 代表「未知」，任何與 NULL 的等號比較結果都是 UNKNOWN（非真），故 col = NULL 永遠不成立。必須用 IS NULL / IS NOT NULL 判斷。
+- id: db-sql-009
+  difficulty: intermediate
+  tags: [sql, distinct]
+  question: |
+    SELECT DISTINCT 的效果是？
+  options:
+    - "去除結果中完全重複的列，只保留相異組合"
+    - "排序結果"
+    - "只回傳第一列"
+    - "刪除資料表中的重複資料"
+  answer: 0
+  explanation: |
+    DISTINCT 對查詢「結果」去重，回傳相異的列組合。它不會修改底層資料，只影響輸出。
+- id: db-sql-010
+  difficulty: intermediate
+  tags: [sql, union]
+  question: |
+    UNION 與 UNION ALL 的差別是？
+  options:
+    - "UNION 會去除重複列（需額外排序/比對）；UNION ALL 保留全部含重複，較快"
+    - "UNION ALL 會去重，UNION 不會"
+    - "兩者完全相同"
+    - "UNION 只能合併兩個欄位"
+  answer: 0
+  explanation: |
+    兩者都垂直合併查詢結果（欄位數與型別需相容）。UNION 會去除重複列（通常需排序去重，較慢）；UNION ALL 直接串接、保留重複，效能較佳。
+- id: db-sql-011
+  difficulty: intermediate
+  tags: [sql, aggregate]
+  question: |
+    關於 COUNT(*) 與 COUNT(col)，下列何者正確？
+  options:
+    - "COUNT(*) 計算所有列；COUNT(col) 只計算該欄「非 NULL」的列"
+    - "兩者完全相同"
+    - "COUNT(col) 會把 NULL 也算進去"
+    - "COUNT(*) 會忽略 NULL 的列"
+  answer: 0
+  explanation: |
+    COUNT(*) 計入每一列（含全為 NULL 的列）；COUNT(col) 只計入該欄位非 NULL 的列。這個差異在有 NULL 時會產生不同結果。
+- id: db-sql-012
+  difficulty: intermediate
+  tags: [sql, subquery]
+  question: |
+    下列何者是子查詢 (subquery) 的合理用途？
+  options:
+    - "在 WHERE 中用 IN (SELECT ...) 來篩選符合另一查詢結果的列"
+    - "用來建立資料庫"
+    - "用來授予權限"
+    - "用來啟動交易"
+  answer: 0
+  explanation: |
+    子查詢是巢狀於另一查詢中的 SELECT，可出現在 WHERE（如 IN、EXISTS、比較）、FROM（衍生表）、SELECT 等位置，用查詢結果驅動外層邏輯。
+- id: db-sql-013
+  difficulty: advanced
+  tags: [sql, execution-order]
+  question: |
+    SQL 查詢各子句的「邏輯」執行順序，下列何者正確？
+  options:
+    - "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
+    - "SELECT → FROM → WHERE → GROUP BY → ORDER BY"
+    - "WHERE → FROM → SELECT → GROUP BY → HAVING"
+    - "ORDER BY → SELECT → WHERE → FROM"
+  answer: 0
+  explanation: |
+    邏輯處理順序為 FROM（取表/JOIN）→ WHERE（列過濾）→ GROUP BY（分組）→ HAVING（組過濾）→ SELECT（投影/算欄位）→ ORDER BY（排序）→ LIMIT。這解釋了為何 SELECT 的別名常不能用在 WHERE。
+- id: db-sql-014
+  difficulty: advanced
+  tags: [sql, correlated-subquery]
+  question: |
+    相關子查詢 (correlated subquery) 的特徵是？
+  options:
+    - "子查詢中引用了外層查詢的欄位，因此需對外層每一列重新評估一次"
+    - "子查詢完全獨立，只需執行一次"
+    - "子查詢不能出現在 WHERE 中"
+    - "與外層查詢無任何關聯"
+  answer: 0
+  explanation: |
+    相關子查詢內參考了外層的列（如 WHERE e.dept = o.dept），無法獨立先算，需隨外層每一列代入重算，常見於 EXISTS。效能上可能較非相關子查詢差。
+- id: db-sql-015
+  difficulty: advanced
+  tags: [sql, self-join]
+  question: |
+    自我連結 (self join) 的典型用途是？
+  options:
+    - "把同一張表以不同別名連結自己，例如查員工與其主管（皆在同一員工表）"
+    - "連結兩個不同資料庫"
+    - "把表與系統檢視連結"
+    - "去除重複列"
+  answer: 0
+  explanation: |
+    self join 將同一表用不同別名視為兩份來連結，常用於階層或同表內列與列的關係，如員工-主管、找出同部門的配對等。
+- id: db-sql-016
+  difficulty: advanced
+  tags: [sql, window-function]
+  question: |
+    視窗函數 (window function，如 ROW_NUMBER() OVER(...)) 相對於 GROUP BY 聚合的特點是？
+  options:
+    - "在「不縮減列數」的情況下，對與當前列相關的一組列做計算（如排名、移動平均）"
+    - "一定會把多列合併成一列"
+    - "不能搭配 PARTITION BY"
+    - "只能用於 DELETE"
+  answer: 0
+  explanation: |
+    視窗函數針對 OVER() 定義的視窗計算，但「保留每一列」，可做排名、累計、移動平均、與分組內比較等，而 GROUP BY 會把每組壓成一列。
+- id: db-sql-017
+  difficulty: advanced
+  tags: [sql, foreign-key]
+  question: |
+    外鍵 (foreign key) 約束的作用是？
+  options:
+    - "確保子表的參考值必須存在於父表的鍵中，維持「參照完整性 (referential integrity)」"
+    - "讓欄位值唯一"
+    - "加速查詢"
+    - "加密欄位"
+  answer: 0
+  explanation: |
+    外鍵要求子表某欄的值必須對應到父表既有的主鍵/唯一鍵，避免「孤兒」參考。可設定 ON DELETE/UPDATE CASCADE 等行為處理父列變動。
+- id: db-sql-018
+  difficulty: advanced
+  tags: [sql, having-aggregate]
+  question: |
+    要找出「下單超過 5 次的客戶」，下列何者正確？
+  options:
+    - "SELECT customer_id FROM orders GROUP BY customer_id HAVING COUNT(*) > 5"
+    - "SELECT customer_id FROM orders WHERE COUNT(*) > 5"
+    - "SELECT customer_id FROM orders GROUP BY customer_id WHERE COUNT(*) > 5"
+    - "SELECT COUNT(*) FROM orders ORDER BY customer_id > 5"
+  answer: 0
+  explanation: |
+    依客戶分組後，用 HAVING 以聚合條件 COUNT(*)>5 過濾各組。WHERE 不能使用聚合函數，故須用 HAVING。
+- id: db-sql-019
+  difficulty: master
+  tags: [sql, security, injection]
+  question: |
+    防範 SQL injection 最根本有效的做法是？
+  options:
+    - "使用參數化查詢 / 預備語句 (prepared statements)，讓使用者輸入只被當作資料而非 SQL 程式碼"
+    - "把使用者輸入轉成大寫"
+    - "限制查詢長度"
+    - "只在前端做檢查"
+  answer: 0
+  explanation: |
+    參數化查詢將 SQL 結構與資料分離，使用者輸入永遠以參數綁定、不會被解析成指令，從根本阻斷注入。單純字串拼接或僅前端驗證都不可靠。
+- id: db-sql-020
+  difficulty: master
+  tags: [sql, null-handling, three-valued-logic]
+  question: |
+    在三值邏輯下，查詢 WHERE col NOT IN (1, 2, NULL) 可能發生什麼？
+  options:
+    - "因為與 NULL 比較產生 UNKNOWN，整個 NOT IN 可能對所有列都不成立，回傳空結果"
+    - "等同於 col NOT IN (1, 2)"
+    - "會把 NULL 視為 0"
+    - "一定回傳所有列"
+  answer: 0
+  explanation: |
+    NOT IN 展開為一連串 <> 並以 AND 連接；其中 col <> NULL 為 UNKNOWN，使整個條件無法為 TRUE，導致即使 col 不是 1 或 2 也被排除，常造成「莫名空結果」。應避免在 NOT IN 清單中含 NULL。
