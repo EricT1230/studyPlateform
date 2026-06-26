@@ -1,0 +1,260 @@
+- id: ml-nn-001
+  difficulty: basic
+  tags: [ml, neuron]
+  question: |
+    人工神經元 (artificial neuron) 的基本運算是？
+  options:
+    - "對輸入做「加權和再加偏置」，然後通過一個激活函數產生輸出"
+    - "把輸入直接複製到輸出"
+    - "只計算輸入的平均值"
+    - "隨機產生輸出"
+  answer: 0
+  explanation: |
+    神經元計算 z = w·x + b，再經激活函數 a = f(z) 輸出。權重與偏置是學習的參數，激活函數引入非線性。
+- id: ml-nn-002
+  difficulty: basic
+  tags: [ml, activation]
+  question: |
+    激活函數 (activation function) 在神經網路中的關鍵作用是？
+  options:
+    - "引入「非線性」，使多層網路能表達複雜的非線性關係"
+    - "加快資料載入"
+    - "減少參數量"
+    - "只用來正規化輸入"
+  answer: 0
+  explanation: |
+    若沒有非線性激活，多層線性變換可摺疊成單一線性變換，網路退化成線性模型。激活函數讓網路能逼近複雜函數。
+- id: ml-nn-003
+  difficulty: basic
+  tags: [ml, layers]
+  question: |
+    典型前饋神經網路的層結構由前到後是？
+  options:
+    - "輸入層 → 隱藏層 → 輸出層"
+    - "輸出層 → 隱藏層 → 輸入層"
+    - "只有輸入層與輸出層，無隱藏層"
+    - "所有層完全相同且可互換"
+  answer: 0
+  explanation: |
+    資料從輸入層進入，經一或多個隱藏層做特徵轉換，最後由輸出層產生預測。隱藏層越多通常稱為「深度」網路。
+- id: ml-nn-004
+  difficulty: basic
+  tags: [ml, deep-learning]
+  question: |
+    「深度學習 (deep learning)」中的「深度」主要指？
+  options:
+    - "網路具有「多個隱藏層」，能逐層學習由低階到高階的特徵表示"
+    - "資料量很大"
+    - "訓練時間很長"
+    - "使用很深的資料庫"
+  answer: 0
+  explanation: |
+    深度指網路層數多。多層讓模型逐層組合特徵（如影像：邊緣→紋理→部件→物件），自動學習階層式表示，減少手工特徵工程。
+- id: ml-nn-005
+  difficulty: basic
+  tags: [ml, forward-propagation]
+  question: |
+    前向傳播 (forward propagation) 指的是？
+  options:
+    - "把輸入經各層逐層計算，最終產生網路的預測輸出"
+    - "由輸出往輸入計算梯度"
+    - "更新權重的步驟"
+    - "載入訓練資料"
+  answer: 0
+  explanation: |
+    前向傳播將輸入沿網路逐層做加權和與激活，得到預測。之後再以反向傳播計算損失對各參數的梯度來更新。
+- id: ml-nn-006
+  difficulty: intermediate
+  tags: [ml, backpropagation]
+  question: |
+    反向傳播 (backpropagation) 的核心是？
+  options:
+    - "利用「連鎖律 (chain rule)」由輸出往輸入逐層計算損失對每個參數的梯度"
+    - "隨機調整權重"
+    - "把輸出複製回輸入"
+    - "重新初始化網路"
+  answer: 0
+  explanation: |
+    反向傳播以連鎖律有效率地計算損失對所有權重的偏微分，將輸出層誤差逐層往回傳遞，供梯度下降更新參數。
+- id: ml-nn-007
+  difficulty: intermediate
+  tags: [ml, relu]
+  question: |
+    ReLU 激活函數 f(x)=max(0, x) 的優點是？
+  options:
+    - "計算簡單、在正區間梯度恆為 1，可緩解深層網路的梯度消失"
+    - "輸出範圍嚴格落在 (0,1)"
+    - "對所有輸入都可微"
+    - "永遠不會有神經元失活"
+  answer: 0
+  explanation: |
+    ReLU 計算便宜，正區間梯度為 1 不會像 sigmoid 那樣飽和，利於深層網路訓練。缺點是負區間梯度為 0，可能造成「死亡 ReLU」（用 Leaky ReLU 等緩解）。
+- id: ml-nn-008
+  difficulty: intermediate
+  tags: [ml, sigmoid]
+  question: |
+    sigmoid 激活函數在深層網路常見的問題是？
+  options:
+    - "兩端飽和使梯度趨近 0（梯度消失），深層難以訓練"
+    - "輸出無上下界"
+    - "計算過於簡單"
+    - "永遠不會飽和"
+  answer: 0
+  explanation: |
+    sigmoid 在輸入很大或很小時輸出趨近 1 或 0、導數趨近 0，多層相乘後梯度急遽縮小（梯度消失），使前層幾乎學不動。
+- id: ml-nn-009
+  difficulty: intermediate
+  tags: [ml, softmax]
+  question: |
+    多類別分類的輸出層常用 softmax，其作用是？
+  options:
+    - "把一組分數轉成「總和為 1 的機率分布」，每類得到一個機率"
+    - "把輸出二值化為 0/1"
+    - "縮小輸入維度"
+    - "計算損失梯度"
+  answer: 0
+  explanation: |
+    softmax 對各類分數取指數再正規化，輸出非負且總和為 1 的機率分布，常搭配交叉熵損失用於多類別分類。
+- id: ml-nn-010
+  difficulty: intermediate
+  tags: [ml, non-linearity]
+  question: |
+    若一個多層網路「所有激活函數都是線性的」，結果是？
+  options:
+    - "整個網路等價於單一線性變換，無法表達非線性關係"
+    - "網路會變得更強大"
+    - "梯度會消失"
+    - "輸出總是 0"
+  answer: 0
+  explanation: |
+    線性函數的合成仍是線性函數，故堆疊再多層線性層也只等於一層線性模型，失去深度的意義。非線性激活才是深度網路表達力的來源。
+- id: ml-nn-011
+  difficulty: intermediate
+  tags: [ml, weight-init]
+  question: |
+    神經網路若把「所有權重初始化為相同值（如全 0）」會發生？
+  options:
+    - "對稱性使同層神經元學到完全相同的東西，無法區分（對稱性破壞失敗）"
+    - "訓練更快收斂"
+    - "自動避免過擬合"
+    - "梯度永遠為 1"
+  answer: 0
+  explanation: |
+    權重全相同時，同層神經元收到相同梯度、更新一致，永遠保持相同，等於只有一個神經元的效果。需隨機初始化（如 Xavier/He）以打破對稱。
+- id: ml-nn-012
+  difficulty: intermediate
+  tags: [ml, epoch-batch]
+  question: |
+    訓練術語中，一個「epoch」指的是？
+  options:
+    - "模型完整地走過「整個訓練資料集」一次"
+    - "處理一個 mini-batch"
+    - "更新一次權重"
+    - "計算一次損失"
+  answer: 0
+  explanation: |
+    一個 epoch = 遍歷全部訓練樣本一次；一個 iteration/step = 處理一個 batch 並更新一次參數。epoch 數 × 每 epoch 的 batch 數 = 總更新次數。
+- id: ml-nn-013
+  difficulty: advanced
+  tags: [ml, cnn]
+  question: |
+    卷積神經網路 (CNN) 的卷積層相對於全連接層的優勢是？
+  options:
+    - "參數共享與局部連結大幅減少參數量，並具備平移不變性，適合影像等格狀資料"
+    - "參數量更多、計算更慢"
+    - "完全不需要激活函數"
+    - "只能處理一維資料"
+  answer: 0
+  explanation: |
+    卷積以小卷積核在整張影像滑動、共享權重，使參數遠少於全連接，且能偵測位置無關的局部特徵（平移不變性），非常適合影像。
+- id: ml-nn-014
+  difficulty: advanced
+  tags: [ml, pooling]
+  question: |
+    CNN 中的池化層 (pooling，如 max pooling) 主要作用是？
+  options:
+    - "降低特徵圖的空間尺寸、減少計算與參數，並提供一定的平移不變性"
+    - "增加特徵圖尺寸"
+    - "新增可學習權重"
+    - "計算損失"
+  answer: 0
+  explanation: |
+    池化對局部區域取最大或平均值做下採樣，縮小特徵圖、降低運算與過擬合風險，並讓特徵對小幅位移更穩健。池化本身通常沒有可學習參數。
+- id: ml-nn-015
+  difficulty: advanced
+  tags: [ml, rnn]
+  question: |
+    循環神經網路 (RNN) 適合處理什麼資料、其特點為何？
+  options:
+    - "序列資料；透過隱藏狀態在時間步間傳遞資訊，使輸出依賴先前的輸入"
+    - "只適合固定大小的影像"
+    - "不具任何記憶"
+    - "無法處理可變長度輸入"
+  answer: 0
+  explanation: |
+    RNN 維護隨時間更新的隱藏狀態，能處理可變長度序列（文字、語音、時序），讓當前輸出考量過去脈絡。但易有長程依賴的梯度消失，催生 LSTM/GRU。
+- id: ml-nn-016
+  difficulty: advanced
+  tags: [ml, batch-norm]
+  question: |
+    批次正規化 (batch normalization) 的主要效益是？
+  options:
+    - "正規化各層輸入分布，穩定並加速訓練、允許較大學習率，並有輕微正則化效果"
+    - "減少模型的層數"
+    - "完全取代激活函數"
+    - "只在推論時使用"
+  answer: 0
+  explanation: |
+    BatchNorm 對每個 mini-batch 標準化層輸入（再以可學習的縮放/平移還原表達力），減緩內部協變量偏移、讓訓練更穩更快，並因 batch 統計帶來雜訊而有輕度正則化。
+- id: ml-nn-017
+  difficulty: advanced
+  tags: [ml, exploding-gradient]
+  question: |
+    深層或循環網路中的「梯度爆炸 (exploding gradient)」常見對策是？
+  options:
+    - "梯度裁剪 (gradient clipping)：把梯度範數限制在某上限內"
+    - "把學習率調到非常大"
+    - "移除所有激活函數"
+    - "增加更多層"
+  answer: 0
+  explanation: |
+    當梯度在反向傳播中連乘放大導致數值爆炸、訓練發散時，梯度裁剪將其範數限制在閾值內，穩定更新。良好的初始化與正規化也有幫助。
+- id: ml-nn-018
+  difficulty: advanced
+  tags: [ml, vanishing-gradient]
+  question: |
+    深層網路的「梯度消失」對訓練的影響是？
+  options:
+    - "靠近輸入的前層收到的梯度極小、幾乎不更新，使深層難以有效學習"
+    - "前層更新過快導致發散"
+    - "讓模型自動正則化"
+    - "與激活函數無關"
+  answer: 0
+  explanation: |
+    當各層導數連乘後趨近 0，誤差訊號傳到前層已極微弱，前層權重幾乎不變。用 ReLU、殘差連結、適當初始化、BatchNorm 等可緩解。
+- id: ml-nn-019
+  difficulty: master
+  tags: [ml, residual, resnet]
+  question: |
+    殘差連結 (residual / skip connection，ResNet) 如何幫助訓練極深網路？
+  options:
+    - "讓某層學習殘差 F(x) 並輸出 F(x)+x，提供梯度可直接回傳的捷徑，緩解梯度消失、利於訓練上百層"
+    - "把層數減半"
+    - "移除所有非線性"
+    - "讓每層輸出固定為 0"
+  answer: 0
+  explanation: |
+    殘差區塊輸出 F(x)+x，使網路只需學習相對於恆等映射的「殘差」，且 skip 路徑讓梯度能近乎無損地回傳，解決深層退化問題，讓上百甚至上千層網路可訓練。
+- id: ml-nn-020
+  difficulty: master
+  tags: [ml, attention, transformer]
+  question: |
+    Transformer 的自注意力 (self-attention) 機制相對於 RNN 的關鍵優勢是？
+  options:
+    - "可「平行」處理整個序列並直接建模任意兩位置間的關係，較易捕捉長程依賴"
+    - "必須逐步循序處理，無法平行"
+    - "完全不需要任何權重"
+    - "只能處理固定長度且很短的序列"
+  answer: 0
+  explanation: |
+    自注意力讓每個位置直接對序列中所有位置加權聚合資訊，不像 RNN 需循序傳遞，故可大規模平行化且更易捕捉長距離關係，是現代大型語言模型的核心。

@@ -1,0 +1,260 @@
+- id: ml-fund-001
+  difficulty: basic
+  tags: [ml, supervised-unsupervised]
+  question: |
+    監督式學習 (supervised) 與非監督式學習 (unsupervised) 的主要差別是？
+  options:
+    - "監督式用「有標籤」資料學習輸入到輸出的映射；非監督式用「無標籤」資料找出資料結構"
+    - "監督式不需要任何資料"
+    - "非監督式一定需要標籤"
+    - "兩者完全相同"
+  answer: 0
+  explanation: |
+    監督式學習從帶標籤的 (x, y) 學習預測 y；非監督式（如分群、降維）僅有 x，目標是發現潛在結構或分布。
+- id: ml-fund-002
+  difficulty: basic
+  tags: [ml, classification-regression]
+  question: |
+    分類 (classification) 與迴歸 (regression) 的差別是？
+  options:
+    - "分類預測「離散類別」；迴歸預測「連續數值」"
+    - "分類預測連續值，迴歸預測類別"
+    - "兩者都只能輸出二元結果"
+    - "兩者都不需要標籤"
+  answer: 0
+  explanation: |
+    分類輸出有限的類別標籤（如貓/狗）；迴歸輸出連續量（如房價）。兩者都是監督式學習任務。
+- id: ml-fund-003
+  difficulty: basic
+  tags: [ml, features-labels]
+  question: |
+    在監督式學習中，「特徵 (feature)」與「標籤 (label)」分別是？
+  options:
+    - "特徵是輸入的描述變數；標籤是希望模型預測的目標值"
+    - "特徵是答案，標籤是輸入"
+    - "兩者都是模型參數"
+    - "特徵是模型輸出"
+  answer: 0
+  explanation: |
+    特徵 x 是描述樣本的輸入屬性；標籤 y 是監督訊號（正確答案）。模型學習由特徵預測標籤。
+- id: ml-fund-004
+  difficulty: basic
+  tags: [ml, train-test]
+  question: |
+    把資料分成訓練集與測試集的主要目的是？
+  options:
+    - "用測試集評估模型在「未見過資料」上的表現，估計泛化能力"
+    - "讓訓練變快"
+    - "增加資料量"
+    - "避免使用標籤"
+  answer: 0
+  explanation: |
+    測試集模擬部署時的新資料，必須與訓練分離。用訓練資料評估會高估表現；測試集才能反映泛化能力。
+- id: ml-fund-005
+  difficulty: basic
+  tags: [ml, model]
+  question: |
+    機器學習中的「模型 (model)」本質上是？
+  options:
+    - "一個從輸入特徵映射到輸出的函數，其參數由資料學習得到"
+    - "一份原始資料的副本"
+    - "一個固定不變的規則表，永不更新"
+    - "資料庫的索引"
+  answer: 0
+  explanation: |
+    模型是帶參數的函數 f(x; θ)；訓練即依資料調整參數 θ，使其輸出盡量符合目標。學到的模型用於對新輸入做預測。
+- id: ml-fund-006
+  difficulty: intermediate
+  tags: [ml, clustering]
+  question: |
+    下列何者是「非監督式」學習任務？
+  options:
+    - "K-means 分群 (clustering)"
+    - "用標記的郵件訓練垃圾郵件分類器"
+    - "用房屋特徵與成交價訓練房價預測"
+    - "用標記影像訓練物件辨識"
+  answer: 0
+  explanation: |
+    K-means 不需標籤，只依特徵相似度把樣本分群，屬非監督式。其餘三者皆有標籤 (y)，屬監督式。
+- id: ml-fund-007
+  difficulty: intermediate
+  tags: [ml, gradient-descent]
+  question: |
+    梯度下降 (gradient descent) 的核心概念是？
+  options:
+    - "沿損失函數「梯度的反方向」逐步更新參數，以最小化損失"
+    - "沿梯度的正方向更新以最大化損失"
+    - "隨機猜測參數直到正確"
+    - "完全不需要損失函數"
+  answer: 0
+  explanation: |
+    梯度指向損失上升最快的方向，故往「負梯度」方向更新參數能下降損失：θ ← θ − η·∇L。重複迭代以逼近（局部）最小值。
+- id: ml-fund-008
+  difficulty: intermediate
+  tags: [ml, loss-function]
+  question: |
+    損失函數 (loss function) 在訓練中的角色是？
+  options:
+    - "量化模型預測與真實值的差距，作為最佳化的目標（越小越好）"
+    - "決定模型的輸入維度"
+    - "儲存訓練資料"
+    - "加快資料載入"
+  answer: 0
+  explanation: |
+    損失函數衡量預測誤差（如 MSE、交叉熵）。訓練的目標就是調整參數以最小化平均損失，引導模型改善。
+- id: ml-fund-009
+  difficulty: intermediate
+  tags: [ml, learning-rate]
+  question: |
+    學習率 (learning rate) 設得「太大」的常見後果是？
+  options:
+    - "更新步伐過大，損失可能震盪甚至發散，無法收斂"
+    - "一定更快收斂到最佳解"
+    - "完全不影響訓練"
+    - "讓模型不需要梯度"
+  answer: 0
+  explanation: |
+    學習率控制每步更新幅度。太大→在最小值附近來回跳動或發散；太小→收斂緩慢、易卡在平坦區。需適當調整或用調度/自適應方法。
+- id: ml-fund-010
+  difficulty: intermediate
+  tags: [ml, linear-regression]
+  question: |
+    線性迴歸 (linear regression) 假設的關係是？
+  options:
+    - "輸出是輸入特徵的「線性組合」（加權和再加偏置）"
+    - "輸出與輸入無任何關係"
+    - "輸出永遠是 0 或 1"
+    - "輸出是輸入的指數函數"
+  answer: 0
+  explanation: |
+    線性迴歸以 ŷ = w·x + b 建模，學習權重 w 與偏置 b，常以最小化均方誤差 (MSE) 求解，預測連續值。
+- id: ml-fund-011
+  difficulty: intermediate
+  tags: [ml, logistic-regression]
+  question: |
+    邏輯迴歸 (logistic regression) 雖名為「迴歸」，實際常用於？
+  options:
+    - "二元分類：用 sigmoid 把線性輸出壓到 (0,1) 作為機率"
+    - "預測連續房價"
+    - "影像降維"
+    - "資料分群"
+  answer: 0
+  explanation: |
+    邏輯迴歸把線性輸出經 sigmoid 轉成 0~1 的機率，再以門檻（如 0.5）做分類，是常見的二元分類基線模型。
+- id: ml-fund-012
+  difficulty: intermediate
+  tags: [ml, reinforcement-learning]
+  question: |
+    強化學習 (reinforcement learning) 與監督式學習的關鍵差別是？
+  options:
+    - "強化學習中代理人透過與環境互動、依「獎勵訊號」學習策略，而非從固定的 (輸入,標籤) 配對學習"
+    - "強化學習不需要任何回饋"
+    - "強化學習就是監督式學習"
+    - "強化學習只能處理影像"
+  answer: 0
+  explanation: |
+    強化學習的代理人採取動作、從環境得到獎勵與新狀態，目標是最大化長期累積獎勵。它沒有逐筆正解標籤，而是延遲、稀疏的獎勵訊號。
+- id: ml-fund-013
+  difficulty: advanced
+  tags: [ml, feature-scaling]
+  question: |
+    對特徵做標準化/正規化 (feature scaling) 的主要好處是？
+  options:
+    - "讓不同尺度的特徵可比，避免大數值特徵主導，並加速梯度下降收斂"
+    - "增加資料筆數"
+    - "自動產生標籤"
+    - "讓模型不需要參數"
+  answer: 0
+  explanation: |
+    當特徵尺度差異大時，梯度方向會被大尺度特徵扭曲、收斂變慢，且距離型方法（KNN、SVM）受尺度影響。標準化（如 z-score）讓各特徵尺度一致。
+- id: ml-fund-014
+  difficulty: advanced
+  tags: [ml, encoding]
+  question: |
+    對「類別型特徵」常用 one-hot encoding 而非直接給整數編碼，原因是？
+  options:
+    - "整數編碼會引入虛假的「順序/大小」關係；one-hot 以獨立指示變數避免模型誤解類別間的距離"
+    - "one-hot 一定減少特徵數"
+    - "整數編碼無法被模型讀取"
+    - "one-hot 會自動標準化資料"
+  answer: 0
+  explanation: |
+    把「紅=1,綠=2,藍=3」會讓模型以為藍>綠>紅且綠是紅藍的中點，這是錯誤的順序假設。one-hot 為每個類別設一個 0/1 欄位，彼此獨立、無序。
+- id: ml-fund-015
+  difficulty: advanced
+  tags: [ml, validation-split]
+  question: |
+    除了訓練集與測試集，另外切出「驗證集 (validation set)」的用途是？
+  options:
+    - "在不碰測試集的情況下，用於選擇超參數與模型，避免以測試集調參造成的樂觀偏誤"
+    - "用來增加訓練資料"
+    - "取代測試集"
+    - "用來儲存模型權重"
+  answer: 0
+  explanation: |
+    若反覆用測試集調參，等於間接把測試資訊洩漏進模型，高估泛化。驗證集（或交叉驗證）專供模型/超參數選擇，測試集只在最後評估一次。
+- id: ml-fund-016
+  difficulty: advanced
+  tags: [ml, hyperparameter]
+  question: |
+    「超參數 (hyperparameter)」與「參數 (parameter)」的差別是？
+  options:
+    - "參數由訓練從資料學得（如權重）；超參數在訓練前由人設定（如學習率、層數、K 值）"
+    - "兩者都由資料自動學得"
+    - "超參數是模型的輸出"
+    - "參數不影響模型"
+  answer: 0
+  explanation: |
+    參數（如神經網路權重）是最佳化學到的；超參數是控制學習過程或模型結構的設定，需透過驗證集調校（如網格/隨機搜尋）。
+- id: ml-fund-017
+  difficulty: advanced
+  tags: [ml, curse-of-dimensionality]
+  question: |
+    「維度詛咒 (curse of dimensionality)」描述的問題是？
+  options:
+    - "特徵維度增加時，資料在高維空間變得極度稀疏，距離度量失去鑑別力、所需樣本量爆增"
+    - "維度太低導致模型無法學習"
+    - "資料筆數太多造成記憶體不足"
+    - "與維度無關的隨機誤差"
+  answer: 0
+  explanation: |
+    高維下樣本間距離趨於相近、體積集中在邊界，使依賴距離/密度的方法失效，且要覆蓋空間所需樣本隨維度指數成長。常以降維或特徵選擇緩解。
+- id: ml-fund-018
+  difficulty: advanced
+  tags: [ml, data-leakage]
+  question: |
+    資料洩漏 (data leakage) 為何危險？
+  options:
+    - "訓練時不慎用到「部署時取不到」或含目標資訊的特徵，使驗證表現虛高、上線後崩潰"
+    - "讓訓練變慢"
+    - "減少資料筆數"
+    - "與模型表現無關"
+  answer: 0
+  explanation: |
+    例如用到未來資訊、或在切分前就對全資料做標準化/特徵選擇，會把測試資訊洩漏進訓練，造成評估過度樂觀。需在切分後、僅用訓練資料擬合前處理。
+- id: ml-fund-019
+  difficulty: master
+  tags: [ml, no-free-lunch]
+  question: |
+    「沒有免費的午餐 (No Free Lunch) 定理」對機器學習的啟示是？
+  options:
+    - "不存在對「所有問題」都最佳的單一演算法；演算法的優劣取決於是否契合該問題的假設/結構"
+    - "任何演算法在所有任務上都一樣好"
+    - "深度學習永遠最好"
+    - "資料越多就不需要選模型"
+  answer: 0
+  explanation: |
+    NFL 定理指在所有可能問題上平均，任兩演算法表現相同。實務之所以有效，是因真實問題有結構，選擇契合該結構（歸納偏好）的演算法才會勝出，故沒有萬用最佳模型。
+- id: ml-fund-020
+  difficulty: master
+  tags: [ml, sgd, batch]
+  question: |
+    隨機梯度下降 (SGD) 相對於整批梯度下降 (batch GD) 的特點是？
+  options:
+    - "每步只用一筆（或一小批）樣本估計梯度，更新更快、引入雜訊有助跳離局部極小，但收斂較不平穩"
+    - "每步都用全部資料，故每步更新極快"
+    - "完全不需要梯度"
+    - "一定比 batch GD 慢且更差"
+  answer: 0
+  explanation: |
+    batch GD 每步用全資料算精確梯度、穩定但每步昂貴；SGD（或 mini-batch）用少量樣本近似梯度，更新頻繁、計算便宜，雜訊還可能幫助逃離鞍點/局部極小，是深度學習的主流。

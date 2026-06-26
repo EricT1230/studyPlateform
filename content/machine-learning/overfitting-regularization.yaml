@@ -1,0 +1,260 @@
+- id: ml-reg-001
+  difficulty: basic
+  tags: [ml, overfitting]
+  question: |
+    過擬合 (overfitting) 是指？
+  options:
+    - "模型把訓練資料（含雜訊）學得太細，導致在新資料上表現變差"
+    - "模型太簡單，連訓練資料都學不好"
+    - "資料量太大"
+    - "訓練速度太慢"
+  answer: 0
+  explanation: |
+    過擬合的模型記住了訓練集的雜訊與偶然模式，訓練表現很好卻無法泛化，測試/驗證表現明顯較差。
+- id: ml-reg-002
+  difficulty: basic
+  tags: [ml, underfitting]
+  question: |
+    欠擬合 (underfitting) 是指？
+  options:
+    - "模型過於簡單或訓練不足，連訓練資料的規律都抓不住，訓練與測試表現都差"
+    - "模型在訓練集完美但測試差"
+    - "資料太多"
+    - "學習率太小造成"
+  answer: 0
+  explanation: |
+    欠擬合的模型容量不足或未充分訓練，無法捕捉資料的真實關係，訓練誤差與測試誤差都偏高（高偏差）。
+- id: ml-reg-003
+  difficulty: basic
+  tags: [ml, bias-variance]
+  question: |
+    在偏差-變異 (bias-variance) 觀點下，過擬合對應？
+  options:
+    - "低偏差、高變異"
+    - "高偏差、低變異"
+    - "高偏差、高變異"
+    - "低偏差、低變異"
+  answer: 0
+  explanation: |
+    過擬合模型對訓練資料貼合很好（低偏差），但對不同訓練樣本極敏感、預測不穩（高變異）。欠擬合則相反（高偏差、低變異）。
+- id: ml-reg-004
+  difficulty: basic
+  tags: [ml, regularization]
+  question: |
+    正則化 (regularization) 的目的是？
+  options:
+    - "對模型複雜度施加懲罰，抑制過擬合、提升泛化"
+    - "讓模型更複雜以擬合更多資料"
+    - "加快資料載入"
+    - "增加特徵數量"
+  answer: 0
+  explanation: |
+    正則化在損失中加入懲罰項（或用 dropout、early stopping 等），限制模型過度貼合訓練雜訊，換取更好的泛化能力。
+- id: ml-reg-005
+  difficulty: basic
+  tags: [ml, more-data]
+  question: |
+    下列何者通常有助於「緩解過擬合」？
+  options:
+    - "取得更多訓練資料"
+    - "增加模型的參數量到遠超資料量"
+    - "移除所有正則化"
+    - "只用訓練集評估"
+  answer: 0
+  explanation: |
+    更多（且具代表性的）資料讓模型較難只靠記憶雜訊取勝，須學到真正的規律，是對抗過擬合最直接有效的手段之一。
+- id: ml-reg-006
+  difficulty: intermediate
+  tags: [ml, l2-ridge]
+  question: |
+    L2 正則化（Ridge）在損失中加入什麼懲罰，效果為何？
+  options:
+    - "加入權重平方和 (Σw²)；使權重整體「縮小、平滑」，但通常不會變成剛好 0"
+    - "加入權重絕對值和；讓多數權重變 0"
+    - "加入偏置項；增加模型容量"
+    - "不影響權重"
+  answer: 0
+  explanation: |
+    L2 懲罰 λΣw² 鼓勵較小的權重，使模型更平滑、對個別特徵不過度依賴，降低變異。它收縮權重但極少使其恰為 0。
+- id: ml-reg-007
+  difficulty: intermediate
+  tags: [ml, l1-lasso, sparsity]
+  question: |
+    L1 正則化（Lasso）的特性是？
+  options:
+    - "加入權重絕對值和 (Σ|w|)，傾向把不重要特徵的權重壓到「恰好 0」，達成特徵選擇"
+    - "讓所有權重都變大"
+    - "與 L2 完全相同"
+    - "只懲罰偏置項"
+  answer: 0
+  explanation: |
+    L1 懲罰的幾何特性（菱形約束的角點）使最佳解常落在某些權重為 0 處，產生稀疏解，等於自動做特徵選擇，利於可解釋性。
+- id: ml-reg-008
+  difficulty: intermediate
+  tags: [ml, dropout]
+  question: |
+    神經網路中的 dropout 如何運作、目的為何？
+  options:
+    - "訓練時隨機「關閉」一部分神經元，迫使網路不過度依賴特定神經元，降低過擬合"
+    - "永久刪除神經元以縮小模型"
+    - "在推論時隨機關閉神經元"
+    - "增加神經元數量"
+  answer: 0
+  explanation: |
+    dropout 在每次訓練前向傳遞隨機讓部分神經元輸出歸零，相當於訓練眾多子網路的集成，減少共適應 (co-adaptation)，提升泛化。推論時通常不丟棄（並做縮放）。
+- id: ml-reg-009
+  difficulty: intermediate
+  tags: [ml, early-stopping]
+  question: |
+    提早停止 (early stopping) 的做法是？
+  options:
+    - "監看「驗證」表現，當它不再改善（開始變差）時停止訓練，避免繼續過擬合"
+    - "訓練固定的最大 epoch 後才停"
+    - "在訓練誤差達 0 時停止"
+    - "隨機決定何時停止"
+  answer: 0
+  explanation: |
+    隨訓練進行，訓練誤差持續下降但驗證誤差會先降後升。early stopping 在驗證誤差開始回升時停下，取泛化最好的時點，是一種隱式正則化。
+- id: ml-reg-010
+  difficulty: intermediate
+  tags: [ml, model-complexity]
+  question: |
+    在固定資料量下，持續「增加模型複雜度」對誤差的典型影響是？
+  options:
+    - "訓練誤差持續下降，但驗證誤差先降後升（過了某點開始過擬合）"
+    - "訓練與驗證誤差都持續下降"
+    - "訓練誤差上升"
+    - "兩者皆不變"
+  answer: 0
+  explanation: |
+    複雜度增加先改善欠擬合（兩誤差下降），但超過甜蜜點後模型開始記憶雜訊，訓練誤差續降而驗證誤差回升，呈 U 形泛化曲線。
+- id: ml-reg-011
+  difficulty: intermediate
+  tags: [ml, data-augmentation]
+  question: |
+    資料增強 (data augmentation，如影像翻轉、裁切、加噪) 對抗過擬合的原理是？
+  options:
+    - "用對標籤不變的變換擴增訓練樣本多樣性，讓模型學到更穩健、不變的特徵"
+    - "直接複製相同樣本以增加數量"
+    - "刪除困難樣本"
+    - "把測試資料加入訓練"
+  answer: 0
+  explanation: |
+    資料增強生成保留標籤語意的變體（如貓翻轉仍是貓），擴大有效資料分布、注入不變性先驗，使模型較不易過擬合特定樣本細節。
+- id: ml-reg-012
+  difficulty: intermediate
+  tags: [ml, detect-overfit]
+  question: |
+    要「偵測」是否過擬合，最直接的方法是？
+  options:
+    - "比較訓練誤差與獨立驗證/測試誤差的差距"
+    - "只看訓練誤差是否夠低"
+    - "看模型參數量"
+    - "看訓練花了多少時間"
+  answer: 0
+  explanation: |
+    過擬合的指標是「訓練表現好但驗證/測試表現明顯較差」。只看訓練誤差會被誤導，必須以未參與訓練的資料評估泛化落差。
+- id: ml-reg-013
+  difficulty: advanced
+  tags: [ml, bias-variance-tradeoff]
+  question: |
+    偏差-變異權衡 (bias-variance tradeoff) 的核心觀念是？
+  options:
+    - "降低偏差（增複雜度）常使變異上升，反之亦然；總泛化誤差約為偏差²+變異+不可約雜訊，需取折衷"
+    - "偏差與變異可同時無限降低"
+    - "變異與模型複雜度無關"
+    - "偏差永遠等於變異"
+  answer: 0
+  explanation: |
+    期望泛化誤差可分解為偏差²、變異與不可約雜訊。簡單模型高偏差低變異、複雜模型低偏差高變異；目標是找使兩者之和最小的複雜度。
+- id: ml-reg-014
+  difficulty: advanced
+  tags: [ml, l1-vs-l2]
+  question: |
+    需要「自動特徵選擇」（讓不重要特徵係數歸零）時，較適合用？
+  options:
+    - "L1 (Lasso)"
+    - "L2 (Ridge)"
+    - "完全不正則化"
+    - "只增大學習率"
+  answer: 0
+  explanation: |
+    L1 產生稀疏解、把無用特徵權重壓到 0，內建特徵選擇；L2 只收縮權重不歸零。若想兼顧，可用同時含 L1+L2 的 Elastic Net。
+- id: ml-reg-015
+  difficulty: advanced
+  tags: [ml, lambda]
+  question: |
+    正則化強度 λ（懲罰係數）設得「過大」會導致？
+  options:
+    - "權重被過度壓縮，模型變得太簡單而欠擬合（高偏差）"
+    - "一定過擬合"
+    - "完全不影響模型"
+    - "訓練誤差降到 0"
+  answer: 0
+  explanation: |
+    λ 越大懲罰越強、權重越被壓抑。過大時模型容量被過度限制，連訓練資料的規律都學不好，轉為欠擬合。λ 需以驗證集調校取折衷。
+- id: ml-reg-016
+  difficulty: advanced
+  tags: [ml, high-bias-variance-remedy]
+  question: |
+    若診斷模型為「高變異（過擬合）」，下列何者是合理對策？
+  options:
+    - "增加訓練資料、加強正則化、降低模型複雜度"
+    - "增加模型複雜度、移除正則化"
+    - "減少訓練資料"
+    - "只在訓練集評估"
+  answer: 0
+  explanation: |
+    高變異對策是「約束模型或增資料」：更多資料、更強正則化、簡化模型、特徵選擇。反之高偏差（欠擬合）才需增加複雜度或特徵、減少正則化。
+- id: ml-reg-017
+  difficulty: advanced
+  tags: [ml, bagging]
+  question: |
+    集成法中的 bagging（如隨機森林）主要降低什麼？
+  options:
+    - "變異：對多個在不同重抽樣資料上訓練的模型取平均，平滑掉個別模型的高變異"
+    - "偏差，藉由加深單一決策樹"
+    - "資料維度"
+    - "訓練資料量"
+  answer: 0
+  explanation: |
+    bagging 在自助重抽樣 (bootstrap) 資料上各自訓練模型再平均/投票，因平均化而降低變異（對高變異、低偏差的基學習器如深樹特別有效）。
+- id: ml-reg-018
+  difficulty: advanced
+  tags: [ml, boosting]
+  question: |
+    Boosting（如 Gradient Boosting）相較 bagging 的主要差異與目標是？
+  options:
+    - "循序訓練弱學習器，每個專注修正前者的錯誤，主要降低「偏差」（但若過度可能過擬合）"
+    - "完全平行訓練、只降變異"
+    - "與單一模型完全相同"
+    - "只能用於迴歸"
+  answer: 0
+  explanation: |
+    boosting 依序加入弱模型，後者針對前者殘差/錯誤加強，逐步降低偏差、提升擬合力。它對雜訊較敏感、迭代過多可能過擬合，需以學習率與輪數正則化。
+- id: ml-reg-019
+  difficulty: master
+  tags: [ml, weight-decay]
+  question: |
+    深度學習中的「權重衰減 (weight decay)」與 L2 正則化的關係是？
+  options:
+    - "在標準 SGD 下，權重衰減等價於對損失加上 L2 懲罰（每步按比例縮小權重）"
+    - "兩者完全無關"
+    - "權重衰減等同 L1"
+    - "權重衰減會放大權重"
+  answer: 0
+  explanation: |
+    傳統上權重衰減（每次更新乘以略小於 1 的因子）在 SGD 下等價於 L2 正則化。不過在 Adam 等自適應優化器中兩者不完全等價，因而有 AdamW 將權重衰減與梯度更新解耦。
+- id: ml-reg-020
+  difficulty: master
+  tags: [ml, double-descent]
+  question: |
+    「雙重下降 (double descent)」現象挑戰了傳統偏差-變異觀的哪一點？
+  options:
+    - "當模型參數量超過「插值門檻」後繼續增大，測試誤差可能「再次下降」，而非如經典 U 形持續上升"
+    - "模型越簡單測試誤差越低"
+    - "訓練誤差永遠不會到 0"
+    - "資料量與誤差無關"
+  answer: 0
+  explanation: |
+    經典觀點預期過參數化會持續惡化泛化（U 形右側上升）。雙重下降顯示在剛好能插值的臨界點誤差最差，之後繼續加大模型，測試誤差反而再次下降，呼應現代過參數化深度網路常仍能泛化的觀察。

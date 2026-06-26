@@ -1,0 +1,260 @@
+- id: ml-eval-001
+  difficulty: basic
+  tags: [ml, accuracy]
+  question: |
+    分類的「準確率 (accuracy)」定義是？
+  options:
+    - "預測正確的樣本數 ÷ 總樣本數"
+    - "正類預測正確數 ÷ 所有正類"
+    - "預測為正類中真正為正的比例"
+    - "模型的訓練時間"
+  answer: 0
+  explanation: |
+    準確率 = (TP+TN) / 全部樣本，衡量整體預測正確的比例。但在類別不平衡時可能誤導。
+- id: ml-eval-002
+  difficulty: basic
+  tags: [ml, confusion-matrix]
+  question: |
+    混淆矩陣中的「偽陽性 (False Positive, FP)」是指？
+  options:
+    - "實際為負類、但被模型預測為正類"
+    - "實際為正類、被正確預測為正類"
+    - "實際為負類、被正確預測為負類"
+    - "實際為正類、卻被預測為負類"
+  answer: 0
+  explanation: |
+    FP（型一錯誤）是把負類誤判為正類；FN（型二錯誤）是把正類誤判為負類。TP/TN 則為正確預測。
+- id: ml-eval-003
+  difficulty: basic
+  tags: [ml, precision]
+  question: |
+    精確率 (precision) 的公式是？
+  options:
+    - "TP / (TP + FP)"
+    - "TP / (TP + FN)"
+    - "(TP + TN) / 全部"
+    - "FP / (FP + TN)"
+  answer: 0
+  explanation: |
+    精確率 = TP/(TP+FP)，回答「預測為正的之中，有多少真的是正」。重視降低誤報時看精確率。
+- id: ml-eval-004
+  difficulty: basic
+  tags: [ml, recall]
+  question: |
+    召回率 (recall / sensitivity) 的公式是？
+  options:
+    - "TP / (TP + FN)"
+    - "TP / (TP + FP)"
+    - "TN / (TN + FP)"
+    - "(TP + TN) / 全部"
+  answer: 0
+  explanation: |
+    召回率 = TP/(TP+FN)，回答「所有實際為正的之中，被抓出多少」。重視不漏掉正類（如疾病篩檢）時看召回率。
+- id: ml-eval-005
+  difficulty: basic
+  tags: [ml, imbalance, accuracy]
+  question: |
+    在 99% 為負類的不平衡資料上，為何「準確率」可能誤導？
+  options:
+    - "模型只要全部預測為負類就有 99% 準確率，卻完全沒抓到任何正類"
+    - "準確率無法計算"
+    - "準確率永遠等於召回率"
+    - "準確率會自動修正不平衡"
+  answer: 0
+  explanation: |
+    極端不平衡時，無腦預測多數類就有很高準確率，但對少數（常是我們在意的）類毫無辨識力。應改看精確率/召回率/F1 或 PR-AUC。
+- id: ml-eval-006
+  difficulty: intermediate
+  tags: [ml, f1]
+  question: |
+    F1 分數是？
+  options:
+    - "精確率與召回率的「調和平均」，兼顧兩者"
+    - "精確率與召回率的算術平均"
+    - "準確率與召回率的乘積"
+    - "只看精確率"
+  answer: 0
+  explanation: |
+    F1 = 2·(P·R)/(P+R) 是 P 與 R 的調和平均，只有兩者都高時 F1 才高，適合不平衡資料下平衡精確率與召回率。
+- id: ml-eval-007
+  difficulty: intermediate
+  tags: [ml, precision-recall-tradeoff]
+  question: |
+    調高分類門檻 (threshold) 通常會？
+  options:
+    - "提高精確率、降低召回率（更保守地預測正類）"
+    - "同時提高精確率與召回率"
+    - "降低精確率、提高召回率"
+    - "對兩者都無影響"
+  answer: 0
+  explanation: |
+    門檻提高→只在更有把握時才判為正→誤報減少（精確率升），但也漏掉更多正類（召回率降）。精確率與召回率常此消彼長。
+- id: ml-eval-008
+  difficulty: intermediate
+  tags: [ml, roc-auc]
+  question: |
+    ROC 曲線與 AUC 衡量的是？
+  options:
+    - "在各種門檻下 TPR 對 FPR 的權衡；AUC 是曲線下面積，越接近 1 區辨力越好（0.5 等同亂猜）"
+    - "模型的訓練時間"
+    - "資料的維度"
+    - "只在單一門檻下的準確率"
+  answer: 0
+  explanation: |
+    ROC 以不同門檻畫出真陽率 (TPR) vs 偽陽率 (FPR)。AUC 表示隨機抽一正一負樣本，模型給正樣本較高分的機率；1 為完美、0.5 為亂猜。
+- id: ml-eval-009
+  difficulty: intermediate
+  tags: [ml, cross-validation]
+  question: |
+    k 折交叉驗證 (k-fold cross-validation) 的做法是？
+  options:
+    - "把資料分成 k 份，輪流以其中 1 份當驗證、其餘 k-1 份訓練，取 k 次結果平均"
+    - "只訓練一次並用全部資料驗證"
+    - "把測試集拆成 k 份"
+    - "重複用同一份資料訓練 k 次"
+  answer: 0
+  explanation: |
+    k-fold 讓每筆資料都當過一次驗證，平均 k 次評估以降低單次切分的隨機性，較穩健地估計泛化能力，尤其在資料量有限時。
+- id: ml-eval-010
+  difficulty: intermediate
+  tags: [ml, regression-metrics, rmse]
+  question: |
+    迴歸常用的 RMSE (Root Mean Squared Error) 特性是？
+  options:
+    - "對「較大誤差」懲罰更重（平方放大），單位與目標變數相同便於解讀"
+    - "對所有誤差一視同仁、線性懲罰"
+    - "只能用於分類"
+    - "永遠等於 MAE"
+  answer: 0
+  explanation: |
+    RMSE = √(平均(誤差²))。平方使大誤差影響更大（對離群值敏感），開根號讓單位回到與 y 相同，便於解讀。
+- id: ml-eval-011
+  difficulty: intermediate
+  tags: [ml, r-squared]
+  question: |
+    決定係數 R²（R-squared）衡量的是？
+  options:
+    - "模型解釋了目標變數變異的比例；1 表示完美擬合，0 表示與只預測平均值一樣"
+    - "模型的訓練速度"
+    - "特徵的數量"
+    - "誤差的絕對值總和"
+  answer: 0
+  explanation: |
+    R² = 1 − SS_res/SS_tot，表示相較於「只用平均值預測」，模型額外解釋了多少變異。可能為負（比預測平均還差）。
+- id: ml-eval-012
+  difficulty: intermediate
+  tags: [ml, mae, mse]
+  question: |
+    MAE 與 MSE 在面對「離群值 (outlier)」時的差別是？
+  options:
+    - "MSE 因平方而對離群值更敏感；MAE 為絕對值，對離群值較穩健"
+    - "MAE 對離群值更敏感"
+    - "兩者對離群值反應完全相同"
+    - "離群值不影響任何誤差指標"
+  answer: 0
+  explanation: |
+    MSE 平方放大大誤差，故離群值影響大；MAE 線性看待誤差、較穩健。資料含許多離群值時，MAE 常較能反映典型誤差。
+- id: ml-eval-013
+  difficulty: advanced
+  tags: [ml, precision-vs-recall]
+  question: |
+    對「垃圾郵件過濾器」而言，把正常郵件誤判為垃圾 (FP) 代價很高，應優先？
+  options:
+    - "提高精確率（寧可漏掉一些垃圾，也不要把正常信丟進垃圾桶）"
+    - "提高召回率，抓到所有垃圾即可"
+    - "只看準確率"
+    - "降低精確率"
+  answer: 0
+  explanation: |
+    誤刪正常信（FP）後果嚴重，應壓低 FP，即重視精確率。反之，如癌症篩檢漏診（FN）代價高，則重視召回率。指標取捨取決於錯誤的相對成本。
+- id: ml-eval-014
+  difficulty: advanced
+  tags: [ml, stratified]
+  question: |
+    在不平衡分類做交叉驗證時，採「分層 (stratified) 切分」的目的是？
+  options:
+    - "讓每一折的類別比例都與整體相近，避免某折幾乎沒有少數類而評估失真"
+    - "讓每折樣本數不同"
+    - "只用多數類訓練"
+    - "隨機打亂以增加雜訊"
+  answer: 0
+  explanation: |
+    分層抽樣保持各折的類別分布一致，特別在少數類稀少時，避免某折缺乏正類導致指標不穩或無法計算，使評估更可靠。
+- id: ml-eval-015
+  difficulty: advanced
+  tags: [ml, imbalance-handling]
+  question: |
+    處理類別不平衡的常見手法「不」包含下列何者？
+  options:
+    - "對少數類過採樣 (oversampling, 如 SMOTE) 或對多數類欠採樣"
+    - "調整類別權重 (class weights) 讓少數類誤分代價更高"
+    - "改用適合不平衡的指標（PR-AUC、F1）"
+    - "直接刪除所有少數類樣本"
+  answer: 3
+  explanation: |
+    刪除少數類會讓問題更糟（模型更學不到它）。合理做法是重採樣、加權、調整門檻或換評估指標，而非丟棄我們在意的少數類。
+- id: ml-eval-016
+  difficulty: advanced
+  tags: [ml, overfitting-detection]
+  question: |
+    從「訓練表現」與「驗證表現」的差距判斷，過擬合 (overfitting) 的典型徵兆是？
+  options:
+    - "訓練誤差很低但驗證誤差明顯較高（兩者差距大）"
+    - "訓練誤差與驗證誤差都很高且接近"
+    - "訓練誤差高、驗證誤差低"
+    - "兩者都很低且接近"
+  answer: 0
+  explanation: |
+    過擬合時模型把訓練資料（含雜訊）背起來，訓練誤差低但無法泛化，驗證誤差高、出現明顯落差。兩者都高且接近則偏向欠擬合 (underfitting)。
+- id: ml-eval-017
+  difficulty: advanced
+  tags: [ml, baseline]
+  question: |
+    評估新模型時先建立「基線 (baseline，如多數類分類器或預測平均值)」的意義是？
+  options:
+    - "提供一個最低參考點，確認複雜模型「確實」帶來超越簡單策略的價值"
+    - "用來取代正式模型"
+    - "增加訓練資料"
+    - "讓模型自動調參"
+  answer: 0
+  explanation: |
+    若複雜模型贏不過「總是猜多數類」或「猜平均」的簡單基線，代表它沒學到有用資訊。基線是判斷模型是否真有價值的對照。
+- id: ml-eval-018
+  difficulty: advanced
+  tags: [ml, multiclass-metrics]
+  question: |
+    多類別分類計算整體 F1 時，「macro 平均」與「weighted/micro 平均」的差別是？
+  options:
+    - "macro 各類等權平均（少數類影響大）；weighted 依各類樣本數加權；micro 彙總所有 TP/FP/FN 再算（受多數類主導）"
+    - "三者結果一定相同"
+    - "macro 只看多數類"
+    - "micro 忽略所有樣本數"
+  answer: 0
+  explanation: |
+    macro 對每類同等看待，能凸顯少數類表現；weighted 依支持度加權；micro 把所有類的計數合併計算，結果偏向樣本多的類。選擇取決於你想凸顯整體還是各類公平。
+- id: ml-eval-019
+  difficulty: master
+  tags: [ml, loocv]
+  question: |
+    留一交叉驗證 (LOOCV, Leave-One-Out) 的特性是？
+  options:
+    - "k 等於樣本數，每次只留一筆驗證；近乎無偏但計算昂貴、且各折模型高度相關使估計變異不一定低"
+    - "只用一筆資料訓練"
+    - "等同於不做驗證"
+    - "一定比 5-fold 更省計算"
+  answer: 0
+  explanation: |
+    LOOCV 用 n-1 筆訓練、1 筆驗證，重複 n 次。它對泛化的偏誤小，但需訓練 n 次（昂貴），且訓練集高度重疊使各折估計相關，變異未必比 k-fold 小。
+- id: ml-eval-020
+  difficulty: master
+  tags: [ml, cv-leakage, preprocessing]
+  question: |
+    在交叉驗證中做特徵標準化/特徵選擇時，正確做法是？
+  options:
+    - "在「每一折內」只用該折的訓練部分擬合前處理，再套用到驗證部分，避免資訊從驗證洩漏"
+    - "先對「全部資料」標準化/選特徵，再做交叉驗證"
+    - "對驗證部分單獨擬合前處理"
+    - "前處理與交叉驗證無關，順序隨意"
+  answer: 0
+  explanation: |
+    若先用全資料擬合前處理（算均值/變異、挑特徵），驗證折的資訊已洩漏進來，導致評估過度樂觀。正確是把前處理包進每折的訓練流程（如 sklearn Pipeline）只用訓練部分擬合。
