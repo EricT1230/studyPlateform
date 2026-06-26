@@ -1,0 +1,260 @@
+- id: os-sched-001
+  difficulty: basic
+  tags: [scheduling, basics]
+  question: |
+    「搶佔式 (preemptive)」與「非搶佔式 (non-preemptive)」排程的差別是？
+  options:
+    - "搶佔式允許排程器中途收回 CPU，非搶佔式須等行程主動讓出或結束"
+    - "非搶佔式比較公平，搶佔式一定不公平"
+    - "搶佔式只能用於單核心"
+    - "兩者只差在優先權的計算方式"
+  answer: 0
+  explanation: |
+    搶佔式排程可在時間片到期或更高優先權任務就緒時，強制收回 CPU；非搶佔式則要等執行中的行程主動阻塞、讓出或結束。
+- id: os-sched-002
+  difficulty: basic
+  tags: [fcfs, convoy]
+  question: |
+    FCFS（先來先服務）排程容易產生的問題是？
+  options:
+    - "飢餓 (starvation)"
+    - "護衛效應 (convoy effect)：短任務被前面的長任務拖住，平均等待時間變長"
+    - "優先權反轉"
+    - "死鎖"
+  answer: 1
+  explanation: |
+    FCFS 下若一個長 CPU burst 的行程先到，後面一堆短任務都得排隊等它，造成護衛效應，拉高平均等待/週轉時間。
+- id: os-sched-003
+  difficulty: basic
+  tags: [sjf]
+  question: |
+    SJF（最短工作優先）在「平均等待時間」上的特性是？
+  options:
+    - "對給定一組任務可達到最小平均等待時間（理論最佳）"
+    - "永遠產生最大平均等待時間"
+    - "與 FCFS 完全相同"
+    - "只在搶佔式下才有意義"
+  answer: 0
+  explanation: |
+    對一批已知執行時間的任務，SJF 可證明能取得最小平均等待時間。難點在於需要預知（或預測）下一個 CPU burst 長度。
+- id: os-sched-004
+  difficulty: basic
+  tags: [round-robin]
+  question: |
+    Round Robin (RR) 排程的核心機制是？
+  options:
+    - "依優先權高低決定執行順序"
+    - "每個行程輪流取得固定的時間片 (time quantum)，用完即被搶佔回 ready 佇列尾端"
+    - "永遠先執行最短的任務"
+    - "先到的行程一直執行到結束"
+  answer: 1
+  explanation: |
+    RR 給每個行程一個固定時間片，用完就放回佇列尾端輪到下一個，提供良好的回應時間，適合分時系統。
+- id: os-sched-005
+  difficulty: basic
+  tags: [metrics]
+  question: |
+    排程指標中，「回應時間 (response time)」的定義是？
+  options:
+    - "從提交到「第一次」獲得 CPU 回應的時間"
+    - "從提交到「完全結束」的時間"
+    - "在 ready 佇列中等待的總時間"
+    - "CPU 實際執行該行程的時間"
+  answer: 0
+  explanation: |
+    回應時間是提交到第一次有反應（首次被排到）的時間；週轉時間 (turnaround) 是提交到完成；等待時間是在 ready 佇列等待的總和。
+- id: os-sched-006
+  difficulty: intermediate
+  tags: [sjf, prediction]
+  question: |
+    SJF 在實務上難以直接實作的主因是？
+  options:
+    - "需要太多記憶體"
+    - "無法事先確知每個行程下一段 CPU burst 的長度"
+    - "只能在單核心執行"
+    - "會造成死鎖"
+  answer: 1
+  explanation: |
+    SJF 需要知道下一個 CPU burst 長度，但這通常未知。實務上以指數加權移動平均 (exponential averaging) 等方法「預測」burst 長度來近似 SJF。
+- id: os-sched-007
+  difficulty: intermediate
+  tags: [priority, starvation, aging]
+  question: |
+    優先權排程可能造成低優先權行程「飢餓 (starvation)」，常見的解法是？
+  options:
+    - "提高所有行程的優先權"
+    - "老化 (aging)：隨等待時間增加逐步提升行程的優先權"
+    - "改用 FCFS"
+    - "縮短時間片"
+  answer: 1
+  explanation: |
+    老化讓長期等待的低優先權行程優先權逐漸上升，最終得以執行，避免無限期飢餓。
+- id: os-sched-008
+  difficulty: intermediate
+  tags: [round-robin, quantum]
+  question: |
+    Round Robin 的時間片 (time quantum) 設得「太小」會有什麼問題？
+  options:
+    - "回應時間變差"
+    - "上下文切換次數過多，切換開銷佔比上升，吞吐量下降"
+    - "退化成 FCFS"
+    - "造成死鎖"
+  answer: 1
+  explanation: |
+    quantum 太小→頻繁切換→切換開銷比例高。quantum 太大→RR 退化成 FCFS。需取折衷，通常讓 quantum 略大於多數互動式 burst。
+- id: os-sched-009
+  difficulty: intermediate
+  tags: [srtf]
+  question: |
+    SRTF (Shortest Remaining Time First) 與 SJF 的關係是？
+  options:
+    - "SRTF 是「搶佔式」版本的 SJF"
+    - "SRTF 是「非搶佔式」版本的 SJF"
+    - "兩者完全無關"
+    - "SRTF 依優先權排程"
+  answer: 0
+  explanation: |
+    SRTF 是搶佔式 SJF：新任務到達時，若其執行時間比目前任務的「剩餘時間」更短，就搶佔。對平均等待時間更佳，但搶佔成本與飢餓風險增加。
+- id: os-sched-010
+  difficulty: intermediate
+  tags: [turnaround, metrics]
+  question: |
+    若一行程在 t=0 提交、t=8 完成，且其總 CPU 執行需求為 5，則其「等待時間」為？
+  options:
+    - "8"
+    - "5"
+    - "3"
+    - "13"
+  answer: 2
+  explanation: |
+    週轉時間 = 完成 - 提交 = 8 - 0 = 8；等待時間 = 週轉時間 - 實際執行時間 = 8 - 5 = 3。
+- id: os-sched-011
+  difficulty: intermediate
+  tags: [multilevel-queue]
+  question: |
+    多層佇列 (multilevel queue) 排程的特徵是？
+  options:
+    - "所有行程共用單一佇列，依優先權排序"
+    - "依行程類型分到不同佇列（如前景/背景），各佇列可有自己的排程演算法"
+    - "行程可隨時在佇列間自由移動"
+    - "只適用於即時系統"
+  answer: 1
+  explanation: |
+    多層佇列把行程「永久」分類到不同佇列（如互動式用 RR、批次用 FCFS），佇列之間再以固定優先權或時間片分配。行程能跨佇列移動的是「多層回饋佇列 MLFQ」。
+- id: os-sched-012
+  difficulty: intermediate
+  tags: [cpu-bound, io-bound]
+  question: |
+    混合 CPU-bound 與 I/O-bound 行程時，良好排程通常傾向？
+  options:
+    - "讓 CPU-bound 行程優先，盡快算完"
+    - "適度提升 I/O-bound 行程的回應，讓它快速發出 I/O 後去等待，提高裝置與 CPU 的整體利用率"
+    - "完全忽略 I/O-bound 行程"
+    - "禁止 I/O-bound 行程被搶佔"
+  answer: 1
+  explanation: |
+    I/O-bound 行程通常 CPU burst 短、很快又去等 I/O。讓它們有較好回應能保持 I/O 裝置忙碌，CPU 也能在它們等待時服務別人，整體利用率更高。
+- id: os-sched-013
+  difficulty: advanced
+  tags: [mlfq]
+  question: |
+    多層回饋佇列 (MLFQ) 中，一個「用完整個時間片仍未完成」的行程通常會？
+  options:
+    - "被提升到更高優先權佇列"
+    - "被降到較低優先權佇列（較長時間片）"
+    - "立即終止"
+    - "維持在原佇列不變"
+  answer: 1
+  explanation: |
+    MLFQ 用行程的行為動態調整優先權：用完時間片（偏 CPU-bound）就降級到低優先權、長時間片的佇列；常讓出 CPU（偏互動式）則留在高優先權。多數實作也週期性提升所有行程以防飢餓。
+- id: os-sched-014
+  difficulty: advanced
+  tags: [fcfs, convoy]
+  question: |
+    關於「護衛效應 (convoy effect)」，下列敘述何者最精確？
+  options:
+    - "多個短任務聚集在一起同時執行"
+    - "一個長 CPU-bound 行程佔住 CPU，使後方眾多短 I/O-bound 行程都被迫等待，連帶讓 I/O 裝置閒置"
+    - "行程在佇列間反覆移動造成的震盪"
+    - "高優先權任務搶佔造成的延遲"
+  answer: 1
+  explanation: |
+    在非搶佔式 FCFS 下，長任務佔 CPU 時，後面的短 I/O-bound 行程排隊空等，I/O 裝置也因沒人發出請求而閒置，整體利用率與週轉時間都變差。
+- id: os-sched-015
+  difficulty: advanced
+  tags: [burst-prediction]
+  question: |
+    用指數加權平均預測下一次 CPU burst：τ(n+1) = α·t(n) + (1−α)·τ(n)。當 α 越「大」代表？
+  options:
+    - "越重視歷史悠久的舊資料"
+    - "越重視最近一次實際 burst t(n)，對近期變化更敏感"
+    - "預測值固定不變"
+    - "完全忽略最近的觀測值"
+  answer: 1
+  explanation: |
+    α 是最近觀測值的權重。α 越大越看重最新的 t(n)、反應快但雜訊大；α 越小越平滑、越依賴歷史。α=0 時預測值恆定，α=1 時只看上一次。
+- id: os-sched-016
+  difficulty: advanced
+  tags: [quantum, tradeoff]
+  question: |
+    設計 RR 時間片大小時的核心取捨是？
+  options:
+    - "quantum 越大回應時間一定越好"
+    - "quantum 太小→切換開銷高；太大→退化為 FCFS、回應變差。需在兩者間折衷"
+    - "quantum 大小不影響任何效能指標"
+    - "quantum 必須等於上下文切換時間"
+  answer: 1
+  explanation: |
+    一般經驗法則是讓約 80% 的 CPU burst 短於 quantum，使多數任務一個時間片內完成、又不會切換過於頻繁。
+- id: os-sched-017
+  difficulty: advanced
+  tags: [real-time, edf, rms]
+  question: |
+    即時排程中，EDF (Earliest Deadline First) 相對於 RMS (Rate-Monotonic) 的特點是？
+  options:
+    - "EDF 是靜態優先權，RMS 是動態優先權"
+    - "EDF 為動態優先權（依最近截止期），理論上可達 100% CPU 利用率仍可排程"
+    - "RMS 一定優於 EDF"
+    - "兩者都無法保證即時性"
+  answer: 1
+  explanation: |
+    EDF 依「最近的截止期」動態指定優先權，對可搶佔的週期性任務，只要總利用率 ≤ 1 即可排程。RMS 為靜態優先權（週期越短優先權越高），可排程上限約為 ln2 ≈ 69%（n 大時）。
+- id: os-sched-018
+  difficulty: advanced
+  tags: [dispatch-latency]
+  question: |
+    「分派延遲 (dispatch latency)」指的是？
+  options:
+    - "行程在 ready 佇列等待的總時間"
+    - "排程器決定停止一個行程、到實際開始執行另一個行程之間的時間"
+    - "I/O 完成所需的時間"
+    - "行程從建立到第一次執行的時間"
+  answer: 1
+  explanation: |
+    分派延遲是 dispatcher 停掉舊行程、切換上下文、啟動新行程所花的時間。即時系統特別在意把它壓到最低且可預測。
+- id: os-sched-019
+  difficulty: master
+  tags: [linux, cfs]
+  question: |
+    Linux 的 CFS (Completely Fair Scheduler) 主要依據什麼來挑選下一個要執行的任務？
+  options:
+    - "固定的靜態優先權數值"
+    - "挑選「虛擬執行時間 (vruntime)」最小的任務，藉此逼近公平分配 CPU"
+    - "永遠選最短剩餘時間的任務"
+    - "輪流給每個任務固定的毫秒數"
+  answer: 1
+  explanation: |
+    CFS 用紅黑樹依 vruntime 排序，總是選 vruntime 最小者執行，讓每個任務拿到接近等量（依 nice 權重調整）的 CPU 時間，取代了傳統固定時間片的概念。
+- id: os-sched-020
+  difficulty: master
+  tags: [multicore, affinity]
+  question: |
+    多核心系統中維持「處理器親和性 (processor affinity)」的主要動機是？
+  options:
+    - "避免行程被任何核心執行"
+    - "讓行程盡量留在同一核心，重用其 cache（避免遷移後 cache 變冷）以提升效能"
+    - "強制所有行程集中在單一核心"
+    - "降低記憶體用量"
+  answer: 1
+  explanation: |
+    行程在某核心執行後，其工作集已暖在該核心的 cache。把它遷到別的核心會使 cache 失效、需重新填充。親和性盡量讓行程留在原核心，與負載平衡之間需取捨。

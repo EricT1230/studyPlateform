@@ -1,0 +1,260 @@
+- id: os-sync-001
+  difficulty: basic
+  tags: [critical-section]
+  question: |
+    臨界區間問題 (critical-section problem) 的解必須滿足三項性質，下列「不」屬於其中的是？
+  options:
+    - "互斥 (mutual exclusion)"
+    - "前進 (progress)"
+    - "有限等待 (bounded waiting)"
+    - "最高吞吐量 (maximum throughput)"
+  answer: 3
+  explanation: |
+    臨界區間解需滿足互斥、前進（沒人在臨界區時，想進入者不應被無關行程無限延遲）、有限等待（等待進入的次數有上限）。吞吐量並非其正確性要求。
+- id: os-sync-002
+  difficulty: basic
+  tags: [mutex, semaphore]
+  question: |
+    互斥鎖 (mutex) 與計數號誌 (counting semaphore) 的主要差別是？
+  options:
+    - "mutex 只允許一個持有者（所有權概念），counting semaphore 可允許最多 N 個同時通過"
+    - "兩者完全相同"
+    - "semaphore 只能鎖單一資源"
+    - "mutex 可同時被多個執行緒持有"
+  answer: 0
+  explanation: |
+    mutex 表達「同一時間只有一個持有者」且通常有所有權（誰鎖誰解）；counting semaphore 維護一個計數，允許最多 N 個執行緒同時通過，常用於有限資源池。
+- id: os-sync-003
+  difficulty: basic
+  tags: [semaphore]
+  question: |
+    二元號誌 (binary semaphore) 的值域是？
+  options:
+    - "任意整數"
+    - "只有 0 與 1"
+    - "只有正整數"
+    - "0 到 N"
+  answer: 1
+  explanation: |
+    二元號誌只有 0、1 兩種值，行為類似 mutex，用於互斥；計數號誌則可為較大的非負整數，表示可用資源數。
+- id: os-sync-004
+  difficulty: basic
+  tags: [deadlock]
+  question: |
+    死鎖 (deadlock) 的直觀定義是？
+  options:
+    - "一組行程各自持有資源並等待對方持有的資源，所有人都無法前進"
+    - "行程因優先權太低永遠拿不到 CPU"
+    - "記憶體不足"
+    - "行程結束時未釋放資源"
+  answer: 0
+  explanation: |
+    死鎖是一組行程形成循環等待：每個都持有資源並等待此循環中另一行程持有的資源，結果全體永久停滯。
+- id: os-sync-005
+  difficulty: basic
+  tags: [spinlock]
+  question: |
+    自旋鎖 (spinlock) 的行為是？
+  options:
+    - "取不到鎖時讓行程睡眠、被喚醒才重試"
+    - "取不到鎖時持續忙碌輪詢 (busy-wait) 直到取得"
+    - "永遠不會阻塞"
+    - "由磁碟控制器實作"
+  answer: 1
+  explanation: |
+    spinlock 在等待時忙碌輪詢、不放棄 CPU。臨界區極短且在多核心時可避免上下文切換成本；但等待久會浪費 CPU，單核心上自旋更不划算。
+- id: os-sync-006
+  difficulty: intermediate
+  tags: [semaphore, atomicity]
+  question: |
+    號誌的 wait()（P）與 signal()（V）操作必須「原子 (atomic)」執行，原因是？
+  options:
+    - "為了讓程式碼比較短"
+    - "避免多執行緒同時修改號誌計數造成競爭條件、破壞互斥"
+    - "原子操作比較省電"
+    - "因為它們需要存取磁碟"
+  answer: 1
+  explanation: |
+    wait/signal 內含對計數的 read-modify-write，若不原子地執行，兩執行緒可能同時看到舊值並都通過，破壞互斥。需以關中斷或原子指令保證不可分割。
+- id: os-sync-007
+  difficulty: intermediate
+  tags: [deadlock, coffman]
+  question: |
+    死鎖發生需「同時」成立四個必要條件，下列何者「不」屬於 Coffman 四條件？
+  options:
+    - "互斥 (mutual exclusion)"
+    - "持有並等待 (hold and wait)"
+    - "可搶佔 (preemption)"
+    - "循環等待 (circular wait)"
+  answer: 2
+  explanation: |
+    四必要條件為互斥、持有並等待、「不可搶佔 (no preemption)」、循環等待。題目列的是「可搶佔」，與條件相反，故不屬於。
+- id: os-sync-008
+  difficulty: intermediate
+  tags: [producer-consumer]
+  question: |
+    生產者-消費者（有限緩衝區）問題中，通常需要哪些同步原語？
+  options:
+    - "一個 mutex 保護緩衝區，加上 empty / full 兩個計數號誌"
+    - "只需一個 mutex"
+    - "只需一個計數號誌"
+    - "不需要任何同步"
+  answer: 0
+  explanation: |
+    典型解用 mutex 互斥存取緩衝區，empty 號誌（初值=容量）計可放入的空位、full 號誌（初值=0）計可取出的項目，協調生產者與消費者的等待。
+- id: os-sync-009
+  difficulty: intermediate
+  tags: [readers-writers]
+  question: |
+    讀者-寫者問題 (readers-writers) 的核心約束是？
+  options:
+    - "任何時刻最多一個讀者"
+    - "多個讀者可同時讀，但寫者必須獨佔（讀寫互斥、寫寫互斥）"
+    - "讀者與寫者可同時存取"
+    - "寫者可以多個同時寫"
+  answer: 1
+  explanation: |
+    讀者-寫者允許多讀者並行（讀不改狀態），但寫者需獨佔存取，且不能與任何讀者同時進行。不同變體在偏好讀者或寫者上有別（可能造成另一方飢餓）。
+- id: os-sync-010
+  difficulty: intermediate
+  tags: [busy-waiting]
+  question: |
+    忙碌等待 (busy waiting) 的主要缺點是？
+  options:
+    - "需要太多記憶體"
+    - "在等待期間持續佔用 CPU 卻不做有用工作，浪費運算資源"
+    - "會造成資料損毀"
+    - "無法用於多執行緒"
+  answer: 1
+  explanation: |
+    忙碌等待讓 CPU 空轉輪詢。對長等待很浪費，因此常改用阻塞式（睡眠/喚醒）號誌。但在臨界區極短、多核心場景，自旋有時反而比切換便宜。
+- id: os-sync-011
+  difficulty: intermediate
+  tags: [monitor]
+  question: |
+    管程 (monitor) 相對於裸用號誌的優點是？
+  options:
+    - "把共享資料與其操作封裝在一起、自動互斥，降低誤用號誌（如忘了 signal）的風險"
+    - "執行速度一定更快"
+    - "不需要任何條件變數"
+    - "可在沒有編譯器/語言支援下自動運作"
+  answer: 0
+  explanation: |
+    管程是高階同步建構：封裝共享狀態，保證同一時間只有一個執行緒在管程內，並提供條件變數 (condition variable) 做 wait/signal，較不易出錯。需語言/執行庫支援。
+- id: os-sync-012
+  difficulty: intermediate
+  tags: [livelock]
+  question: |
+    活鎖 (livelock) 與死鎖 (deadlock) 的差別是？
+  options:
+    - "活鎖中行程狀態不斷改變卻無實質進展；死鎖中行程完全停滯不動"
+    - "兩者完全相同"
+    - "活鎖只發生在單執行緒"
+    - "死鎖中行程仍在做有用工作"
+  answer: 0
+  explanation: |
+    死鎖的行程被永久阻塞、不動；活鎖的行程持續執行並改變狀態（例如互相禮讓、反覆重試）卻始終無法前進。兩者都導致無進展。
+- id: os-sync-013
+  difficulty: advanced
+  tags: [deadlock, prevention]
+  question: |
+    死鎖「預防 (prevention)」的策略是？
+  options:
+    - "讓系統進入安全狀態後才配置資源"
+    - "設計上「否定」四必要條件之一（例如要求一次取得所有資源、或對資源強加全序避免循環等待）"
+    - "週期性偵測死鎖再復原"
+    - "忽略死鎖、重開機處理"
+  answer: 1
+  explanation: |
+    預防從結構上讓四條件之一不可能成立：如消除持有並等待（一次配齊）、允許搶佔、或對資源編號強制以遞增順序請求以打破循環等待。
+- id: os-sync-014
+  difficulty: advanced
+  tags: [deadlock, avoidance, safe-state]
+  question: |
+    死鎖「避免 (avoidance)」中的「安全狀態 (safe state)」指？
+  options:
+    - "系統完全沒有任何資源被配置"
+    - "存在一個讓所有行程都能依序取得所需資源並完成的執行順序 (safe sequence)"
+    - "所有行程都已結束"
+    - "沒有任何行程在等待"
+  answer: 1
+  explanation: |
+    安全狀態指存在一個安全序列，使每個行程都能取得其最大需求、執行完並釋放資源，讓後續行程也能完成。避免演算法只允許會保持安全狀態的配置。
+- id: os-sync-015
+  difficulty: advanced
+  tags: [bankers-algorithm]
+  question: |
+    銀行家演算法 (Banker's algorithm) 的用途是？
+  options:
+    - "偵測已發生的死鎖"
+    - "在配置資源「之前」檢查配置後系統是否仍處於安全狀態，否則拒絕該配置以避免死鎖"
+    - "從死鎖中復原"
+    - "排程 CPU"
+  answer: 1
+  explanation: |
+    銀行家演算法需事先知道每行程的最大需求，於每次資源請求時試算配置後是否仍能找到安全序列；若否則讓請求等待，藉此「避免」進入不安全狀態。
+- id: os-sync-016
+  difficulty: advanced
+  tags: [deadlock, detection]
+  question: |
+    死鎖「偵測與復原」相對於「避免」的特點是？
+  options:
+    - "允許死鎖發生，事後透過資源配置圖/矩陣演算法偵測，再以終止行程或搶佔資源復原"
+    - "完全不可能發生死鎖"
+    - "不需要任何演算法"
+    - "與避免完全相同"
+  answer: 0
+  explanation: |
+    偵測法不預先限制配置（吞吐較高），而是定期檢查是否出現循環等待；偵測到後以終止部分行程或搶佔資源來打破死鎖。代價是復原成本與偵測開銷。
+- id: os-sync-017
+  difficulty: advanced
+  tags: [atomic, test-and-set]
+  question: |
+    硬體原子指令如 TestAndSet / CompareAndSwap 對同步的價值在於？
+  options:
+    - "提供不可被中斷分割的 read-modify-write，能用來建構正確的鎖與無鎖結構"
+    - "讓記憶體變大"
+    - "加速磁碟存取"
+    - "取代分頁機制"
+  answer: 0
+  explanation: |
+    這些指令原子地完成「讀取並有條件修改」，是實作 spinlock、號誌與 lock-free 演算法的基礎，避免了純軟體互斥的複雜性與正確性問題。
+- id: os-sync-018
+  difficulty: advanced
+  tags: [semaphore, ordering]
+  question: |
+    號誌除了互斥，也常用於「排序 (ordering)」——強制 A 動作先於 B。典型作法是？
+  options:
+    - "用初值為 0 的號誌：B 先 wait()，A 完成後 signal()，確保 B 在 A 之後才前進"
+    - "用初值為 1 的 mutex 包住兩者"
+    - "讓 A、B 都自旋等待"
+    - "提高 A 的優先權即可"
+  answer: 0
+  explanation: |
+    以初值 0 的號誌做事件同步：B 執行到同步點先 wait() 而阻塞，A 完成關鍵步驟後 signal() 喚醒 B，保證 A→B 的先後順序。
+- id: os-sync-019
+  difficulty: master
+  tags: [dining-philosophers]
+  question: |
+    哲學家用餐問題 (dining philosophers) 中，若每位哲學家都「先拿左筷再拿右筷」，可能發生？
+  options:
+    - "記憶體洩漏"
+    - "死鎖：所有人同時拿起左筷後，都在等右筷，形成循環等待"
+    - "優先權反轉"
+    - "不會有任何問題"
+  answer: 1
+  explanation: |
+    全部先拿左筷會讓每人持有一支、等待右鄰的那支，構成循環等待而死鎖。解法包括限制同時進餐人數、奇偶哲學家拿筷順序相反（打破循環等待）、或一次原子地取得兩支。
+- id: os-sync-020
+  difficulty: master
+  tags: [lock-free, cas, memory-barrier]
+  question: |
+    無鎖 (lock-free) 程式設計中，常見的「ABA 問題」是指？
+  options:
+    - "兩個執行緒同時持有同一把鎖"
+    - "CAS 看到值仍為 A 就以為沒變，但其間其實經歷了 A→B→A 的變化，導致誤判"
+    - "記憶體位址重複配置"
+    - "編譯器重排指令造成的當機"
+  answer: 1
+  explanation: |
+    ABA 問題中，CompareAndSwap 僅比較「值」是否仍為 A，無法察覺中間被改成 B 又改回 A 的歷程，可能誤判狀態未變。常見對策是加版本號/標記（tagged pointer）或使用 double-width CAS。

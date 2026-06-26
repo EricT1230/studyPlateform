@@ -1,0 +1,260 @@
+- id: os-vm-001
+  difficulty: basic
+  tags: [virtual-memory, basics]
+  question: |
+    虛擬記憶體 (virtual memory) 帶來的核心好處是？
+  options:
+    - "讓程式的邏輯位址空間可大於實體記憶體，且各行程位址空間互相隔離"
+    - "讓 CPU 時脈變快"
+    - "完全消除磁碟存取"
+    - "讓所有行程共用同一段實體記憶體"
+  answer: 0
+  explanation: |
+    虛擬記憶體把邏輯位址映射到實體位址，使程式可用比實體記憶體更大的位址空間（部分放磁碟），並提供行程間的位址隔離與保護。
+- id: os-vm-002
+  difficulty: basic
+  tags: [paging]
+  question: |
+    分頁 (paging) 中，「page」與「frame」的關係是？
+  options:
+    - "page 是實體記憶體的單位，frame 是虛擬位址的單位"
+    - "page 是虛擬位址空間的固定大小區塊，frame 是實體記憶體的對應固定大小區塊"
+    - "兩者大小通常不同"
+    - "frame 只存在於磁碟上"
+  answer: 1
+  explanation: |
+    虛擬位址空間切成大小固定的 page，實體記憶體切成同樣大小的 frame，分頁表把 page 映射到 frame。兩者大小相同。
+- id: os-vm-003
+  difficulty: basic
+  tags: [page-table]
+  question: |
+    分頁表 (page table) 的主要功能是？
+  options:
+    - "記錄每個檔案的位置"
+    - "把虛擬頁號 (page number) 映射到實體框號 (frame number)"
+    - "儲存 CPU 暫存器內容"
+    - "管理行程的排程優先權"
+  answer: 1
+  explanation: |
+    分頁表為每個行程維護 page→frame 的映射，並含有效位元、保護位元、髒位元等。虛擬位址 = 頁號 + 頁內偏移。
+- id: os-vm-004
+  difficulty: basic
+  tags: [page-fault]
+  question: |
+    「分頁錯失 (page fault)」發生於？
+  options:
+    - "CPU 除以零"
+    - "存取的虛擬頁目前不在實體記憶體中（有效位元為無效），需由作業系統載入"
+    - "分頁表已滿"
+    - "行程嘗試寫入唯讀變數"
+  answer: 1
+  explanation: |
+    當存取的頁不在記憶體（valid bit 標示不在），會觸發 page fault，OS 從磁碟把該頁載入某個 frame、更新分頁表後重試該指令。
+- id: os-vm-005
+  difficulty: basic
+  tags: [tlb]
+  question: |
+    TLB (Translation Lookaside Buffer) 的用途是？
+  options:
+    - "快取最近的位址轉換 (page→frame)，加速虛擬到實體位址的查詢"
+    - "儲存最近執行的指令"
+    - "快取磁碟區塊"
+    - "管理行程佇列"
+  answer: 0
+  explanation: |
+    TLB 是位址轉換的硬體快取。命中時可免去存取記憶體中分頁表的開銷；未命中則需走分頁表（可能多層）再填入 TLB。
+- id: os-vm-006
+  difficulty: intermediate
+  tags: [demand-paging]
+  question: |
+    「需求分頁 (demand paging)」的策略是？
+  options:
+    - "程式啟動時就把所有頁載入記憶體"
+    - "只有在實際被存取（觸發 page fault）時才把頁載入記憶體"
+    - "把整個磁碟複製到記憶體"
+    - "永遠不把任何頁載入記憶體"
+  answer: 1
+  explanation: |
+    需求分頁採惰性載入：頁只有在第一次被存取時才載入，減少啟動時間與記憶體用量。代價是首次存取會有 page fault 延遲。
+- id: os-vm-007
+  difficulty: intermediate
+  tags: [page-fault, handling]
+  question: |
+    處理一次 page fault 時，下列哪一步「不」屬於典型流程？
+  options:
+    - "檢查存取是否合法（在行程位址空間內）"
+    - "找一個空閒 frame（必要時用置換演算法選犧牲頁換出）"
+    - "從磁碟讀入所需頁並更新分頁表"
+    - "重新編譯該行程的程式碼"
+  answer: 3
+  explanation: |
+    page fault 流程：驗證存取合法性→取得 frame（必要時置換）→自磁碟載入頁→更新分頁表與 TLB→重試觸發錯失的指令。完全不涉及重新編譯。
+- id: os-vm-008
+  difficulty: intermediate
+  tags: [effective-access-time]
+  question: |
+    若記憶體存取需 100ns、page fault 服務需 8ms，page fault 率為 p，則有效存取時間約為？
+  options:
+    - "(1−p)·100ns + p·8ms"
+    - "100ns + 8ms"
+    - "p·100ns"
+    - "8ms / p"
+  answer: 0
+  explanation: |
+    有效存取時間 = (1−p)×命中時間 + p×缺頁服務時間 = (1−p)·100ns + p·8,000,000ns。因缺頁服務遠大於記憶體存取，即使很小的 p 也會大幅拉高平均時間。
+- id: os-vm-009
+  difficulty: intermediate
+  tags: [thrashing]
+  question: |
+    「輾轉 (thrashing)」是指？
+  options:
+    - "CPU 過熱降頻"
+    - "行程因可用 frame 太少而頻繁 page fault，幾乎所有時間都在換頁、CPU 利用率反而暴跌"
+    - "磁碟讀寫頭來回移動"
+    - "兩行程互相等待對方的鎖"
+  answer: 1
+  explanation: |
+    當同時執行的行程過多、每個分到的 frame 不足以容納其工作集時，會不斷 page fault、互相搶 frame，系統忙於換頁而非運算，CPU 利用率驟降。
+- id: os-vm-010
+  difficulty: intermediate
+  tags: [working-set]
+  question: |
+    工作集模型 (working set model) 的核心概念是？
+  options:
+    - "行程在最近一段時間窗 Δ 內存取過的頁集合，近似其當前所需的記憶體"
+    - "行程一生用到的所有頁"
+    - "行程的分頁表大小"
+    - "磁碟上交換區的大小"
+  answer: 0
+  explanation: |
+    工作集 W(t,Δ) 是時間窗 Δ 內被參考的頁集合，估計行程「現在」需要的 frame 數。OS 可據此分配 frame、偵測並避免 thrashing。
+- id: os-vm-011
+  difficulty: intermediate
+  tags: [locality]
+  question: |
+    虛擬記憶體之所以有效，主要倚賴程式的「參考局部性 (locality of reference)」，它包含？
+  options:
+    - "時間局部性與空間局部性"
+    - "只有時間局部性"
+    - "只有空間局部性"
+    - "與局部性無關，純靠磁碟速度"
+  answer: 0
+  explanation: |
+    時間局部性：剛存取的位址近期可能再被存取；空間局部性：鄰近位址近期可能被存取。兩者讓少量在記憶體的頁就能服務多數存取，降低缺頁。
+- id: os-vm-012
+  difficulty: intermediate
+  tags: [fragmentation]
+  question: |
+    純分頁 (paging) 系統主要會產生哪一種碎片？
+  options:
+    - "外部碎片 (external fragmentation)"
+    - "內部碎片 (internal fragmentation)：最後一頁通常用不滿"
+    - "完全沒有任何碎片"
+    - "磁碟碎片"
+  answer: 1
+  explanation: |
+    分頁以固定大小配置，消除了外部碎片，但行程最後一頁通常填不滿，造成內部碎片（平均每行程約半頁）。
+- id: os-vm-013
+  difficulty: advanced
+  tags: [page-replacement, fifo, belady]
+  question: |
+    關於 FIFO 頁置換演算法的「Belady's anomaly」，正確的描述是？
+  options:
+    - "增加 frame 數一定減少 page fault"
+    - "在某些參考字串下，增加 frame 數反而「增加」page fault 次數"
+    - "FIFO 永遠是最佳演算法"
+    - "FIFO 不會發生任何 page fault"
+  answer: 1
+  explanation: |
+    Belady 異常指 FIFO（及部分非堆疊演算法）可能出現「frame 變多、缺頁反而變多」的反直覺現象。LRU、OPT 等堆疊演算法 (stack algorithm) 不會發生。
+- id: os-vm-014
+  difficulty: advanced
+  tags: [page-replacement, lru]
+  question: |
+    LRU (Least Recently Used) 置換的依據與實作難點是？
+  options:
+    - "置換「最久未被使用」的頁；精確實作需硬體支援時間戳或堆疊，成本高"
+    - "置換最近剛用過的頁"
+    - "隨機選一頁置換"
+    - "置換編號最大的頁"
+  answer: 0
+  explanation: |
+    LRU 用「最久未使用」近似未來最不可能用到的頁。精確 LRU 需為每次存取記錄時間或維護存取堆疊，硬體成本高，故常用 clock/second-chance 等近似法。
+- id: os-vm-015
+  difficulty: advanced
+  tags: [page-replacement, optimal]
+  question: |
+    最佳置換演算法 (OPT / MIN) 的策略與用途是？
+  options:
+    - "置換「未來最久才會再被使用」的頁；無法實作，但作為其他演算法的理論下界"
+    - "置換最近最常使用的頁，可實際部署"
+    - "與 FIFO 完全相同"
+    - "永遠不產生缺頁"
+  answer: 0
+  explanation: |
+    OPT 置換未來最久才會用到的頁，可證明缺頁次數最少，但需預知未來故無法實作。它常用來當基準，衡量真實演算法離最佳有多遠。
+- id: os-vm-016
+  difficulty: advanced
+  tags: [page-replacement, clock]
+  question: |
+    Clock（second-chance）演算法相對於精確 LRU 的優點是？
+  options:
+    - "缺頁次數一定比 LRU 少"
+    - "用一個參考位元 (reference bit) 近似 LRU，硬體成本低、易實作"
+    - "完全不需要任何位元"
+    - "可預知未來存取"
+  answer: 1
+  explanation: |
+    Clock 把頁排成環，用 reference bit 給「最近用過」的頁第二次機會：指標掃到 ref=1 就清 0 並略過，ref=0 則置換。以極低成本近似 LRU。
+- id: os-vm-017
+  difficulty: advanced
+  tags: [cow, virtual-memory]
+  question: |
+    copy-on-write 與虛擬記憶體的關係是？
+  options:
+    - "兩者無關"
+    - "利用分頁表把共享頁標為唯讀，寫入時觸發保護錯誤再複製該頁，達成延遲複製"
+    - "COW 會立即複製整個位址空間"
+    - "COW 只用於磁碟檔案"
+  answer: 1
+  explanation: |
+    COW 把父子（或映射）共享的頁標為唯讀，任一方寫入時觸發頁保護例外，OS 再複製該頁並改回可寫。是分頁機制的直接應用。
+- id: os-vm-018
+  difficulty: advanced
+  tags: [multilevel-page-table]
+  question: |
+    採用「多層分頁表 (multilevel page table)」的主要動機是？
+  options:
+    - "加快 CPU 時脈"
+    - "避免為龐大且稀疏的位址空間配置單一連續的巨大分頁表，只在需要時配置下層表"
+    - "讓分頁表存到 TLB"
+    - "消除 page fault"
+  answer: 1
+  explanation: |
+    64 位元位址空間的單層分頁表會大到不可行。多層分頁表將頁號切段、逐層查找，未使用的區段不需配置下層表，大幅節省分頁表記憶體。
+- id: os-vm-019
+  difficulty: master
+  tags: [inverted-page-table]
+  question: |
+    反轉分頁表 (inverted page table) 的特點是？
+  options:
+    - "每個行程一張、大小隨虛擬位址空間成長"
+    - "全系統一張、項目數等於「實體 frame」數，以節省分頁表空間，但查詢較慢（需搜尋/雜湊）"
+    - "完全不需要任何查詢"
+    - "只儲存在 TLB 中"
+  answer: 1
+  explanation: |
+    反轉分頁表全系統一張，每個實體 frame 一個項目（記錄是哪個行程的哪一頁），空間隨實體記憶體而非虛擬空間成長。缺點是依 (pid, page) 查 frame 較慢，常用雜湊加速。
+- id: os-vm-020
+  difficulty: master
+  tags: [tlb, huge-pages]
+  question: |
+    使用「大頁 (huge pages)」對 TLB 的主要效益是？
+  options:
+    - "縮小每個分頁表項目的大小"
+    - "提高 TLB reach（同樣數量的 TLB 項目能涵蓋更大記憶體範圍），減少 TLB miss"
+    - "讓 TLB 完全不需要"
+    - "增加 page fault 次數"
+  answer: 1
+  explanation: |
+    TLB 項目數有限，每項涵蓋一頁。改用大頁（如 2MB）後，同一項 TLB 涵蓋的位址範圍變大，TLB reach 提升、miss 減少，對大記憶體工作集尤其有利；代價是可能增加內部碎片。

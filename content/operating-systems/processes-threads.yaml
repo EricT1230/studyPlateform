@@ -1,0 +1,260 @@
+- id: os-procthread-001
+  difficulty: basic
+  tags: [process, basics]
+  question: |
+    「行程 (process)」與「程式 (program)」最關鍵的差別是？
+  options:
+    - "程式是執行中的實體，行程是磁碟上的檔案"
+    - "程式是磁碟上的被動指令集合，行程是執行中的程式實例（含狀態）"
+    - "兩者完全相同，只是稱呼不同"
+    - "行程不需要記憶體，程式需要"
+  answer: 1
+  explanation: |
+    程式是儲存在磁碟上的被動實體（指令與資料）；行程是「執行中的程式」，擁有自己的位址空間、暫存器狀態、堆疊與 PCB。同一個程式可同時對應多個行程。
+- id: os-procthread-002
+  difficulty: basic
+  tags: [thread]
+  question: |
+    同一行程內的多個執行緒 (thread) 預設「共享」下列何者？
+  options:
+    - "各自獨立的堆疊 (stack)"
+    - "各自獨立的暫存器與程式計數器"
+    - "程式碼區、全域資料與堆積 (heap)"
+    - "各自獨立的位址空間"
+  answer: 2
+  explanation: |
+    同行程的執行緒共享程式碼、全域/靜態資料與 heap；但各自擁有獨立的堆疊、暫存器與程式計數器 (PC)。
+- id: os-procthread-003
+  difficulty: basic
+  tags: [pcb]
+  question: |
+    行程控制區塊 (PCB) 通常「不」包含下列何者？
+  options:
+    - "行程狀態與程式計數器"
+    - "CPU 暫存器內容"
+    - "記憶體管理資訊（如分頁表指標）"
+    - "整個程式的原始碼"
+  answer: 3
+  explanation: |
+    PCB 保存行程的中繼資料：PID、狀態、PC、暫存器、排程資訊、記憶體管理資訊、開啟檔案表等。原始碼不在 PCB 內。
+- id: os-procthread-004
+  difficulty: basic
+  tags: [context-switch]
+  question: |
+    「上下文切換 (context switch)」指的是？
+  options:
+    - "把行程從磁碟載入記憶體"
+    - "儲存目前行程狀態並載入另一行程狀態，讓 CPU 切換執行對象"
+    - "把使用者模式切換到核心模式"
+    - "配置一段新的虛擬記憶體"
+  answer: 1
+  explanation: |
+    上下文切換是儲存當前執行緒/行程的 CPU 狀態（暫存器、PC 等）到其 PCB，再載入下一個的狀態。它是純開銷，期間不做有用工作。
+- id: os-procthread-005
+  difficulty: basic
+  tags: [fork, unix]
+  question: |
+    在 UNIX 中，fork() 成功後在「子行程」裡的回傳值是？
+  options:
+    - "子行程的 PID"
+    - "0"
+    - "-1"
+    - "父行程的 PID"
+  answer: 1
+  explanation: |
+    fork() 在子行程回傳 0，在父行程回傳子行程的 PID，失敗則回傳 -1。程式常用這個差異分流父子邏輯。
+- id: os-procthread-006
+  difficulty: intermediate
+  tags: [process-state, scheduling]
+  question: |
+    行程從 ready 狀態轉為 running 狀態，是由下列何者觸發？
+  options:
+    - "I/O 完成中斷"
+    - "排程器 (scheduler) 的 dispatch"
+    - "行程呼叫 exit()"
+    - "發生 page fault"
+  answer: 1
+  explanation: |
+    ready→running 由排程器選中並 dispatch 到 CPU。running→ready 通常是時間片用盡（被搶佔）；running→waiting 是發出 I/O 或等待事件。
+- id: os-procthread-007
+  difficulty: intermediate
+  tags: [thread, performance]
+  question: |
+    相較於建立新「行程」，建立新「執行緒」通常較快，主要原因是？
+  options:
+    - "執行緒不需要被排程"
+    - "執行緒共享行程既有的位址空間，不必複製/建立新的位址空間"
+    - "執行緒永遠在核心模式執行"
+    - "執行緒不需要堆疊"
+  answer: 1
+  explanation: |
+    建立行程需建立新的位址空間（即使有 copy-on-write 也要建頁表等結構）；執行緒共享既有位址空間，只需配置自己的堆疊與暫存器狀態，故較輕量。
+- id: os-procthread-008
+  difficulty: intermediate
+  tags: [thread, kernel]
+  question: |
+    關於 user-level threads 與 kernel-level threads，下列何者正確？
+  options:
+    - "user-level thread 阻塞於系統呼叫時，核心仍能排程同行程的其他 user-level thread"
+    - "kernel-level thread 由核心感知並可在多核心上真正並行"
+    - "user-level thread 的切換一定比 kernel-level thread 慢"
+    - "kernel-level thread 不需要核心參與排程"
+  answer: 1
+  explanation: |
+    純 user-level threads 核心不感知，一條 thread 在系統呼叫阻塞會卡住整個行程（many-to-one）。kernel-level threads 由核心排程，可真正在多核心並行；其切換需進核心，較重。
+- id: os-procthread-009
+  difficulty: intermediate
+  tags: [zombie, unix]
+  question: |
+    UNIX 中「殭屍行程 (zombie)」是指？
+  options:
+    - "已結束但其結束狀態尚未被父行程以 wait() 回收的行程"
+    - "父行程已死、被 init 收養的行程"
+    - "陷入無窮迴圈、佔滿 CPU 的行程"
+    - "被換出到磁碟的行程"
+  answer: 0
+  explanation: |
+    子行程終止後會保留一個項目（結束碼）等父行程 wait() 回收，這段期間即殭屍。父行程若不回收會造成 PID 洩漏。被 init 收養的是孤兒 (orphan)。
+- id: os-procthread-010
+  difficulty: intermediate
+  tags: [orphan, unix]
+  question: |
+    父行程先結束、其仍在執行的子行程會怎樣？
+  options:
+    - "子行程立即被強制終止"
+    - "子行程成為孤兒，被 init/systemd（PID 1）收養"
+    - "子行程變成殭屍永遠卡住"
+    - "子行程自動成為新的父行程的父行程"
+  answer: 1
+  explanation: |
+    孤兒行程會被 PID 1（init/systemd）收養，由它負責後續 wait() 回收，因此孤兒不會變殭屍。
+- id: os-procthread-011
+  difficulty: intermediate
+  tags: [ipc]
+  question: |
+    比較「共享記憶體 (shared memory)」與「訊息傳遞 (message passing)」兩種 IPC，下列何者正確？
+  options:
+    - "共享記憶體通常較快，但需自行處理同步"
+    - "訊息傳遞通常較快，因為不需複製資料"
+    - "共享記憶體只能用於不同機器之間"
+    - "訊息傳遞不需要核心參與"
+  answer: 0
+  explanation: |
+    共享記憶體建立後存取不經核心、速度快，但需自行用鎖/號誌避免競爭。訊息傳遞由核心中介、較易正確同步，但每則訊息多有複製與系統呼叫開銷。
+- id: os-procthread-012
+  difficulty: intermediate
+  tags: [context-switch, performance]
+  question: |
+    下列何者「不是」上下文切換造成效能損耗的主要來源？
+  options:
+    - "儲存/恢復暫存器與 PCB 狀態"
+    - "快取 (cache) 與 TLB 內容因切換而失效，需重新填充"
+    - "排程器選擇下一個行程的計算"
+    - "把程式重新從磁碟編譯"
+  answer: 3
+  explanation: |
+    切換成本來自直接成本（存/載狀態、跑排程器）與間接成本（cache/TLB 變冷需重新暖機）。切換不涉及重新編譯。
+- id: os-procthread-013
+  difficulty: advanced
+  tags: [fork, cow]
+  question: |
+    現代 UNIX 的 fork() 多採用 copy-on-write (COW)，其行為是？
+  options:
+    - "fork 當下立即完整複製父行程整個位址空間"
+    - "父子共享相同實體分頁，僅在任一方「寫入」時才複製該分頁"
+    - "子行程完全不分配任何記憶體"
+    - "只複製堆疊，不複製 heap"
+  answer: 1
+  explanation: |
+    COW 讓 fork 後父子先共享唯讀對映的實體分頁；任一方寫入時才觸發複製該頁。這讓 fork 很快，尤其 fork 後常接著 exec() 直接丟棄舊位址空間。
+- id: os-procthread-014
+  difficulty: advanced
+  tags: [thread-model]
+  question: |
+    多對一 (many-to-one) 執行緒模型最大的缺點是？
+  options:
+    - "建立執行緒成本過高"
+    - "一條執行緒發出阻塞式系統呼叫會卡住整個行程，且無法利用多核心並行"
+    - "需要太多核心資源"
+    - "無法支援多執行緒程式"
+  answer: 1
+  explanation: |
+    many-to-one 把多個 user thread 對映到單一 kernel thread，核心一次只看到一條，故一條阻塞會卡全部，也無法把同行程的執行緒分散到多核心。
+- id: os-procthread-015
+  difficulty: advanced
+  tags: [thread-pool]
+  question: |
+    使用「執行緒池 (thread pool)」相對於「每個請求都新建一條執行緒」的主要好處是？
+  options:
+    - "可無限制地同時處理任意多請求"
+    - "省去重複建立/銷毀執行緒的開銷，並限制同時執行的執行緒數量"
+    - "讓每個請求都有獨立位址空間"
+    - "完全避免任何同步問題"
+  answer: 1
+  explanation: |
+    執行緒池預先建立並重複使用固定數量的執行緒，攤掉建立/銷毀成本，也對並行度設上限以避免資源耗盡（thread thrashing）。
+- id: os-procthread-016
+  difficulty: advanced
+  tags: [race-condition, concurrency]
+  question: |
+    「競爭條件 (race condition)」的本質是？
+  options:
+    - "兩個行程競爭同一顆 CPU"
+    - "運算結果取決於多個執行緒存取共享資料的相對時序，缺乏適當同步"
+    - "記憶體不足導致的錯誤"
+    - "磁碟 I/O 太慢造成的延遲"
+  answer: 1
+  explanation: |
+    競爭條件發生在多執行緒未同步地存取共享狀態，最終結果隨排程時序而異。典型例子是對共享計數器的非原子 read-modify-write。
+- id: os-procthread-017
+  difficulty: advanced
+  tags: [ipc, pipe]
+  question: |
+    關於 UNIX 匿名管線 (anonymous pipe)，下列何者正確？
+  options:
+    - "是雙向通訊通道"
+    - "是單向的位元組串流，通常用於有親屬關係的行程之間"
+    - "可在無關係的任意兩行程之間直接使用"
+    - "資料以固定大小的訊息為單位、保留邊界"
+  answer: 1
+  explanation: |
+    匿名管線是單向位元組串流（無訊息邊界），透過 fork 繼承檔案描述子，常用於父子行程間。要雙向需開兩條；無親屬關係多用 named pipe (FIFO) 或 socket。
+- id: os-procthread-018
+  difficulty: advanced
+  tags: [daemon]
+  question: |
+    「常駐行程 (daemon)」的典型特徵是？
+  options:
+    - "在前景執行並綁定使用者終端機"
+    - "在背景長期執行、不綁定控制終端機，常由 init 系統管理"
+    - "只能由 root 在登入時手動啟動"
+    - "執行完一個任務後立即結束"
+  answer: 1
+  explanation: |
+    daemon 是背景長駐的服務行程（如 sshd、cron），脫離控制終端機，通常開機由 init/systemd 啟動並監督。
+- id: os-procthread-019
+  difficulty: master
+  tags: [scheduling, concurrency, priority-inversion]
+  question: |
+    「優先權反轉 (priority inversion)」是指？
+  options:
+    - "排程器錯誤地把高優先權行程降級"
+    - "高優先權任務因所需的鎖被低優先權任務持有而被阻塞，且該低優先權任務又被中優先權任務搶佔，導致高優先權任務長時間等待"
+    - "兩個同優先權任務互相搶 CPU"
+    - "低優先權任務永遠拿不到 CPU（飢餓）"
+  answer: 1
+  explanation: |
+    優先權反轉中，高優先權 H 等待 L 持有的鎖，而中優先權 M 不需該鎖卻搶佔 L，使 L 無法釋放鎖，H 被間接卡住。經典解法是優先權繼承 (priority inheritance)，讓 L 暫時繼承 H 的優先權。
+- id: os-procthread-020
+  difficulty: master
+  tags: [thread, signals, concurrency]
+  question: |
+    在多執行緒行程中對「非同步信號 (asynchronous signal)」的處理，下列敘述何者最正確？
+  options:
+    - "信號一定會送達行程中的每一條執行緒"
+    - "行程層級的信號可送達任一條未阻擋該信號的執行緒；通常建議由專責執行緒以 sigwait 同步處理"
+    - "多執行緒程式無法處理信號"
+    - "每條執行緒都必須註冊相同的信號處理函式"
+  answer: 1
+  explanation: |
+    行程導向的信號（如 SIGINT）會交給「任一條」未遮罩該信號的執行緒處理，難以預測。常見作法是在所有執行緒遮罩該信號，另設一條專責執行緒用 sigwait() 同步等待處理，避免在 handler 裡碰到 async-signal-unsafe 問題。
