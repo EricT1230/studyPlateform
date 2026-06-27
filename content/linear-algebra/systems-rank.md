@@ -1,17 +1,77 @@
 # 線性系統與秩
 
-## 核心概念
+## 在解什麼？
 
-線性方程組 `Ax=b` 有解稱為 consistent；無解稱為 inconsistent。Augmented matrix `[A|b]` 把係數矩陣與右側向量合併，用 row operations 解題。Homogeneous system `Ax=0` 一定有 zero solution。Rank 是 pivot 數，也可理解為 column space 的維度。解集合的形狀由特解加上 null space 決定，因此 rank 同時控制限制數量與自由度。
+`Ax = b` 就是「一堆線性方程式」。三個可能：**唯一解、無解、無限多解**。
+這章的核心：用 **rank（秩）** 一眼判斷是哪一種。
 
-## 解題重點
+## 增廣矩陣 + 高斯消去
 
-Rouche-Capelli theorem 給出一致性條件：`rank(A)=rank([A|b])`。若一致且未知數數量為 `n`、rank 為 `r`，free variables 有 `n-r` 個；沒有 free variable 時唯一解，有 free variable 時通常無限多解。若 `A` 是可逆 square matrix，解為 `x=A^{-1}b`。幾何上，`Ax=b` 有解等價於 `b` 在 `A` 的 column space 中。Rectangular 或 rank-deficient 時，常改問 least squares 或最小 norm 解。SVD 觀點下，rank 是非零 singular values 的個數。
+把係數和右側併成 `[A | b]`，用列運算化簡：
 
-## 常見陷阱
+```
+ x +  y = 3        [ 1  1 | 3 ]
+2x +  y = 4   →    [ 2  1 | 4 ]
+                    化簡 → x=1, y=2（唯一解）
+```
 
-Elementary row operations 不改變 solution set，但 column operations 通常會改變原方程意義。Full column rank 表示 columns independent 與 `Ax=0` 只有 trivial solution；full row rank 表示 rows independent，不必然是 square。Least squares 的 normal equations 是 `A^T A x=A^T b`，不是原系統必有精確解。`rank(A)=rank(A^T)`，但 row space 與 column space 位在不同環境時不能混為一談。
+列運算（換列、列乘非零數、列加減）**不改變解集合**。
 
-## 練習前檢查
+## 用 rank 判斷有沒有解（一致性）
 
-先數未知數、方程數與 pivot 數。化簡後是否出現 `0=nonzero` 的矛盾列？free variables 有幾個？討論數值解時，condition number 是否可能放大誤差？若用 pseudoinverse，題目要的是精確解、least-squares 解，還是最小 norm 解？寫參數解時，每個自由變數都要保留，不要把一組特例誤當完整解。最後代回原式檢查。
+```
+rank(A) = rank([A|b])  →  有解 (consistent)
+rank(A) < rank([A|b])  →  無解 (inconsistent)
+```
+
+「無解」在化簡後會出現一列 `0 0 … 0 | 非零`，意思是「0 = 5」這種矛盾。
+
+## 有解時：唯一還是無限多？
+
+設未知數有 n 個、`r = rank(A)`：
+
+```
+自由變數個數 = n − r
+
+n − r = 0  →  唯一解
+n − r > 0  →  無限多解（有 n−r 個自由度）
+```
+
+```
+唯一解        無限多解（一條線）      無解
+  ╳  兩線交一點   ═══ 兩線重合         ║ ║ 兩線平行不交
+```
+
+## 齊次系統 Ax = 0
+
+`Ax = 0` **一定有解**（至少 x=0 這個顯然解）。
+- 若 `rank = n`（滿行秩）→ 只有零解。
+- 若 `rank < n` → 有非零解（無限多）。
+
+## 幾何意義
+
+`Ax = b` 有解 ⇔ **b 落在 A 的 column space 裡**（b 能被 A 的各行線性組合出來）。
+
+## 特解 + 齊次解 = 全部解
+
+無限多解時，完整解 = 「一個特解」+「Ax=0 的所有解（null space）」：
+
+```
+x = x_特解 + (自由變數參數化的 null space)
+```
+
+寫參數解時，**每個自由變數都要保留**，別只寫一個特例當完整答案。
+
+## 常見誤解
+
+- **列**運算不改變解集合；**行**運算通常會改變方程意義（少用）。
+- 滿行秩 (full column rank) ⇔ 各行獨立 ⇔ `Ax=0` 只有零解。
+- 方陣可逆才有 `x = A⁻¹b`；長方形/秩不足時改問**最小平方解**（normal equation `AᵀA x = Aᵀb`），那不是原系統的精確解。
+- `rank(A) = rank(Aᵀ)`，但 row space 與 column space 在不同空間，別混。
+
+## 解題時的判斷
+
+1. 數：未知數 n、方程數、pivot 數 r。
+2. 化簡後有沒有 `0 = 非零` 的矛盾列？→ 無解。
+3. 沒矛盾：`n−r=0` 唯一解、`n−r>0` 無限多（自由度 n−r）。
+4. 寫參數解時保留所有自由變數，最後**代回原式檢查**。

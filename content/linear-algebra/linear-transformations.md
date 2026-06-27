@@ -1,17 +1,72 @@
-# 線性變換
+# 線性變換 (Linear Transformation)
 
-## 核心概念
+## 什麼是線性變換？
 
-Linear transformation 保留加法與純量乘法：`T(u+v)=T(u)+T(v)`、`T(cu)=cT(u)`，等價於 `T(au+bv)=aT(u)+bT(v)`。因此必有 `T(0)=0`。對 `T: R^n -> R^m`，standard matrix 的第 `j` 欄是 `T(e_j)`。Kernel 是 `{x | T(x)=0}`，image/range 是所有可能輸出。幾何上，線性變換可拉伸、旋轉、投影或剪切，但不會把原點平移走。
+一個把向量變成向量的函數 T，只要滿足兩條規則就是線性的：
 
-## 解題重點
+```
+① T(u + v) = T(u) + T(v)      （加法保留）
+② T(c·u)   = c·T(u)           （純量乘法保留）
+```
 
-判斷 injective 可看 kernel 是否只有 zero vector；判斷 surjective 到 `R^m` 可看 rank 是否為 `m`。Rank-nullity theorem 是 `dim(domain)=rank+nullity`。Composition 的矩陣順序要反過來讀：若 `T(x)=Ax`、`S(y)=By`，則 `S o T` 的矩陣是 `BA`。換基時，basis vectors 作為 columns 的矩陣 `P` 滿足 `v=P[v]_B`。同一個 operator 在不同 basis 下會得到 similar matrices，但描述的是同一個線性作用。若子空間在作用後仍留在自身內，就稱為 invariant subspace，可把問題縮小到該子空間研究。
+直覺：線性變換可以**拉伸、旋轉、投影、剪切**，但**不會把原點移走**——所以必有 `T(0) = 0`。
 
-## 常見陷阱
+快速否定法：若 `T(0) ≠ 0`，它一定不是線性。
 
-`T(x)=Ax+b` 在 `b != 0` 時通常是 affine，不是 linear，因為 `T(0) != 0`。矩陣 entries 會隨 basis 改變，但 rank 是變換本身的性質。Orthogonal matrix 保留長度與 inner product，不代表每個座標不變。Functional 的輸出是 scalar，isomorphism 則必須同時 linear 且 bijective。
+## 矩陣就是線性變換
 
-## 練習前檢查
+每個 `T: Rⁿ → Rᵐ` 都對應一個矩陣 A，使 `T(x) = Ax`。
+**訣竅：A 的第 j 行 = T 作用在第 j 個基底向量 eⱼ 上的結果。**
 
-先確認 domain 與 codomain 維度。是否檢查了 `T(0)=0`？矩陣乘法順序是否符合「先右後左」？injective、surjective 的 rank 條件是否對應到正確空間維度？若題目談 quotient space，還要確認代表元選擇不影響輸出。幾何圖像可輔助判斷，但最後仍要回到線性條件。輸入輸出空間不同時，別亂用 determinant。
+```
+例：把平面逆時針轉 90°
+  T(e1)=T(1,0)=(0,1)     T(e2)=T(0,1)=(−1,0)
+  → A = [ 0  −1 ]
+        [ 1   0 ]
+```
+
+## 兩個重要子空間
+
+- **核 (kernel)**：被打成零的輸入，`{ x : T(x) = 0 }`。
+- **像 (image / range)**：所有可能的輸出。
+
+它們直接決定 T 的性質：
+- **單射 (injective)** ⇔ kernel 只有零向量。
+- **滿射 (surjective) 到 Rᵐ** ⇔ rank = m（像填滿整個 codomain）。
+
+## 秩-零度定理 (Rank–Nullity)
+
+```
+dim(domain) = rank + nullity
+              (像的維度) (核的維度)
+
+例：T: R⁵ → R³，rank=3 → nullity = 5 − 3 = 2
+```
+
+直覺：輸入的維度，要嘛「活下來變成輸出」(rank)、要嘛「被壓成零」(nullity)，加起來守恆。
+
+## 合成：矩陣順序要反過來
+
+先做 T 再做 S（`S∘T`），矩陣是 **BA**（不是 AB）：
+
+```
+T(x)=Ax, S(y)=By
+(S∘T)(x) = S(Ax) = B(Ax) = (BA)x
+```
+
+和函數合成一樣「右先左後」。
+
+## 常見誤解
+
+- **`T(x) = Ax + b`（b≠0）不是線性**，是仿射 (affine)——因為 `T(0)=b≠0`。
+- 矩陣的數值會隨**基底**改變，但 **rank 是變換本身的性質**（不隨基底變）。
+- 正交矩陣保長度與內積，**不代表每個座標不變**。
+- 同一個變換在不同基底下是**相似矩陣 (similar)**，描述同一作用。
+
+## 解題時的判斷
+
+- 先用「`T(0)=0`？加法/純量保留？」判斷是不是線性。
+- 求矩陣 → 算 T 對每個基底向量的結果，當成各行。
+- 單射看 kernel、滿射看 rank。
+- 合成記得 **BA（右先左後）**。
+- 輸入輸出空間維度不同時，**別用行列式**（det 只給方陣）。

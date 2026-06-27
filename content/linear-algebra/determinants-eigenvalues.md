@@ -1,17 +1,69 @@
 # 行列式與特徵值
 
-## 核心概念
+## 行列式 (determinant)：面積/體積的縮放倍率
 
-Determinant 只定義在 square matrix 上，衡量線性變換的有向體積縮放。`det(A) != 0` 等價於 `A` 可逆、rank 滿、columns 線性獨立。Triangular matrix 的 determinant 是主對角線乘積；交換兩列會變號，整個 `n x n` 矩陣乘以 `c` 會使 determinant 變成 `c^n det(A)`。Eigenpair 滿足 `Av=lambda v` 且 `v != 0`，意思是方向不變，只被縮放。行列式符號也可反映 orientation 是否反轉。
+行列式只定義在**方陣**上，幾何意義是「這個線性變換把面積（或體積）放大幾倍」。
 
-## 解題重點
+2×2 公式：
+```
+      | a  b |
+det = | c  d |  =  ad − bc
+```
 
-求 eigenvalues 通常先算 characteristic polynomial `det(lambda I-A)`，再解其根。Diagonal matrix 的 eigenvalues 就是對角線元素；trace 等於 eigenvalues 總和，determinant 等於 eigenvalues 乘積（含重數）。Diagonalization 的關鍵是是否有足夠多 linearly independent eigenvectors。若矩陣可寫成 `A=PDP^{-1}`，則高次方、遞迴與穩定性問題都可轉成對角線上的純量問題。Cofactor expansion 適合有很多零的列或欄，否則列運算通常更有效。
+直覺：
+- `det > 0`：方向不變、面積放大 det 倍。
+- `det < 0`：方向被翻轉（鏡射）。
+- **`det = 0`：把空間壓扁了**（壓到更低維），所以不可逆。
 
-## 常見陷阱
+關鍵等價：`det(A) ≠ 0` ⇔ A **可逆** ⇔ rank 滿 ⇔ columns 線性獨立。
 
-`det(A+B)` 一般不等於 `det(A)+det(B)`，但 `det(AB)=det(A)det(B)`。`0` 是 eigenvalue 代表矩陣 singular。Algebraic multiplicity 不保證等於 geometric multiplicity；後者不足時不可 diagonalize。Real symmetric matrix 的 eigenvalues 為 real，但不一定全為正；positive definite 才要求全部大於零。
+## 特徵值與特徵向量：方向不變、只被縮放
 
-## 練習前檢查
+`A v = λ v`（v ≠ 0）的意思是：向量 v 經過 A 變換後，**方向不變**，只被拉伸 λ 倍。
+v 是特徵向量、λ 是特徵值。
 
-矩陣是否為 square？row operation 對 determinant 的影響是否被記錄？eigenvector 是否非零？若宣稱可 diagonalize，是否已找到一組 basis 大小的 eigenvectors？相似矩陣共享 characteristic polynomial，但 eigenvectors 需依 basis 轉換。若討論極限，先看最大特徵值絕對值。代入前也要確認多項式定義方向。
+## 怎麼求：走一遍
+
+求 A = [[2,1],[1,2]] 的特徵值。解特徵多項式 `det(A − λI) = 0`：
+
+```
+| 2−λ   1  |
+|  1   2−λ |  = (2−λ)² − 1 = λ² − 4λ + 3 = (λ−1)(λ−3) = 0
+
+→ λ = 1, 3
+```
+
+求 λ=3 的特徵向量：解 (A − 3I)v = 0：
+```
+[ −1   1 ] [x]   [0]
+[  1  −1 ] [y] = [0]   →  x = y  →  v = (1, 1)
+```
+（λ=1 同理得 v = (1, −1)。）
+
+## 兩個快速檢查
+
+```
+trace（對角線和）= 所有特徵值之和   →  2+2 = 4 = 1+3 ✓
+det             = 所有特徵值之積   →  3   = 1·3 ✓
+```
+
+對角矩陣/三角矩陣的特徵值，**就是對角線元素**。
+
+## 對角化 A = PDP⁻¹
+
+如果有「足夠多（n 個）線性獨立的特徵向量」，就能寫成 `A = PDP⁻¹`（P 的行是特徵向量、D 是特徵值對角矩陣）。
+好處：`Aⁿ = PDⁿP⁻¹`，高次方、遞迴、穩定性都變成「對角線上的純量問題」，超好算。
+
+## 常見誤解
+
+- `det(A+B) ≠ det(A)+det(B)`（但 `det(AB) = det(A)·det(B)` 成立）。
+- **0 是特徵值 ⇔ 矩陣 singular（不可逆）**。
+- 代數重數 ≥ 幾何重數；**幾何重數不足時不能對角化**。
+- 實對稱矩陣的特徵值**都是實數**，但不一定全正（全正才叫正定）。
+
+## 解題時的判斷
+
+- 先確認是**方陣**才有 det/特徵值。
+- 求特徵值 → 解 `det(A−λI)=0`；對角/三角矩陣直接讀對角線。
+- 用 trace=和、det=積 **快速驗算**。
+- 要算高次方/極限 → 想對角化；極限看「最大特徵值的絕對值」。
