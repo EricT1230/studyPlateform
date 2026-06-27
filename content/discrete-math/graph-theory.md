@@ -1,17 +1,119 @@
-# 圖論
+# 圖論 (Graph Theory)
 
-## 核心概念
+## 這是什麼？
 
-Graph 由頂點與邊組成；simple graph 不含 self-loop 與 parallel edges。無向圖的 handshaking lemma 是 `sum deg(v)=2|E|`。Tree 是 connected 且 acyclic，因此 `n` 個頂點有 `n-1` 條邊。Connected 表示任兩頂點間有 path；bipartite 等價於沒有 odd cycle；planar connected graph 滿足 `V-E+F=2`。同一張圖也可用 adjacency list、matrix 或圖形描述，解題時要能在表示法之間轉換。
+圖 (graph) 是用來描述「一堆東西」以及「它們之間關係」的工具。
 
-## 解題重點
+東西畫成「點」(vertex)，關係畫成「線」(edge)。
 
-先辨認圖是 directed、undirected、weighted、simple、connected 或 bipartite。Euler 題看 degree：Euler circuit 需要所有頂點偶度，Euler trail 則允許恰兩個奇度頂點。Hamiltonian 問的是頂點，Euler 問的是邊。最短路要確認邊權非負才可用 Dijkstra；MST 常靠 cut property 判斷安全邊。進階題若提到 matching、flow 或 Laplacian，先找它對應的結構量：鄰居集合、cut capacity 或 connected components。證明題常可從反例、度數總和或移除頂點後的連通性下手。
+生活中其實到處都是圖：
+- 捷運路線圖：站是點，軌道是線。
+- 朋友關係：人是點，「互相認識」是線。
+- 網頁：網頁是點，超連結是線。
 
-## 常見陷阱
+只要問題是「誰跟誰有關係」，就能用圖來想。
 
-Tree 沒有 cycle，但 bipartite graph 可以有偶數 cycle。Planar 不等於可用兩色，也不代表邊數任意多。Odd cycle 需要三色，不是所有 cycle 都需要三色。Directed graph 有 topological ordering 的條件是 DAG；只看無向連通性不夠。Graph coloring 問的是相鄰頂點不同色，不能只數頂點或邊。
+## 一張真實的圖長這樣
 
-## 練習前檢查
+![無向圖：圓圈是頂點 (vertex)，連線是邊 (edge)](https://commons.wikimedia.org/wiki/Special:FilePath/Undirected%20graph.svg "圖片來源：Wikimedia Commons「Undirected graph.svg」，公共領域 (Public Domain)")
 
-題目問路徑、迴路、著色、平面性、匹配還是流量？條件是否包含 connected？degree 是入度、出度還是無向 degree？演算法的前提，如非負權重或 DAG，是否已確認？
+圓圈是頂點，圓圈之間的連線是邊。就這麼簡單。
+
+## 正式寫法
+
+數學上把圖寫成 G = (V, E)。
+V 是所有頂點的集合。
+E 是所有邊的集合。
+
+用一個小例子對照：
+
+```
+    A───────B
+    │       │
+    C───────D
+```
+
+- V = {A, B, C, D}
+- E = {A-B, A-C, B-D, C-D}
+- 頂點數 |V| = 4，邊數 |E| = 4
+
+## degree：一個點連了幾條線
+
+一個頂點的 degree（度數）就是「連到它的邊有幾條」。
+
+在上圖中，A 連到 B 和 C，所以 deg(A) = 2。四個點的 degree 都是 2。
+
+**一個一定成立的規律：把所有點的 degree 加起來，會等於邊數的兩倍。**
+
+為什麼？因為每一條邊都有「兩個端點」，所以每條邊會被它的兩端各算一次 degree，總共算兩次。
+
+```
+Σ deg(v) = 2 × |E|
+```
+
+驗算上圖：2 + 2 + 2 + 2 = 8，而邊數 4 的兩倍也是 8。一致。
+
+（順帶一個常考的小推論：degree 是奇數的點，個數一定是偶數。）
+
+## 幾種你會一直遇到的圖
+
+**Simple graph（簡單圖）**：最「乾淨」的圖——一個點不連自己、兩個點之間最多一條線。
+
+```
+   不允許 self-loop      不允許重複邊
+        ┌──┐               ╭───╮
+        A──┘             A ╰───╯ B
+```
+
+**Tree（樹）**：連得起來、又沒有任何環的圖。長得像家譜或資料夾結構。
+重點規律：n 個點的樹，剛好有 n − 1 條邊。
+
+```
+        A
+       ╱ ╲
+      B   C       5 個點 → 4 條邊
+     ╱ ╲
+    D   E
+```
+
+**Bipartite（二分圖）**：點可以分成兩群，線只在兩群「之間」、不在同一群「內部」。
+例如「學生」與「課程」：學生選課是跨群的線，學生跟學生之間沒有線。
+
+```
+  學生:  A   B
+         │╲ ╱│
+         │ ╳ │
+         │╱ ╲│
+  課程:  C   D
+```
+
+**Directed graph（有向圖）**：線有方向（箭頭）。像「追蹤」是單向的，A 追蹤 B 不代表 B 追蹤 A。
+沒有環的有向圖叫 DAG，可以排出明確的先後順序（像課程的先修關係）。
+
+```
+   A ──▶ B ──▶ D
+   │           ▲
+   └───▶ C ────┘
+```
+
+## 兩個經典問題：Euler 與 Hamiltonian
+
+**Euler（一筆畫）**：能不能不重複地走過「每一條邊」剛好一次？
+這就是著名的「柯尼斯堡七橋問題」——能不能一次走完城裡每座橋。
+判斷只看 degree：每個點 degree 都是偶數 → 可以一筆畫且回到起點。
+
+**Hamiltonian**：能不能走過「每一個點」剛好一次？
+注意差別：Euler 在乎「邊」，Hamiltonian 在乎「點」。兩者判斷方式完全不同。
+
+## 解題時的判斷順序
+
+1. 這張圖是有向還是無向？有沒有權重？
+2. 題目在問「邊」還是「點」？邊想 Euler，點想 Hamiltonian。
+3. 要算最短路徑：邊的權重有沒有負數？有負就不能用 Dijkstra。
+4. 要排先後順序：先確認它是不是 DAG。
+
+## 常見誤解
+
+- 樹一定沒有環；但二分圖可以有「偶數長度」的環。
+- 「能畫成不交叉 (planar)」不等於「兩種顏色就能著色」。
+- Euler 看 degree、Hamiltonian 看點，別把兩者的判斷混在一起。
