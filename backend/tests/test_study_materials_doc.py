@@ -1,9 +1,20 @@
 from pathlib import Path
 
+import pytest
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONTENT_DIR = REPO_ROOT / "content"
 MATERIALS_DOC = REPO_ROOT / "docs" / "study-materials.md"
+
+# docs/ is part of the repo but NOT the runtime backend image (the Dockerfile
+# copies only backend/ + content/). These are documentation-completeness checks,
+# so skip them when docs/ is absent (e.g. running inside the bare image). CI/dev
+# with the full repo still runs and enforces them.
+pytestmark = pytest.mark.skipif(
+    not MATERIALS_DOC.exists(),
+    reason="docs/study-materials.md not present (needs the full repo, not the runtime image)",
+)
 
 
 def test_study_materials_doc_covers_every_content_topic():
