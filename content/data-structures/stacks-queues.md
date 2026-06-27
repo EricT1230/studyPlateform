@@ -1,23 +1,77 @@
-# 堆疊與佇列
+# 堆疊與佇列 (Stack & Queue)
 
-## 核心概念
+## 這是什麼？
 
-Stack 是 LIFO，最後放入者最先取出；queue 是 FIFO，最早進入者最早離開。兩者可用動態陣列、linked list 或 circular buffer 實作。Deque 支援兩端 push/pop，monotonic stack/deque 則用「維持單調」換取線性時間。
+兩個都是「限制你只能從特定一端存取」的容器，差別在「從哪一端」。
 
-```text
-stack: push, pop, top
-queue: enqueue, dequeue, front
-circular: rear = (rear + 1) mod m
+- **堆疊 (Stack)**：只能從**同一端**進出。像疊盤子——最後疊上去的最先被拿走。這叫 **LIFO**（後進先出）。
+- **佇列 (Queue)**：一端進、另一端出。像排隊買票——最先排的最先輪到。這叫 **FIFO**（先進先出）。
+
+## 堆疊：後進先出 (LIFO)
+
+![堆疊：push 把元素疊上去，pop 從同一端取走，最後進的最先出](https://commons.wikimedia.org/wiki/Special:FilePath/Data%20stack.svg "圖片來源：Wikimedia Commons「Data stack.svg」")
+
+只有三個動作，而且都只碰「頂端 (top)」：
+
+```
+push 30        pop → 30
+   │             ▲
+   ▼             │
+┌────┐  top → ┌────┐
+│ 30 │        │ 30 │ ← 被拿走
+├────┤        ├────┤
+│ 20 │        │ 20 │ ← 變成新的 top
+├────┤        ├────┤
+│ 10 │        │ 10 │
+└────┘        └────┘
 ```
 
-## 解題重點
+push（放上去）、pop（拿走頂端）、top（看頂端是誰），全是 O(1)。
 
-Stack 常用於括號配對、遞迴 call stack、DFS、infix/postfix 轉換與 next greater element。Queue 常用於 BFS 與事件模擬。兩個 stack 可實作 queue，每個元素最多搬移一次，所以操作可攤銷 `Theta(1)`。
+## 佇列：先進先出 (FIFO)
 
-## 常見陷阱
+從尾端進 (enqueue)、從頭端出 (dequeue)：
 
-Circular queue 只靠 `front == rear` 無法同時區分空與滿，常需 size 或保留一格。BFS 若 visited 標記太晚，可能重複入隊。攤銷 `O(1)` 不等於每一次都 `O(1)`。
+```
+            dequeue                    enqueue
+            （從這出）                 （從這進）
+              ▲                          │
+              │                          ▼
+   front → ┌────┬────┬────┬────┐ ← rear
+           │ 10 │ 20 │ 30 │ 40 │
+           └────┴────┴────┴────┘
+   10 最先進，所以 10 最先出
+```
 
-## 練習前檢查
+## 環狀佇列（省記憶體的小技巧）
 
-題目要的是最近未配對、最早到達，還是當前最大/最小？資料結構是否需要固定容量？空集合操作是否定義清楚？
+用固定陣列做佇列，出隊後前面會空出來、浪費掉。環狀佇列讓 rear 走到底時「繞回開頭」：
+
+```
+       ┌───────────────┐
+       ▼               │
+   [ _ ][20][30][ _ ][ _ ]
+        ↑front     ↑rear  →（再進就繞回最左邊）
+
+   下一格 = (目前位置 + 1) mod 容量
+```
+
+陷阱：只用 `front == rear` 沒辦法分辨「空」和「滿」（兩種情況看起來一樣）。解法是另存一個 size，或刻意空一格不用。
+
+## 它們各自拿來做什麼
+
+- **Stack**：括號配對、函式呼叫的 call stack、DFS、運算式轉換 (infix→postfix)、找「下一個更大的元素」。
+- **Queue**：BFS（廣度優先）、排程、事件模擬。
+
+## 常見誤解
+
+- 「兩個 stack 可以拼出一個 queue」：可以，且每個元素最多被搬一次，所以攤平後仍是 O(1)——但攤平 O(1) ≠ 每一次都 O(1)。
+- 環狀佇列的空/滿判斷一定要想清楚（size 或留一格）。
+- BFS 要在「入隊時」就標記 visited，太晚標記會重複入隊。
+
+## 解題時的判斷
+
+- 要的是「最近、還沒處理的那個」→ Stack。
+- 要的是「最早到、照順序處理」→ Queue。
+- 要兩端都能進出 → Deque（雙端佇列）。
+- 要「滑動視窗最大/最小」→ 單調 (monotonic) deque。

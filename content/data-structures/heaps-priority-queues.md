@@ -1,23 +1,73 @@
-# 堆積與優先佇列
+# 堆積與優先佇列 (Heap & Priority Queue)
 
-## 核心概念
+## 這是什麼？
 
-Binary heap 是 complete binary tree，通常用陣列表示。Min-heap 只保證每個父節點不大於子節點，因此 root 是最小值，但左右子樹之間沒有完整排序。Priority queue 用它支援 `find-min`、`insert`、`extract-min` 等操作。
+優先佇列是「每次都自動吐出最重要的那一個」的容器。
+堆積 (heap) 是實作優先佇列最常用的資料結構。
 
-```text
-0-based: left=2i+1, right=2i+2, parent=(i-1)//2
-insert / extract-min: O(log n)
-build-heap: O(n)
+生活類比：醫院急診室。不是先到先看，而是**最嚴重的先看**。不管病人來的順序，下一個永遠是「目前最緊急」的那位。
+
+堆積有兩種：
+- **Min-heap**：root（最頂端）永遠是**最小值**。
+- **Max-heap**：root 永遠是**最大值**。
+
+## 一張圖看懂（Max-heap）
+
+![最大堆積：每個父節點都 ≥ 它的子節點，所以根是最大值](https://commons.wikimedia.org/wiki/Special:FilePath/Max-Heap.svg "圖片來源：Wikimedia Commons「Max-Heap.svg」，CC BY-SA 3.0")
+
+唯一的規則（以 max-heap 為例）：**每個父節點都 ≥ 它的兩個子節點。**
+
+```
+            100        ← root 是最大
+          /     \
+        19       36
+       /  \     /  \
+      17   3   25   1
 ```
 
-## 解題重點
+注意：父子有大小關係，但**左右兄弟之間沒有排序**（19 和 36 誰大都行）。所以堆積只保證「頂端是極值」，不是整體排好序。
 
-插入後用 sift-up，刪除 root 後把最後元素搬到 root 再 sift-down。Top-k 可維持大小為 k 的 min-heap；k-way merge 維持每條序列目前元素，總時間常是 `Theta(n log k)`。Dijkstra 的 priority queue key 是 tentative distance。
+## 它其實是塞在陣列裡的
 
-## 常見陷阱
+完全二元樹可以直接攤平成陣列，用公式找父子，不需要指標：
 
-Heap 不是 BST，不能二分查找任意 key。Min-heap 找最大值最壞需看葉節點，通常是 `Theta(n)`。支援 decrease-key 時要知道元素在 heap array 的位置。
+```
+索引:  0    1    2    3    4    5    6
+     [100][ 19][ 36][ 17][  3][ 25][  1]
 
-## 練習前檢查
+left(i)  = 2i + 1
+right(i) = 2i + 2
+parent(i)= (i - 1) / 2     （整數除法）
+```
 
-你需要反覆取最小/最大，還是只排序一次？是否要 meld 多個 heap？穩定性是否重要？索引公式是否與 0-based/1-based 一致？
+實例：索引 1（值 19）的小孩 = 索引 3、4（17 和 3）。對得起上面那棵樹。
+
+## 兩個核心動作（都是 O(log n)）
+
+**插入 → 往上浮 (sift-up)**：先放到最後一格，再跟父節點比，比較大就往上換，直到不違規。
+
+```
+插入 50：放到尾端 → 跟父比 → 比父大就上浮 → 停在正確高度
+```
+
+**取出極值 → 往下沉 (sift-down)**：root 就是答案，取走後把「最後一個」搬到 root，再跟較大的小孩比、往下換。
+
+```
+取走 100 → 把尾端搬到頂 → 跟較大的子比 → 往下沉到定位
+```
+
+樹高是 log n，所以這兩個動作都是 O(log n)。
+另外，從一堆雜亂資料「一次建好」整個 heap 只要 O(n)（比逐個插入的 O(n log n) 快）。
+
+## 常見誤解
+
+- **堆積不是二元搜尋樹**。不能拿它做二分查找任意值。
+- Min-heap 想找「最大值」沒捷徑，最壞要看遍葉節點 → O(n)。
+- 索引公式有 0-based 和 1-based 兩版，混用會全錯，先確認哪一種。
+
+## 解題時的判斷
+
+- 要「反覆取最小/最大」、邊加邊取 → 優先佇列（heap）。
+- 只需要「排序一次」→ 直接排序就好，不必 heap。
+- 找「前 k 大」→ 維持一個大小 k 的 min-heap。
+- Dijkstra 最短路、Huffman 編碼、合併 k 條已排序串列 → 都靠 heap。

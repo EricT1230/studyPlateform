@@ -1,22 +1,72 @@
-# 雜湊表
+# 雜湊表 (Hash Table)
 
-## 核心概念
+## 這是什麼？
 
-Hash table 用 hash function 把 key 映射到 bucket，目標是讓查找、插入、刪除在平均或期望下接近 `Theta(1)`。碰撞不可避免，需要 separate chaining 或 open addressing 處理。Load factor `alpha = n / m` 是效能的核心指標。
+雜湊表是「用一個公式，把 key 直接算成存放位置」的容器，所以查找平均只要 O(1)。
 
-## 解題重點
+生活類比：圖書館用書的分類號決定它放哪一櫃。你不用一櫃一櫃找，套個規則就知道去哪一櫃拿。
 
-Chaining 把同 bucket 的 key 放在串列、陣列或樹中；open addressing 把元素放在表內，透過 probing 找空位。表太滿時要 resize 並 rehash，雖然單次 `O(n)`，但可攤銷。查找時 hash value 相同仍要做 equality check。
+核心元件：
+- **hash function（雜湊函數）**：把 key 換算成一個陣列索引。
+- **bucket（桶）**：陣列裡的格子，真正放資料的地方。
 
-```text
-index = hash(key) mod m
-expected cost ~= O(1 + alpha)
+```
+index = hash(key) mod m      （m = 桶的數量）
 ```
 
-## 常見陷阱
+實例：hash("apple") = 152，表有 10 格 → 152 mod 10 = 2 → "apple" 放第 2 格。
 
-以為 hash table 永遠最壞 `O(1)`；惡意碰撞可退化。Open addressing 刪除時不能直接清空 slot，常需 tombstone。Linear probing 容易 primary clustering；key 若可變，插入後改 key 會破壞查找。
+## 碰撞：兩個 key 算到同一格
 
-## 練習前檢查
+不同 key 可能算出同一個索引，這叫**碰撞 (collision)**，無法完全避免。處理方式有兩大派。
 
-key 是否有穩定 equality 與 hash？是否需要排序或 range query？load factor 是否受控？面對外部輸入是否需要 randomized hashing？
+**1. 鏈結法 (separate chaining)**：同一格掛一條串列，碰撞的 key 都串在那格後面。
+
+![鏈結法雜湊表：每個 bucket 掛一條鏈結串列，碰撞的元素串在同一格](https://commons.wikimedia.org/wiki/Special:FilePath/Hash%20table%205%200%201%201%201%201%200%20LL.svg "圖片來源：Wikimedia Commons「Hash table 5 0 1 1 1 1 0 LL.svg」，公共領域 (Public Domain)")
+
+```
+桶
+0 │ →（空）
+1 │ → [John] → [Lisa]      ← John、Lisa 撞同一格，串起來
+2 │ → [Sandra]
+3 │ →（空）
+```
+
+**2. 開放定址 (open addressing)**：不掛串列，撞到就往後找下一個空格放。
+
+```
+hash → 第 2 格已滿 → 試第 3 格 → 也滿 → 第 4 格空 → 放這
+```
+
+## load factor：表有多滿
+
+```
+load factor α = 資料數 n ÷ 桶數 m
+```
+
+α 越大、碰撞越多、變慢。平均查找成本約 O(1 + α)。
+當 α 太高（例如超過 0.7），就**擴容並重新雜湊 (rehash)**：開更大的表、把所有 key 重算位置搬過去。單次 rehash 是 O(n)，但很少發生，攤平後仍 O(1)。
+
+## 為什麼是「平均」O(1)、不是「最壞」O(1)
+
+如果 hash function 很爛、或有人惡意餵入全部撞同一格的 key，鏈結法會退化成一條長串列 → 查找變 O(n)。
+
+```
+全部撞第 1 格：
+1 │ → [a] → [b] → [c] → [d] → ...   （等於 linked list，O(n)）
+```
+
+所以最壞情況是 O(n)；好的 hash function + 控制 load factor 才能維持平均 O(1)。
+
+## 常見誤解
+
+- 雜湊表**不保證最壞 O(1)**，只是平均/期望 O(1)。
+- 算出同一個 hash 值，**還是要做 equality 比對**確認 key 真的相同（hash 相同 ≠ key 相同）。
+- 開放定址刪除時**不能直接清空**那格，否則會切斷後面的探測鏈；要用「墓碑 (tombstone)」標記。
+- 雜湊表**不維持順序**，需要排序或範圍查詢時別用它（改用平衡樹）。
+
+## 解題時的判斷
+
+- 要「快速用 key 查存在/取值」、不在乎順序 → 雜湊表。
+- 需要「排序、範圍查詢、找前後一個」→ 用平衡二元搜尋樹，不是雜湊表。
+- 看到「平均 O(1) vs 最壞 O(n)」、「load factor」、「rehash」→ 都在指雜湊表。

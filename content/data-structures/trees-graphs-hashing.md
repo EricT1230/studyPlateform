@@ -1,23 +1,82 @@
-# 樹、圖與雜湊整合
+# 樹、圖與雜湊：怎麼選
 
-## 核心概念
+## 這一章在講什麼？
 
-樹、圖與雜湊常在同一題中比較取捨。BST 維持 key 的順序，平衡後查找與更新可達 `O(log n)`；heap 只保證優先順序；trie 按字元路徑查 prefix；graph 用邊描述關係；hash table 用 key 直接定位 bucket。
+樹 (tree)、圖 (graph)、雜湊 (hash) 是三種「組織關係」的方式。
+考試常把它們放在一起，問你「這個情境該用哪一個」。
+所以重點不是死背，而是搞懂**各自擅長什麼**。
 
-## 解題重點
+## 二元搜尋樹 (BST)：有序的樹
 
-若需要 range query 或依序輸出，balanced search tree 通常比 hash table 合適。若只做 exact lookup，hash table 平均較快。Sparse graph 適合 adjacency list；dense graph 或常查某邊是否存在時，可考慮 adjacency matrix。DSU 適合無向連通性與 Kruskal，但不表示有向鄰接。
+BST 的規則：**每個節點，左子樹都比它小、右子樹都比它大。**
 
-```text
-BST inorder => sorted keys
-matrix[u][v] => O(1) edge check
-hash expected lookup => O(1)
+![二元搜尋樹：左子樹的值都比節點小，右子樹的值都比節點大](https://commons.wikimedia.org/wiki/Special:FilePath/Binary%20search%20tree.svg "圖片來源：Wikimedia Commons「Binary search tree.svg」，公共領域 (Public Domain)")
+
+```
+            8
+          /   \
+         3      10
+        / \       \
+       1   6       14
 ```
 
-## 常見陷阱
+因為有左小右大的規則，找一個值就像猜數字：比目前小往左、比目前大往右，每次砍一半 → O(log n)。
 
-把 heap 當排序好的樹。用 hash table 解需要順序的題。對 sparse graph 使用 matrix 造成 `O(V^2)` 空間浪費。BST 若未平衡，排序插入會退化成 linked list。
+**殺手級特性：把 BST 做「中序走訪 (inorder)」，會剛好按大小順序輸出。**
 
-## 練習前檢查
+```
+inorder(1, 3, 6, 8, 10, 14) ← 自動排好序
+```
 
-操作需要順序、範圍、prefix、連通性還是 exact lookup？資料是稀疏還是稠密？最壞情況是否重要？
+陷阱：如果照順序 1,2,3,4… 插入，樹會歪成一條線（退化成 linked list），查找變 O(n)。所以實務用**平衡樹**（AVL、紅黑樹）保證樹高永遠是 log n。
+
+## 圖 (Graph)：兩種存法
+
+圖在描述「誰連到誰」。怎麼存它，影響效率：
+
+**鄰接串列 (adjacency list)**：每個點記一條「我的鄰居」清單。省空間，適合**稀疏圖**（邊不多）。
+
+```
+A: → B → C
+B: → A
+C: → A → D
+D: → C
+```
+
+**鄰接矩陣 (adjacency matrix)**：用 V×V 的表，格子記「有沒有邊」。查「u、v 之間有沒有邊」是 O(1)，但空間 O(V²)，適合**稠密圖**或常常要查單一邊。
+
+```
+     A  B  C  D
+  A [ 0  1  1  0 ]
+  B [ 1  0  0  0 ]
+  C [ 1  0  0  1 ]
+  D [ 0  0  1  0 ]
+```
+
+## 雜湊 (Hash)：只求快速精確查找
+
+雜湊表用 key 直接算位置，平均 O(1) 找到。
+但它**不維持順序**——不能做範圍查詢、不能照大小輸出。
+
+## 三者怎麼選（這就是考點）
+
+| 你的需求 | 該用 |
+|---|---|
+| 精確查「有沒有這個 key」、不在乎順序 | 雜湊表（平均 O(1)） |
+| 要排序輸出、範圍查詢、找前後一個 | 平衡 BST（O(log n)） |
+| 反覆取最小/最大 | heap（優先佇列） |
+| 查字串前綴 (prefix) | trie |
+| 描述「誰連到誰」、走訪/最短路 | 圖（稀疏用串列、稠密用矩陣） |
+
+## 常見誤解
+
+- 把 heap 當成「排好序的樹」——heap 只保證頂端是極值，不是整體有序。
+- 需要順序卻用雜湊表——雜湊不維持順序。
+- 稀疏圖用鄰接矩陣——白白浪費 O(V²) 空間。
+- 以為 BST 一定 O(log n)——沒平衡的話最壞是 O(n)。
+
+## 解題時先問自己
+
+- 需要的是順序、範圍、prefix、連通性，還是純精確查找？
+- 資料是稀疏還是稠密？
+- 最壞情況重不重要（決定要不要平衡樹、要不要防惡意碰撞）？

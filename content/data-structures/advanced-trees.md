@@ -1,22 +1,84 @@
-# 進階樹結構
+# 進階樹結構 (Balanced & Specialized Trees)
 
-## 核心概念
+## 為什麼需要進階樹？
 
-進階樹的共同目標是用額外 invariant 換取可預測的查詢或更新成本。AVL 與 red-black tree 讓 BST 高度維持 `O(log n)`；B-tree/B+ tree 為磁碟或索引減少 I/O；trie 依字元走訪；segment tree 與 Fenwick tree 支援區間或 prefix 查詢。
+普通 BST 有個致命傷：照順序插入會歪成一條線，退化成 linked list、查找變 O(n)。
 
-## 解題重點
-
-選資料結構前先看操作：exact lookup、range query、prefix search、order statistic 或版本查詢。AVL 查詢較緊，red-black 更新較平衡；B+ tree 的資料多在 leaf，適合 range scan；Fenwick 的 `lowbit(i)` 管一段 suffix-like prefix 區間。
-
-```text
-Fenwick: tree[i] covers i-lowbit(i)+1 .. i
-Segment tree query/update: O(log n)
+```
+照 1,2,3,4,5 插入 →   1
+                       \
+                        2
+                         \
+                          3      （根本是 linked list）
+                           \
+                            4
 ```
 
-## 常見陷阱
+進階樹的共同目的就一句話：**用額外規則 (invariant) 強迫樹保持矮胖，把高度鎖在 O(log n)。**
 
-旋轉後忘記更新高度、顏色或 subtree size。Trie 的時間常看字串長度 `L`，不是元素數 `n`。Lazy propagation 標記若沒有下推，區間更新與查詢容易錯。
+## 自平衡 BST：AVL 與紅黑樹
 
-## 練習前檢查
+兩者都讓樹在插入/刪除後**自動調整回平衡**，手段是「旋轉 (rotation)」。
 
-需要維持排序嗎？查詢是單點、範圍還是前綴？資料是否在外部儲存？更新頻率是否足以影響結構選擇？
+旋轉就是局部換父子關係、把過高的一邊拉低：
+
+```
+   右旋 (right rotation)
+        y                x
+       / \              / \
+      x   C    ───▶    A   y
+     / \                  / \
+    A   B                B   C
+```
+
+**紅黑樹**用「節點塗紅/黑 + 幾條顏色規則」來保證平衡：
+
+![紅黑樹：用紅/黑著色規則，讓任一路徑長度差不超過兩倍，維持 O(log n)](https://commons.wikimedia.org/wiki/Special:FilePath/Red%20black%20tree%20graphviz%20example.svg "圖片來源：Wikimedia Commons「Red black tree graphviz example.svg」，CC BY-SA 4.0")
+
+差別（考點）：
+- **AVL**：平衡更嚴格 → 樹更矮 → **查詢更快**，但插入/刪除可能要較多旋轉。
+- **紅黑樹**：平衡較鬆 → **更新時旋轉較少**，適合頻繁增刪（C++ map、Java TreeMap 都用它）。
+
+## B-tree / B+ tree：為「磁碟」而生
+
+一個節點可以裝**很多** key、有**很多**個小孩，所以樹又矮又寬。
+
+```
+            [ 17 | 35 ]
+           /     |     \
+      [..]    [20 28]   [40 50 60]
+```
+
+為什麼這樣設計？因為從**磁碟**讀一次很慢，一次卻能讀一大塊。讓一個節點剛好等於一個磁碟區塊，就能「讀一次拿一堆 key」，把磁碟存取次數壓到最低。資料庫索引、檔案系統都用它。
+B+ tree 再把所有資料集中在葉節點、葉節點互相串連，特別適合**範圍查詢**。
+
+## Trie（字典樹）：為「字串前綴」而生
+
+依「字元」一層層往下走，共用相同前綴的字串會共用路徑。
+
+```
+        (root)
+        /    \
+       c      d
+       |      |
+       a      o
+      / \     |
+     t   r    g
+   (cat)(car)(dog)
+```
+
+查一個長度 L 的字串是 O(L)，**跟總共有幾個字串無關**。適合自動補全、字典、IP 路由。
+
+## 常見誤解
+
+- 旋轉後**忘記更新**高度/顏色/子樹大小 → 後續全錯。
+- Trie 的成本看「字串長度 L」，不是「元素數 n」。
+- 稀疏資料硬塞固定結構、或把 B-tree 用在純記憶體小資料（殺雞用牛刀）。
+
+## 解題時的判斷
+
+- 純記憶體、要有序 + 查詢/更新 O(log n) → AVL 或紅黑樹。
+- 查詢多、更新少 → 偏 AVL；更新頻繁 → 偏紅黑樹。
+- 資料在磁碟/做索引、要範圍掃描 → B-tree / B+ tree。
+- 大量字串、查前綴或自動補全 → trie。
+- 區間和/區間更新 → segment tree 或 Fenwick (BIT)。
