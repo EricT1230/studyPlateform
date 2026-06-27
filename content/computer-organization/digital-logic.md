@@ -1,26 +1,74 @@
-# 數位邏輯
+# 數位邏輯 (Digital Logic)
 
-## 核心概念
-數位邏輯分為組合邏輯與循序邏輯。組合邏輯輸出只由目前輸入決定，例如 mux、decoder、adder；循序邏輯有狀態，靠 latch 或 flip-flop 在 clock 控制下保存資訊。
+## 這是什麼？
+
+數位電路只認 0 和 1。把這些 0/1 用邏輯閘組合起來，就能做運算、記憶、控制——CPU 說到底就是一大堆邏輯閘。
+
+分兩大類：
+- **組合邏輯 (combinational)**：輸出**只看現在的輸入**，沒有記憶。
+- **循序邏輯 (sequential)**：有**狀態（記憶）**，靠時脈 (clock) 控制更新。
+
+## 基本邏輯閘（真值表）
 
 ```
-輸入 → 組合邏輯 → D flip-flop → 狀態
-              ↑             ↓
-              └── next-state ┘
+   AND          OR           XOR          NOT
+ A B │ Y      A B │ Y      A B │ Y       A │ Y
+ 0 0 │ 0      0 0 │ 0      0 0 │ 0        0 │ 1
+ 0 1 │ 0      0 1 │ 1      0 1 │ 1        1 │ 0
+ 1 0 │ 0      1 0 │ 1      1 0 │ 1
+ 1 1 │ 1      1 1 │ 1      1 1 │ 0
+ 都1才1       有1就1       不同才1        反相
 ```
 
-同步電路的速度受 critical path 限制：clock-to-Q、組合邏輯延遲、setup time 與 clock skew 都要放進同一個 clock period。
-練習時把「功能正確」與「時序安全」分開看：布林式正確只代表穩態輸出對，若資料在 clock edge 前後不穩，仍可能造成錯誤取樣。
-因此遇到電路題，可先解出邏輯功能，再檢查最慢路徑、暫存器邊界與非同步輸入是否被妥善處理。
+XOR 記法：「兩個不一樣才是 1」——加法器的核心（1+1 進位、本位是 0）。
 
-## 解題重點
-- 真值表、布林式、K-map 與邏輯閘可互相轉換。
-- Latch 是 level-sensitive；flip-flop 多為 edge-triggered。
-- Moore 輸出只看狀態；Mealy 輸出可同時看狀態與輸入。
-- Ripple-carry 慢在 carry 逐位傳遞；carry-lookahead 用 generate/propagate 加速。
+## 組合邏輯：沒有記憶
 
-## 常見陷阱
-Combinational hazard 是延遲不一致造成的短暫 glitch，不一定改變穩態答案。跨 clock domain 取樣可能 metastability，兩級 synchronizer 只能降低機率。Tri-state bus 同時只能有一個 driver 主動驅動。
+輸入一變，輸出立刻跟著算出來。常見零件：
+- **多工器 (MUX)**：用選擇線挑一個輸入送出（像切換開關）。
+- **解碼器 (decoder)**：把 n 條輸入變成 2ⁿ 條「只有一條為 1」的輸出。
+- **加法器 (adder)**：full adder 用 XOR 算本位、用 AND/OR 算進位。
 
-## 練習前檢查
-你應能辨識組合與循序電路、畫出簡單 FSM、檢查 setup/hold 觀念，並說明 static hazard、Gray code、one-hot encoding 與 clock gating 的基本風險。
+表示法可互換：**真值表 ↔ 布林式 ↔ K-map ↔ 邏輯閘**。K-map 是用來化簡布林式的工具。
+
+## 循序邏輯：有狀態
+
+加入「記憶元件」就有了狀態：
+
+```
+ 輸入 ──▶ 組合邏輯 ──▶ D flip-flop ──▶ 輸出/狀態
+            ▲                    │
+            └──── 回授 next-state ┘
+```
+
+- **Latch**：對「電位 (level)」敏感——clock 是高電位時就透通。
+- **Flip-flop**：對「邊緣 (edge)」敏感——只在 clock 跳變的那一瞬間更新（較好控制）。
+
+## 有限狀態機 (FSM)
+
+循序電路常畫成狀態機：
+- **Moore**：輸出**只看目前狀態**。
+- **Mealy**：輸出**看狀態 + 當下輸入**（反應更快、狀態可能更少）。
+
+## 時序：功能對 ≠ 電路就對
+
+同步電路的速度受**關鍵路徑 (critical path)** 限制。一個 clock 週期要塞得下：
+
+```
+clock-to-Q + 組合邏輯延遲 + setup time + clock skew  ≤  一個 clock 週期
+```
+
+布林式正確只代表「穩態輸出對」；若資料在 clock edge 前後不穩（違反 setup/hold），仍會取樣到錯的值。所以要**功能、時序分開檢查**。
+
+## 常見誤解
+
+- **Hazard / glitch**：延遲不一致造成的「短暫」錯誤脈衝，不一定改變穩態答案。
+- 跨時脈域取樣可能 **metastability**（亞穩態）；兩級 synchronizer 只能「降低機率」，無法完全消除。
+- **三態匯流排 (tri-state bus)** 同一時間只能有一個 driver 主動驅動，否則衝突。
+
+## 解題時的判斷
+
+- 先分：這是組合（無記憶）還是循序（有狀態）電路？
+- 功能題：真值表/布林式/K-map 互轉、化簡。
+- 時序題：找最慢路徑、檢查 setup/hold、注意非同步輸入。
+- FSM 題：先確認是 Moore 還是 Mealy。

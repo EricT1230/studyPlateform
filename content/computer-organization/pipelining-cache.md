@@ -1,25 +1,74 @@
-# 管線與快取
+# 管線與快取 (Pipeline & Cache)
 
-## 核心概念
-Pipeline 把指令拆成多個階段並重疊執行，目標是提高穩定狀態下的 throughput。常見五階段可想成：
+## 管線：像洗衣店流水線
+
+一條指令分成幾個階段。與其一條做完才做下一條，不如**讓不同指令的不同階段同時進行**，提高吞吐。
+
+生活類比：洗衣店有「洗→烘→摺」三台機器。第一批在烘時，第二批就能開始洗——機器不閒置。
+
+五階段：IF（取指）→ ID（解碼）→ EX（執行）→ MEM（存取記憶體）→ WB（寫回）。
 
 ```
-IF → ID → EX → MEM → WB
+週期:   1    2    3    4    5    6    7
+I1:    IF   ID   EX   MEM  WB
+I2:         IF   ID   EX   MEM  WB
+I3:              IF   ID   EX   MEM  WB
 ```
 
-Cache 則利用 locality 把常用資料放在較快層級。位址通常拆成 `tag | index | block offset`；offset 找 block 內位置，index 找 set 或 line，tag 驗證是否命中。
-這兩個主題都在處理「平均情況如何變快」：管線靠重疊工作，cache 靠大多數存取命中快層級；但 hazard、miss 與預測錯誤會把理想值拉回現實。
-分析效能時，先建立理想值，再逐一加回 stall、miss penalty 與 flush 成本，答案會比憑直覺判斷可靠。
-若題目給比例，通常要換成每指令平均成本，務必小心。
+理想下，填滿後**每個週期完成一條指令**。但注意：單一指令的總時間（latency）沒變短，變好的是**吞吐 (throughput)**。
 
-## 解題重點
-- Hazard 分三類：structural 資源衝突、data 相依、control 分支方向未定。
-- Forwarding 可減少 RAW stall，但 load-use 仍可能停一拍。
-- `AMAT = hit time + miss rate × miss penalty`。
-- Miss 類型：compulsory 首次、capacity 容量不足、conflict 映射競爭。
+## 管線的三種危障 (hazard)
 
-## 常見陷阱
-提高 associativity 主要減少 conflict miss，不會消除首次 miss。Direct-mapped 不是容量最小，而是每個 block 位置固定。Write-through 與 write-back 是寫入下一層時機；write-allocate 則是 write miss 時是否載入 cache。
+讓管線無法順跑、要插入 stall 的狀況：
+- **結構危障 (structural)**：兩條指令同時搶同一個硬體資源。
+- **資料危障 (data)**：後一條要用前一條還沒算好的結果（RAW）。
+- **控制危障 (control)**：遇到分支，還不知道下一條該抓哪裡。
 
-## 練習前檢查
-你應能算平均 CPI、分解 cache 位址、判斷分支預測錯誤成本，並說明 coherence、store buffer、prefetch 與 non-blocking cache 對效能與一致性的影響。
+解法：
+- **forwarding（資料前送）**：算好的結果直接送給需要的階段，省去多數 RAW stall。但 **load-use**（load 完馬上用）仍可能停一拍。
+- **分支預測**：先猜分支方向；猜錯要把錯抓的指令清掉 (flush)，有懲罰。
+
+## 快取：把常用資料放近一點
+
+靠**局部性**，把熱資料放在快層。位址被拆成三段來查快取：
+
+```
+記憶體位址 = [   tag   |  index  |  offset  ]
+                ↑          ↑          ↑
+            驗證命中    挑哪個 set    block 內第幾個 byte
+```
+
+- **offset**：定位 block（cache line）內的位置。
+- **index**：定位放在哪一個 set / line。
+- **tag**：比對確認「這格存的真的是我要的位址」。
+
+## 平均存取時間 AMAT
+
+```
+AMAT = 命中時間 + 失誤率 × 失誤懲罰
+       hit time + miss rate × miss penalty
+```
+
+實例：hit time 1 cycle、miss rate 5%、miss penalty 100 cycles
+→ AMAT = 1 + 0.05 × 100 = 6 cycles。
+
+## 三種 cache miss（3C）
+
+- **強制 miss (compulsory)**：第一次存取，本來就不在 → 不可避免。
+- **容量 miss (capacity)**：快取太小，裝不下工作集。
+- **衝突 miss (conflict)**：映射方式讓多個 block 搶同一格。
+
+提高**關聯度 (associativity)** 主要減少**衝突** miss，但消不掉強制 miss。
+
+## 常見誤解
+
+- 管線提高**吞吐**，不縮短**單一指令延遲**。
+- 提高 associativity 減 conflict miss，**不會消除首次 (compulsory) miss**。
+- **write-through vs write-back** 講的是「何時寫到下一層」；**write-allocate** 講的是「write miss 時要不要先把該 block 載入快取」——別混。
+
+## 解題時的判斷（效能題的鐵則）
+
+1. 先算**理想值**（管線滿載、全命中）。
+2. 再**逐項加回**成本：stall、miss penalty、flush。
+3. 給比例時，換算成「每指令平均成本」再加總。
+4. 這樣比憑直覺猜可靠得多。
