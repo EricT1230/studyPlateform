@@ -21,13 +21,13 @@ export default function NotesPanel({ subject, topic }) {
   if (!subject || !topic) return null;
 
   return (
-    <div className="card">
+    <div className={`card notes-panel ${open ? "is-open" : ""}`}>
       <button className="notes-toggle" onClick={() => setOpen((o) => !o)}>
         <span>✍️ 筆記（{subject} · {topic}）</span>
         <span aria-hidden="true">{open ? "▲" : "▼"}</span>
       </button>
       {open && (
-        <>
+        <div className="notes-body">
           <textarea
             className="notes-area"
             value={text}
@@ -38,7 +38,7 @@ export default function NotesPanel({ subject, topic }) {
             <button className="primary" onClick={save}>儲存筆記</button>
             <span className="notes-status">{status}</span>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
