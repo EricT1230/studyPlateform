@@ -603,14 +603,15 @@ a { color: var(--accent-strong); }
 .notes-actions { display: flex; align-items: center; gap: 12px; margin-top: var(--space-3); }
 .notes-status { color: var(--ok); font-size: 0.85rem; font-weight: 600; }
 
-/* On wide screens the notes panel floats on the right instead of stacking below.
-   Narrow screens keep the normal in-flow card (defined above). */
-@media (min-width: 1024px) {
+/* On wide screens the notes panel floats in the right gutter, BESIDE the
+   centred 820px content column (never overlapping it). It scales to fit the
+   available margin. Narrower screens keep the normal in-flow card below. */
+@media (min-width: 1200px) {
   .notes-panel {
     position: fixed;
     top: 84px;
-    right: 16px;
-    width: 320px;
+    left: calc(50% + 420px);
+    width: min(320px, calc(50vw - 436px));
     max-height: calc(100vh - 104px);
     margin: 0;
     display: flex;
@@ -625,6 +626,101 @@ a { color: var(--accent-strong); }
     overflow-y: auto;
   }
 }
+
+/* ============================================================
+   Two-column reading layout (tutorial): content + sticky notes sidebar.
+   Breaks out of the 820px column to use the side space; stacks on narrow.
+   ============================================================ */
+@media (min-width: 1100px) {
+  .reading {
+    width: min(1180px, 100vw - 48px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  .reading-side { position: sticky; top: 84px; }
+  /* inside the sidebar the notes are an in-flow card, not the fixed overlay */
+  .reading-side .notes-panel {
+    position: static;
+    left: auto;
+    width: auto;
+    max-height: calc(100vh - 110px);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+/* ============================================================
+   Gantt chart (embedded in tutorials via HTML, proportional bars)
+   ============================================================ */
+.gantt {
+  position: relative;
+  margin: var(--space-4) 0;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+}
+.gantt::before {
+  content: "甘特圖";
+  position: absolute;
+  top: -9px;
+  left: 14px;
+  padding: 0 8px;
+  background: var(--surface);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.gantt-bars {
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.gantt-bars > span {
+  padding: 10px 4px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  white-space: nowrap;
+}
+.gantt-bars > span + span { border-left: 2px solid #fff; }
+.gantt-axis {
+  position: relative;
+  display: flex;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.gantt-axis > span { text-align: left; }
+.gantt-axis .end { position: absolute; right: 0; }
+.gantt-note { margin: 8px 0 0; font-size: 0.85rem; color: var(--text-soft); }
+
+/* Table of contents (tutorial sidebar) */
+.toc { padding: var(--space-3) var(--space-4); }
+.toc-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text); }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 2px 0; }
+.toc li.toc-sub { padding-left: var(--space-3); }
+.toc a {
+  display: block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.86rem;
+  color: var(--text-soft);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.toc a:hover { background: var(--accent-soft); color: var(--accent-strong); }
+
+/* offset anchor jumps so the sticky nav doesn't hide the heading */
+.tutorial h2, .tutorial h3 { scroll-margin-top: 84px; }
 
 /* ============================================================
    Responsive

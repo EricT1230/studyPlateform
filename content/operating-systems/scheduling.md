@@ -19,12 +19,20 @@
 先來先服務 (FCFS)。假設三個工作同時到達，CPU 需求：P1=7、P2=3、P3=3。
 按到達順序 P1→P2→P3：
 
-```
-| P1            | P2    | P3    |
-0               7       10      13
-
-等待時間：P1=0, P2=7, P3=10  →  平均 = 17/3 ≈ 5.67
-```
+<div class="gantt">
+  <div class="gantt-bars">
+    <span style="flex:7;background:var(--accent)">P1</span>
+    <span style="flex:3;background:var(--ok)">P2</span>
+    <span style="flex:3;background:var(--accent-strong)">P3</span>
+  </div>
+  <div class="gantt-axis">
+    <span style="flex:7">0</span>
+    <span style="flex:3">7</span>
+    <span style="flex:3">10</span>
+    <span class="end">13</span>
+  </div>
+  <p class="gantt-note">等待時間：P1=0、P2=7、P3=10 → 平均 = 17/3 ≈ 5.67</p>
+</div>
 
 問題：P1 很長，害後面兩個短工作乾等。這就是**護衛效應 (convoy effect)**。
 
@@ -32,12 +40,20 @@
 
 最短工作優先 (SJF)。同樣三個工作，改成短的先：P2→P3→P1：
 
-```
-| P2    | P3    | P1            |
-0       3       6               13
-
-等待時間：P2=0, P3=3, P1=6  →  平均 = 9/3 = 3
-```
+<div class="gantt">
+  <div class="gantt-bars">
+    <span style="flex:3;background:var(--ok)">P2</span>
+    <span style="flex:3;background:var(--accent-strong)">P3</span>
+    <span style="flex:7;background:var(--accent)">P1</span>
+  </div>
+  <div class="gantt-axis">
+    <span style="flex:3">0</span>
+    <span style="flex:3">3</span>
+    <span style="flex:7">6</span>
+    <span class="end">13</span>
+  </div>
+  <p class="gantt-note">等待時間：P2=0、P3=3、P1=6 → 平均 = 9/3 = 3</p>
+</div>
 
 平均等待從 5.67 降到 3。**SJF 對「平均等待時間」是理論最佳。**
 代價：你得先知道每個工作要跑多久（實務上只能用過去紀錄「預測」）。
@@ -46,11 +62,28 @@
 
 給每個工作固定「時間片 (quantum)」，輪流跑，時間到沒做完就排到隊尾：
 
-```
-quantum = 2
-| P1 | P2 | P3 | P1 | P2 | P3 | P1 | ...
-  輪流上，每次最多 2，沒做完就回去排隊
-```
+<div class="gantt">
+  <div class="gantt-bars">
+    <span style="flex:2;background:var(--accent)">P1</span>
+    <span style="flex:2;background:var(--ok)">P2</span>
+    <span style="flex:2;background:var(--accent-strong)">P3</span>
+    <span style="flex:2;background:var(--accent)">P1</span>
+    <span style="flex:1;background:var(--ok)">P2</span>
+    <span style="flex:1;background:var(--accent-strong)">P3</span>
+    <span style="flex:3;background:var(--accent)">P1</span>
+  </div>
+  <div class="gantt-axis">
+    <span style="flex:2">0</span>
+    <span style="flex:2">2</span>
+    <span style="flex:2">4</span>
+    <span style="flex:2">6</span>
+    <span style="flex:1">8</span>
+    <span style="flex:1">9</span>
+    <span style="flex:3">10</span>
+    <span class="end">13</span>
+  </div>
+  <p class="gantt-note">quantum = 2：輪流跑、每次最多 2，沒做完排到隊尾。P2 在 t=9、P3 在 t=10 完成，P1 最後在 t=13。</p>
+</div>
 
 好處：回應快、互動體驗好（不會有人等太久才被理）。
 取捨：quantum 太小 → 一直在切換、開銷大；太大 → 退化成 FCFS。
