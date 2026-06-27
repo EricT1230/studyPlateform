@@ -1,28 +1,79 @@
-# CPU 排程
+# CPU 排程 (CPU Scheduling)
 
-## 核心概念
-CPU 排程決定 ready queue 中誰取得 CPU。常見目標包含高 CPU utilization、高 throughput、低 turnaround time、低 response time、低 waiting time 與公平性；不同工作負載會讓目標互相拉扯。
+## 這是什麼？
+
+很多行程都在 ready queue 排隊等 CPU，但 CPU 一次只能跑一個。
+**排程器就是決定「下一個給誰跑」的那個裁判。**
+
+生活類比：銀行只有一個櫃檯，一堆人在等。叫號規則（先到先辦？急件優先？每人限 5 分鐘？）就是排程演算法，不同規則會讓「平均等待時間」差很多。
+
+排程要追的目標常互相打架：高吞吐、低等待、低回應時間、公平。沒有一個演算法全贏。
+
+## 兩個先搞懂的詞
+
+- **搶佔式 (preemptive)**：時間到或來了更急的，可以**中途把 CPU 收回**。
+- **非搶佔式 (non-preemptive)**：一旦給了 CPU，要等它**自己跑完或去等 I/O** 才換人。
+
+## 用甘特圖看懂：FCFS 的護衛效應
+
+先來先服務 (FCFS)。假設三個工作同時到達，CPU 需求：P1=7、P2=3、P3=3。
+按到達順序 P1→P2→P3：
 
 ```
-ready → running → blocked
-   ↑        ↓
-   └── preempt / yield
+| P1            | P2    | P3    |
+0               7       10      13
+
+等待時間：P1=0, P2=7, P3=10  →  平均 = 17/3 ≈ 5.67
 ```
 
-Preemptive scheduler 可中斷目前執行者；non-preemptive 則等它阻塞或主動讓出。I/O-bound 工作常短 CPU burst，CPU-bound 工作則長時間計算。
-排程不是單純找「最快」演算法，而是在互動性、吞吐、公平與可預測性間取捨。做表格題時，先畫時間軸，再從每個 process 的到達、開始、完成時間推導指標。
-若題目允許搶佔，時間軸會在新工作到達、時間片用完或 I/O 阻塞時切段；若不允許搶佔，就等目前工作讓出 CPU。
-所有指標都應從同一條時間軸一致計算。
+問題：P1 很長，害後面兩個短工作乾等。這就是**護衛效應 (convoy effect)**。
 
-## 解題重點
-- FCFS 簡單但可能有 convoy effect。
-- SJF/SRTF 對平均等待時間好，但需要預測 burst。
-- Round Robin 靠 time quantum 改善互動反應。
-- Priority scheduling 要處理 starvation，常用 aging。
-- MLFQ 會依行為動態調整優先權。
+## 換成 SJF：短的先做
 
-## 常見陷阱
-Quantum 太小會讓 context switch overhead 過高；太大又接近 FCFS。Response time 不是 turnaround time。Priority inversion 是低優先權持鎖阻塞高優先權，可能需要 priority inheritance。多核心排程還要考慮負載平衡與 cache affinity。
+最短工作優先 (SJF)。同樣三個工作，改成短的先：P2→P3→P1：
 
-## 練習前檢查
-你應能手算等待與完成時間、比較 FCFS/SJF/SRTF/RR/priority/MLFQ，並說明 preemption、aging、real-time deadline、throughput 與 fairness 的取捨。
+```
+| P2    | P3    | P1            |
+0       3       6               13
+
+等待時間：P2=0, P3=3, P1=6  →  平均 = 9/3 = 3
+```
+
+平均等待從 5.67 降到 3。**SJF 對「平均等待時間」是理論最佳。**
+代價：你得先知道每個工作要跑多久（實務上只能用過去紀錄「預測」）。
+
+## Round Robin：輪流，每人限時
+
+給每個工作固定「時間片 (quantum)」，輪流跑，時間到沒做完就排到隊尾：
+
+```
+quantum = 2
+| P1 | P2 | P3 | P1 | P2 | P3 | P1 | ...
+  輪流上，每次最多 2，沒做完就回去排隊
+```
+
+好處：回應快、互動體驗好（不會有人等太久才被理）。
+取捨：quantum 太小 → 一直在切換、開銷大；太大 → 退化成 FCFS。
+
+## 常見演算法一覽
+
+| 演算法 | 特點 | 風險 |
+|---|---|---|
+| FCFS | 簡單、公平 | 護衛效應 |
+| SJF / SRTF | 平均等待最佳 | 要預測 burst；長工作可能餓死 |
+| Round Robin | 回應快、適合互動 | quantum 難調 |
+| Priority | 重要的先做 | 低優先權**飢餓** → 用 aging 救 |
+| MLFQ | 依行為動態調整優先權 | 參數多 |
+
+## 常見誤解
+
+- **回應時間 (response) ≠ 週轉時間 (turnaround)**。回應是「等多久才第一次被理」，週轉是「從到達到完全做完」。
+- quantum 太小不是「更好」——切換開銷會吃掉效能。
+- **優先權反轉**：低優先權行程握著鎖，卡住高優先權行程。解法是優先權繼承 (priority inheritance)。
+
+## 解題時的判斷（甘特圖題）
+
+1. 先把**時間軸（甘特圖）畫出來**。
+2. 搶佔式 → 在「新工作到達 / 時間片用完 / 去等 I/O」這幾個點切段。
+3. 完成時間、週轉、等待，**全部從同一條時間軸推**，不要各算各的。
+4. 等待時間 = 週轉時間 − 實際執行時間。

@@ -1,27 +1,79 @@
-# 行程與執行緒
+# 行程與執行緒 (Process & Thread)
 
-## 核心概念
-Process 是資源容器，擁有位址空間、開啟檔案、權限與 PCB；thread 是 CPU 排程的執行單位，通常共享同一 process 的記憶體與檔案。Program 是靜態檔案，process 是執行中的實例。
+## 先分清三個詞
+
+- **程式 (program)**：躺在硬碟上的檔案，是死的指令集合。
+- **行程 (process)**：程式被「執行起來」的一份實例，是活的，有自己的記憶體、狀態。
+- **執行緒 (thread)**：行程「內部」真正在 CPU 上跑的執行單位。
+
+生活類比：食譜是程式；照著食譜實際在廚房做菜是行程；廚房裡同時切菜、炒菜的幾雙手是執行緒。同一份食譜可以開好幾個廚房（多個行程）同時做。
+
+## 行程擁有什麼
+
+每個行程有自己獨立的一塊地盤，彼此看不到對方的記憶體（隔離 → 安全）：
 
 ```
-Process
-├─ address space / files
-└─ threads：PC、registers、stack
+行程 (Process)
+├── 程式碼 (code)
+├── 全域資料 (data)
+├── 堆積 (heap)        ← 動態配置
+├── 堆疊 (stack)
+└── PCB：PID、狀態、暫存器、開啟的檔案…
 ```
 
-Context switch 會保存目前執行狀態並載入下一個可執行單位。`fork` 建立新 process，`exec` 用新程式映像取代目前 process。
-作業系統題常把「隔離」與「共享」放在一起考：process 隔離能提升保護性，thread 共享能降低溝通成本，但一旦共享資料，就必須面對同步與記憶體可見性。
-判斷題目時，先找資源屬於 process 還是 thread，再推導切換與通訊成本。
-這能避免把共享記憶體問題誤判成行程隔離問題。
+PCB（行程控制區塊）就是 OS 用來記住「這個行程現在長怎樣」的小檔案。
 
-## 解題重點
-- Process 間隔離較強，IPC 需 pipe、socket、shared memory 等機制。
-- Threads 溝通便宜，但共享資料需要同步。
-- 狀態常見為 new、ready、running、blocked、terminated。
-- Kernel thread 由 OS 排程；user thread 切換快但可能受 blocking system call 影響。
+## 行程的五種狀態
 
-## 常見陷阱
-Thread 不是比較小的 process 而已，重點是共享 address space。多執行緒不保證變快，鎖競爭與 cache coherence 會吃成本。Zombie 是已結束但尚未被 parent 回收狀態，不是仍在執行。
+行程在生命週期會在這幾個狀態間轉換：
 
-## 練習前檢查
-你應能分清 program/process/thread、畫出狀態轉移，並說明 context switch、PCB、fork/exec、IPC、race condition、user/kernel thread 與多核心平行的限制。
+```
+        建立              排程選中            結束
+  new ──────▶ ready ───────────▶ running ──────▶ terminated
+                ▲                  │  │
+       I/O完成  │      時間片用完   │  │ 發出 I/O / 等事件
+                └──────────────────┘  ▼
+                              waiting (blocked)
+```
+
+- **ready → running**：排程器挑中它、給 CPU。
+- **running → ready**：時間片用完，被搶下來排隊。
+- **running → waiting**：去等 I/O 或某個事件。
+- **waiting → ready**：等到了，回去排隊。
+
+## 行程 vs 執行緒：差在「共享」
+
+同一行程的多個執行緒**共享**程式碼、全域資料、heap；但**各自擁有**自己的堆疊、暫存器、PC：
+
+```
+        行程（共享區）
+   ┌─────────────────────┐
+   │  code | data | heap  │   ← 所有 thread 共用
+   └─────────────────────┘
+      │           │
+   Thread 1    Thread 2
+   stack/PC    stack/PC      ← 各自獨立
+```
+
+所以：
+- 建執行緒比建行程**便宜**（不用另開一整塊位址空間）。
+- 執行緒溝通**便宜**（直接讀同一份記憶體）——但因此要面對同步問題（race condition）。
+- 行程之間隔離，溝通要透過 **IPC**（pipe、socket、共享記憶體）。
+
+## 上下文切換 (Context Switch)
+
+CPU 要從一個執行單位換到另一個，得先把目前的狀態（暫存器、PC）存進 PCB、再載入下一個的。這段時間 **CPU 沒做有用的事**，是純開銷；還會讓 cache/TLB 變冷。
+
+## 常見誤解
+
+- **執行緒不是「比較小的行程」**——重點是它「共享位址空間」。
+- 多執行緒**不保證變快**：鎖競爭、cache coherence 都要成本。
+- **殭屍 (zombie)** 是已結束、但父行程還沒回收的行程，不是還在跑的。
+- `fork` 是複製出一個新行程；`exec` 是用新程式映像「取代」目前行程（不是新增）。
+
+## 解題時的判斷
+
+- 先問：這個資源是屬於「行程」還是「執行緒」？（決定隔離還是共享）
+- 要平行又要省溝通成本 → 多執行緒，但準備好處理同步。
+- 要強隔離、互不干擾 → 多行程 + IPC。
+- 看到狀態轉換題 → 先在腦中畫出那張五狀態圖。

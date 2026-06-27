@@ -1,25 +1,79 @@
-# 虛擬記憶體
+# 虛擬記憶體 (Virtual Memory)
 
-## 核心概念
-虛擬記憶體讓每個 process 看到獨立的位址空間，OS 與硬體再把 virtual page 映射到 physical frame。Page table 保存映射、權限、valid、dirty 等資訊；TLB 快取最近轉換，避免每次都查記憶體中的頁表。
+## 這是什麼？
+
+虛擬記憶體讓每個程式都「以為」自己獨佔一整塊乾淨、連續的記憶體，實際上 OS + 硬體在背後偷偷把它對應到真正的實體記憶體（或硬碟）。
+
+帶來三個好處：
+- 程式可用的空間能**比實體 RAM 還大**（用不到的先放硬碟）。
+- 各行程**互相隔離**，碰不到別人的記憶體（安全）。
+- 程式不用管實體記憶體現在哪裡有空位。
+
+## 核心：虛擬位址 → 實體位址
+
+程式用的是「虛擬位址」，硬體會把它翻譯成「實體位址」。
+
+![虛擬記憶體：每個行程的虛擬位址，透過對應表映射到實體記憶體或硬碟](https://commons.wikimedia.org/wiki/Special:FilePath/Virtual%20memory.svg "圖片來源：Wikimedia Commons「Virtual memory.svg」")
+
+做法：把記憶體切成固定大小的塊。
+- 虛擬空間的塊叫 **page（頁）**。
+- 實體記憶體的塊叫 **frame（框）**，大小相同。
+- **分頁表 (page table)** 記錄「哪一頁 → 對應哪一框」。
 
 ```
-virtual address = page number + offset
-page table：page → frame
+虛擬位址 = 頁號 (page number) + 頁內偏移 (offset)
+
+       頁號 ──查分頁表──▶ 框號
+                              ＋ offset（直接帶過去）
+                              = 實體位址
 ```
 
-Demand paging 只在頁被實際存取時載入。若頁不在記憶體，page fault 交由 OS 找 frame、必要時換出犧牲頁、讀入資料後重試指令。
-本章的核心問題是「位址轉換成本」與「實體記憶體不足」：TLB 降低轉換成本，置換演算法降低缺頁成本，工作集模型則用來判斷目前給的 frame 是否足夠。
-先分清硬體快取失敗、權限失敗與頁面不在記憶體。
+## TLB：翻譯的快取
 
-## 解題重點
-- TLB miss 只是轉換快取沒命中，不一定 page fault。
-- Effective access time 要把 fault rate 與服務時間換成同一單位。
-- FIFO、LRU、Clock、OPT 的差異在於選哪個頁換出。
-- Working set 不足會造成 thrashing。
+每次存取都去查分頁表（在記憶體裡）很慢。**TLB** 是硬體裡的小快取，存最近用過的「頁→框」對應。
 
-## 常見陷阱
-Paging 消除外部碎片，但仍有最後一頁用不滿的內部碎片。Protection fault 與 page not present 都可能表現為 fault，但原因不同。Copy-on-write 先共享唯讀頁，寫入時才複製，不是立刻複製整個位址空間。
+```
+存取位址 → 先問 TLB
+   命中 → 直接拿到框號（快）
+   沒中 → 才去查分頁表，再把結果放回 TLB
+```
 
-## 練習前檢查
-你應能分清 page/frame/TLB/page fault，手算 page offset 與有效存取時間，並說明 multilevel page table、inverted page table、huge pages、Belady's anomaly 與 Clock 近似 LRU。
+注意：**TLB miss ≠ page fault**。TLB miss 只是這個快取沒命中，頁可能還在記憶體裡。
+
+## Page Fault：要的頁不在記憶體
+
+採「需求分頁」——頁只有在**真的被用到**時才載入。若存取的頁不在記憶體（valid bit = 無效），就觸發 **page fault**：
+
+```
+1. 存取某頁 → 發現不在記憶體（page fault）
+2. OS 找一個空的 frame
+   （沒有空的 → 用置換演算法選一個犧牲頁換出去）
+3. 從硬碟把要的頁讀進來、更新分頁表
+4. 重試剛剛那條指令
+```
+
+page fault 要動到硬碟，非常慢，所以「缺頁率」對效能影響極大。
+
+## 置換演算法（要換出哪一頁）
+
+當記憶體滿了又要載入新頁，得挑一頁犧牲：
+- **FIFO**：最早進來的先換（簡單，但可能有 Belady 異常：框變多反而缺頁更多）。
+- **LRU**：換「最久沒用」的（效果好，但精確實作貴）。
+- **Clock**：用一個 reference bit 近似 LRU，便宜又好用。
+- **OPT**：換「未來最久才用到」的（理論最佳，但需預知未來，無法實作，只當基準）。
+
+## Thrashing：忙著換頁、沒空做事
+
+如果同時跑的行程太多，每個分到的 frame 都不夠裝它的「工作集 (working set)」，就會一直 page fault、互搶 frame，CPU 幾乎都在等硬碟 → 系統卡死。這叫 **thrashing**。
+
+## 常見誤解
+
+- **TLB miss ≠ page fault**（一個是快取沒中，一個是頁不在記憶體）。
+- 分頁消除了**外部碎片**，但仍有「最後一頁用不滿」的**內部碎片**。
+- **copy-on-write**：fork 後父子先共享唯讀頁，有人要寫才複製那一頁——不是一開始就複製整個位址空間。
+
+## 解題時的判斷
+
+- 先分清楚是哪種「失敗」：TLB 沒中、權限不符、還是頁不在記憶體。
+- 算有效存取時間：把缺頁率 × 缺頁服務時間，跟命中時間換成同單位再加權。
+- 缺頁太多 → 想 working set 夠不夠、是不是 thrashing。
